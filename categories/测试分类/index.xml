@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>所有文章 - YouAreFree</title>
-    <link>http://localhost:1313/posts/</link>
+    <title>测试分类 - 分类 - YouAreFree</title>
+    <link>http://localhost:1313/categories/%E6%B5%8B%E8%AF%95%E5%88%86%E7%B1%BB/</link>
     <description>这是一个个人博客网站</description>
     <generator>Hugo 0.142.0 &amp; FixIt v0.3.17-8b402129</generator>
     <language>zh-CN</language>
     <managingEditor>1022440588@qq.com (UAreFree)</managingEditor>
     <webMaster>1022440588@qq.com (UAreFree)</webMaster>
     <lastBuildDate>Sat, 25 Jan 2025 12:51:07 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/%E6%B5%8B%E8%AF%95%E5%88%86%E7%B1%BB/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>文章测试</title>
       <link>http://localhost:1313/posts/article-test/</link>
