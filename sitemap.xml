@@ -2,7 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2025-08-26T11:29:08+08:00</lastmod>
+    <lastmod>2025-08-30T10:42:57+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2025-08-30T10:42:57+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -32,12 +38,6 @@
   </url>
   <url>
     <loc>http://localhost:1313/posts/mit-lab-mmap/</loc>
-    <lastmod>2025-08-26T11:29:08+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:1313/posts/</loc>
     <lastmod>2025-08-26T11:29:08+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
