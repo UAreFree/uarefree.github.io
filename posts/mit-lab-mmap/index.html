@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>MIT6.1810 Lab:Mmap -  Blog</title><meta name="author" content="UAreFree">
+<meta name="description" content="MIT6.1810 lab xv6 2024 mmap
+"><meta name="keywords" content='MIT6.1810, Lab'>
+  <meta itemprop="name" content="MIT6.1810 Lab:Mmap">
+  <meta itemprop="description" content="MIT6.1810 lab xv6 2024 mmap">
+  <meta itemprop="datePublished" content="2025-08-26T11:29:08+08:00">
+  <meta itemprop="dateModified" content="2025-08-26T11:29:08+08:00">
+  <meta itemprop="wordCount" content="7172">
+  <meta itemprop="keywords" content="MIT6.1810,Lab"><meta property="og:url" content="http://localhost:1313/posts/mit-lab-mmap/">
+  <meta property="og:site_name" content=" Blog">
+  <meta property="og:title" content="MIT6.1810 Lab:Mmap">
+  <meta property="og:description" content="MIT6.1810 lab xv6 2024 mmap">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-08-26T11:29:08+08:00">
+    <meta property="article:modified_time" content="2025-08-26T11:29:08+08:00">
+    <meta property="article:tag" content="MIT6.1810">
+    <meta property="article:tag" content="Lab">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="MIT6.1810 Lab:Mmap">
+  <meta name="twitter:description" content="MIT6.1810 lab xv6 2024 mmap">
+<meta name="application-name" content="YouAreFree">
+<meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/mit-lab-mmap/" title="MIT6.1810 Lab:Mmap -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/posts/mit-lab-fs/" title="MIT6.1810 Lab:File system" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/mit-lab-mmap/index.md" title="MIT6.1810 Lab:Mmap -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "MIT6.1810 Lab:Mmap",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/localhost:1313\/posts\/mit-lab-mmap\/"
+    },"genre": "posts","keywords": "MIT6.1810, Lab","wordcount":  7172 ,
+    "url": "http:\/\/localhost:1313\/posts\/mit-lab-mmap\/","datePublished": "2025-08-26T11:29:08+08:00","dateModified": "2025-08-26T11:29:08+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "UAreFree"
+      },"description": ""
+  }
+  </script><script src="/js/head/color-scheme.min.js"></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="32" width="32"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item">
+              <a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 所有分类</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 所有标签</a></li><li class="menu-item">
+              <a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="26" width="26"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item"><a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 所有分类</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 所有标签</a></li><li class="menu-item"><a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="fi-container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="合集"><div class="details collection-details open">
+      <div class="details-summary collection-summary">
+        <i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i>
+        <span class="collection-name" title="合集">Xv6</span>
+        <span class="collection-count">8</span><i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></div>
+      <div class="details-content collection-content">
+        <nav>
+          <ul class="collection-list"><li class="collection-item"><a href="/posts/mit-lab-util/" title="MIT6.1810 Lab:Xv6 and Unix Utilities">MIT6.1810 Lab:Xv6 and Unix Utilities</a></li><li class="collection-item"><a href="/posts/mit-lab-syscall/" title="MIT6.1810 Lab:System Calls">MIT6.1810 Lab:System Calls</a></li><li class="collection-item"><a href="/posts/mit-lab-pgtbl/" title="MIT6.1810 Lab:Page Tables">MIT6.1810 Lab:Page Tables</a></li><li class="collection-item"><a href="/posts/mit-lab-traps/" title="MIT6.1810 Lab:Traps">MIT6.1810 Lab:Traps</a></li><li class="collection-item"><a href="/posts/mit-lab-cow/" title="MIT6.1810 Lab:Copy-on-Write Fork for Xv6">MIT6.1810 Lab:Copy-on-Write Fork for Xv6</a></li><li class="collection-item"><a href="/posts/mit-lab-lock/" title="MIT6.1810 Lab:Locks">MIT6.1810 Lab:Locks</a></li><li class="collection-item"><a href="/posts/mit-lab-fs/" title="MIT6.1810 Lab:File System">MIT6.1810 Lab:File System</a></li><li class="collection-item"><span class="active" title="MIT6.1810 Lab:Mmap">MIT6.1810 Lab:Mmap</span></li></ul>
+          <div class="collection-nav-simple"><a href="/posts/mit-lab-fs/" class="collection-nav-item" rel="prev" title="MIT6.1810 Lab:File System"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i></a><span class="text-secondary">8/8</span><i class="fa-solid fa-angle-right fa-fw collection-nav-item text-secondary" aria-hidden="true"></i></div>
+        </nav>
+      </div>
+    </div></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>MIT6.1810 Lab:Mmap</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-26 11:29:08"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-26">2025-08-26</time></span>&nbsp;<span title="7172 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 7200 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 15 分钟</span>&nbsp;</div>
+    </div><div class="content" id="content"><p>MIT6.1810 lab xv6 2024 mmap</p>
+<p>先读一下从内核世界透视<a href="https://mp.weixin.qq.com/s/AUsgFOaePwVsPozC3F6Wjw"target="_blank" rel="external nofollow noopener noreferrer">mmap内存映射的本质（原理篇）</a>这篇文章。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/mman.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kt">void</span><span class="o">*</span> <span class="nf">mmap</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">length</span><span class="p">,</span> <span class="kt">int</span> <span class="n">prot</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">off_t</span> <span class="n">offset</span><span class="p">);</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>系统调用mmap映射的是虚拟内存中的文件映射与匿名映射区，在这段虚拟内存区域中，包含了一段一段的虚拟映射区，每调用一次mmap就会在文件映射与匿名映射区划分一段作为申请的虚拟内存。</p>
+<p>addr：指定映射的虚拟内存起始地址，一般设为NULL，交由内核决定起始地址。</p>
+<p>length：申请的内存有多大，决定匿名映射的物理内存有多大或文件映射的文件区域有多大。addr和length必须按照PAGE_SIZE对齐。</p>
+<p>如果是文件映射，就要通过参数fd指定要映射文件的描述符，通过offset指定文件映射区在文件的偏移。Linux中内存页和磁盘块大小一般情况都是4KB，这里的offset也必须按照4KB对齐。</p>
+<p>mmap映射的虚拟内存在内核中用struct vm_area_struct结构表示，进程中的VMA有两种组织形式，双向链表和红黑树。mmap系统调用本质是先要在虚拟内存空间中划分出一段VMA出来，这段VMA区域的大小由vm_start，vm_end表示，而它们由mmap参数addr、length决定；随后内核会对这段VMA进行相关的映射，如果是文件映射，内核会将映射的文件以及要映射文件区域在文件中的offset，与VMA中的vm_file、vm_pgoff关联映射起来，他们由mmap参数fd、offset决定；mmap映射的这段VMA中的相关权限和标志位，是由mmap参数的prot、flags决定的，最终会映射到VMA中的vm_page_prot、vm_flags中，指定进程对这块VMA的访问权限和相关标志位。PS：进程所依赖的动态链接库.so文件也是通过mmap文件映射的方式将代码段、数据段映射到文件映射与匿名映射区中。</p>
+<p>mmap中参数prot指定VMA的访问权限，取值有四种：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#define PROT_READ 0x1  </span><span class="cm">/* page can be read */</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define PROT_WRITE 0x2  </span><span class="cm">/* page can be written */</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define PROT_EXEC 0x4  </span><span class="cm">/* page can be executed */</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define PROT_NONE 0x0  </span><span class="cm">/* page can not be accessed */</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>mmap中参数flags指定VMA映射方式，OS对物理页的管理类型有两种：一种是匿名页、一种是文件页，对应的映射也就分为两种，匿名映射、文件映射，mmap所映射的物理内存能否在多进程间共享又分为共享映射、私有映射两种映射方式，共享映射是多进程共享的，一个进程修改了共享映射的内存其他进程是可以看到的，用于多进程间的通信；私有映射是进程私有的，其他进程看不到，多进程修改同一映射文件将不会回写到磁盘文件上。</p>
+<p>按照匿名、文件与共享、私有进行组合，就有四种映射方式。</p>
+<ol>
+<li>
+<p>私有匿名映射：MAP_PRIVATE | MAP_ANONYMOUS，glib库中封装的malloc函数申请内存大于128KB时使用mmap私有匿名映射方式来申请堆内存。这里mmap只是先申请一段VMA，还没有真正分配物理内存，PTE是空的，只有读写此区域时，才会触发缺页异常分配物理内存。私有匿名映射除了用于申请虚拟内存之外，还会用于execve系统调用中，内核需要删除释放旧的虚拟内存空间并情况页表，然后打开可执行文件，解析文件头，判断可执行文件的格式，对应函数进行加载。这个过程就需要私有匿名映射创建新的虚拟内存空间中的BSS段、堆和栈。
+<figure><a class="lightgallery" href="/xv6/%e7%a7%81%e6%9c%89%e5%8c%bf%e5%90%8d%e6%98%a0%e5%b0%84.png" title="/xv6/私有匿名映射.png" data-thumbnail="/xv6/私有匿名映射.png" data-sub-html="<h2>私有匿名映射</h2>"><img loading="lazy" src='/xv6/私有匿名映射.png' alt="/xv6/私有匿名映射.png"></a><figcaption class="image-caption">私有匿名映射</figcaption>
+  </figure></p>
+</li>
+<li>
+<p>私有文件映射：MAP_PRIVATE，mmap内存文件映射的本质是vm_area_struct结构体中传入参数fd所对应的file结构体指针，指向file结构体，file结构体中存有inode结构体成员，即该文件对应的inode索引，从而找到对应的磁盘块block。和私有匿名映射一样，它不会立即分配物理页面，而是利用缺页异常，进程1在建立PTE之后，再次访问这段文件内存映射时就相当于直接访问文件的page cache，这个过程是在用户态的，没有切态。进程2同样在访问这段文件时也触发缺页异常，建立PTE，但会直接指向进程1中的page cache。所有进程的PTE都设为只读，当任一进程试图写入时，又会触发缺页中断，会申请一个内存页，然后将page cache的内容拷贝到新内存页中，并更新PTE。当进程都有各自专属的物理内存页时，就和page cache脱离关系了，各自的修改在进程之间时互不可见的，且均不会回写到磁盘文件中。可执行文件的.text、.data就使用私有文件映射到了进程虚拟内存空间中的代码段和数据段中。
+<figure><a class="lightgallery" href="/xv6/%e7%a7%81%e6%9c%89%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84%e5%a4%9a%e8%bf%9b%e7%a8%8b.png" title="/xv6/私有文件映射多进程.png" data-thumbnail="/xv6/私有文件映射多进程.png" data-sub-html="<h2>私有文件映射多进程</h2>"><img loading="lazy" src='/xv6/私有文件映射多进程.png' alt="/xv6/私有文件映射多进程.png"></a><figcaption class="image-caption">私有文件映射多进程</figcaption>
+  </figure>
+<figure><a class="lightgallery" href="/xv6/%e7%a7%81%e6%9c%89%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84%e8%bf%9b%e7%a8%8b%e7%a9%ba%e9%97%b4.png" title="/xv6/私有文件映射进程空间.png" data-thumbnail="/xv6/私有文件映射进程空间.png" data-sub-html="<h2>私有文件映射进程空间</h2>"><img loading="lazy" src='/xv6/私有文件映射进程空间.png' alt="/xv6/私有文件映射进程空间.png"></a><figcaption class="image-caption">私有文件映射进程空间</figcaption>
+  </figure></p>
+</li>
+<li>
+<p>共享文件映射：MAP_SHARED，和私有文件映射过程一样，唯一不同的点是，多进程中的虚拟内存映射区通过缺页中断会映射到同一page cache中，且是可读可写，不会再次触发缺页中断去各自分配新的物理页。多进程对共享映射区的任何修改都会通过内核回写线程pdflush刷新到磁盘文件中。根据 mmap 共享文件映射多进程之间读写共享（不会发生写时复制）的特点，常用于多进程之间共享内存（page cache），多进程之间的通讯。
+<figure><a class="lightgallery" href="/xv6/%e5%85%b1%e4%ba%ab%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84.png" title="/xv6/共享文件映射.png" data-thumbnail="/xv6/共享文件映射.png" data-sub-html="<h2>共享文件映射</h2>"><img loading="lazy" src='/xv6/共享文件映射.png' alt="/xv6/共享文件映射.png"></a><figcaption class="image-caption">共享文件映射</figcaption>
+  </figure></p>
+</li>
+<li>
+<p>共享匿名映射：MAP_SHARED | MAP_ANONYMOUS，将fd设为-1来实现共享匿名映射，这种映射方式常用于父子进程之间共享内存，父子进程之间的通讯。这个思路如果按照上述的话，就是进程1缺页中断分配一个物理页，进程2同样缺页中断要分配进程1所指的物理页，但是进程2怎么找到这个物理页？找不到的。但这对于共享文件映射很容易，因为有文件的page cache存在，进程2可以根据offset从page cache中查找是否已经有其他进程把映射的文件内容加载到文件页中。如果文件页已经存在 page cache 中了，进程 2 直接映射这个文件页就可以了。共享匿名映射在内核中是通过一个叫做 tmpfs 的虚拟文件系统来实现的，tmpfs 不是传统意义上的文件系统，它是基于内存实现的，挂载在 dev/zero 目录下。当多个进程通过 mmap 进行共享匿名映射的时候，内核会在 tmpfs 文件系统中创建一个匿名文件，这个匿名文件并不是真实存在于磁盘上的，它是内核为了共享匿名映射而模拟出来的，匿名文件也有自己的 inode 结构以及 page cache。在 mmap 进行共享匿名映射的时候，内核会把这个匿名文件关联到进程的虚拟映射区 VMA 中。这样一来，当进程虚拟映射区域与 tmpfs 文件系统中的这个匿名文件映射起来之后，后面的流程就和共享文件映射一模一样了。由于是基于内存实现的虚拟文件系统，在其他进程是不可见的，而子进程是可见的，适用于父子进程间的共享匿名映射。</p>
+</li>
+</ol>
+<p>总结：</p>
+<ol>
+<li>私有匿名映射，其主要用于进程申请虚拟内存，以及初始化进程虚拟内存空间中的 BSS 段，堆，栈这些虚拟内存区域。</li>
+<li>私有文件映射，其核心特点是背后映射的文件页在多进程之间是读共享的，多个进程对各自虚拟内存区的修改只能反应到各自对应的文件页上，而且各自的修改在进程之间是互不可见的，最重要的一点是这些修改均不会回写到磁盘文件中。我们可以利用这些特点来加载二进制可执行文件的 .text , .data section 到进程虚拟内存空间中的代码段和数据段中。</li>
+<li>共享文件映射，多进程之间读写共享（不会发生写时复制），常用于多进程之间共享内存（page cache），多进程之间的通讯。</li>
+<li>共享匿名映射，用于父子进程之间共享内存，父子进程之间的通讯。父子进程之间需要依赖 tmpfs 中的匿名文件来实现共享内存。是一种特殊的共享文件映射。</li>
+</ol>
+<p>xv6的mmap函数声明：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="nf">mmap</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">addr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">len</span><span class="p">,</span> <span class="kt">int</span> <span class="n">prot</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">off_t</span> <span class="n">offset</span><span class="p">);</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看出和上述Linux的mmap函数声明是一致的，本实验就是要实现类似于Unix的上述简化实现。只实现文件映射部分，没有匿名映射。实验说明：</p>
+<ol>
+<li>内核自己决定文件映射的虚拟地址，mmap返回该地址，失败返回0xffffffffffffffff。</li>
+<li>len是映射的字节数。</li>
+<li>prot有可读、可写、可执行三种。</li>
+<li>flags是MAP_PRIVATE或MAP_SHARED，即私有文件映射或共享文件映射，就是上述所提的2、3两种情况。</li>
+<li>在usertrap()中page fault进行处理分配物理内存。</li>
+<li>MAP_SHARED可以不分配物理内存。
+munmap函数声明：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">munmap</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">addr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">len</span><span class="p">);</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>移除指定地址范围内的mmap映射。</li>
+<li>MAP_SHARED要将修改写入文件，进程退出时也要对MAP_SHARED的任何修改写入文件。</li>
+</ol>
+<p>hints：</p>
+<ol>
+<li>按照之前的老方法添加mmap和munmap系统调用。</li>
+<li>定义VMA结构体，记录映射的虚拟地址空间的起始地址、长度、权限、文件等信息。</li>
+<li>声明一个大小为16的VMA数组。</li>
+<li>把VMA数组对应到一个未使用的区域。</li>
+<li>VMA结构体中应包含一个指向file结构体的指针。</li>
+<li>mmap应增加文件的引用计数。</li>
+<li>VMA区域引发的page fault进行处理，分配一页物理内存，使用readi读入文件的4KB并映射到用户地址空间，设置正确的页面权限。</li>
+<li>使用uvmunmap取消对应地址范围的映射，并减少相应file的引用计数，如果页面MAP_SHARED，需要将其写回文件，参考filewrite。</li>
+<li>修改exit()取消进程的映射区域，就像调用munmap一样。</li>
+<li>修改fork()确保父子进程有相同的映射区域，增加VMA的引用计数，子进程的page fault可以分配一个新的物理页，不与父进程共享。</li>
+</ol>
+<p>注意通过mmap对映射文件的写操作不能超过文件大小。mmap参数length大小是2页但是文件只有1.5页怎么办？</p>
+<p>代码实现：</p>
+<p>老办法添加sys_mmap和sys_munmap两个系统调用的函数声明，这里不再赘述。</p>
+<p>添加VMA结构体，并声明一个大小为16的VMA结构体数组。参照mmap的函数参数，结构体成员变量需要有起始地址、结束地址、映射长度、权限、类型、文件描述符、偏移量、对应的映射文件这些，此外加入valid变量表示这块vma区域是否映射到了对应的文件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="nf">mmap</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">addr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">len</span><span class="p">,</span> <span class="kt">int</span> <span class="n">prot</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">off_t</span> <span class="n">offset</span><span class="p">);</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// proc.h
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="n">vma</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">valid</span><span class="p">;</span>  <span class="c1">// 是否被映射
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint64</span> <span class="n">start</span><span class="p">;</span>  <span class="c1">// 起始地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint64</span> <span class="n">end</span><span class="p">;</span>    <span class="c1">// 结束地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint64</span> <span class="n">length</span><span class="p">;</span> <span class="c1">// 映射长度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">prot</span><span class="p">;</span>   <span class="c1">// 权限
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">flags</span><span class="p">;</span>  <span class="c1">// 类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>     <span class="c1">// 文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">offset</span><span class="p">;</span> <span class="c1">// 偏移量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">;</span> <span class="c1">// 指向对应的映射文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define NVMA 16
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Per-process state
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="n">proc</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">spinlock</span> <span class="n">lock</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// p-&gt;lock must be held when using these:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">enum</span> <span class="n">procstate</span> <span class="n">state</span><span class="p">;</span>        <span class="c1">// Process state
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">void</span> <span class="o">*</span><span class="n">chan</span><span class="p">;</span>                  <span class="c1">// If non-zero, sleeping on chan
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">killed</span><span class="p">;</span>                  <span class="c1">// If non-zero, have been killed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">xstate</span><span class="p">;</span>                  <span class="c1">// Exit status to be returned to parent&#39;s wait
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">pid</span><span class="p">;</span>                     <span class="c1">// Process ID
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// wait_lock must be held when using this:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">proc</span> <span class="o">*</span><span class="n">parent</span><span class="p">;</span>         <span class="c1">// Parent process
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// these are private to the process, so p-&gt;lock need not be held.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint64</span> <span class="n">kstack</span><span class="p">;</span>               <span class="c1">// Virtual address of kernel stack
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint64</span> <span class="n">sz</span><span class="p">;</span>                   <span class="c1">// Size of process memory (bytes)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">pagetable_t</span> <span class="n">pagetable</span><span class="p">;</span>       <span class="c1">// User page table
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">trapframe</span> <span class="o">*</span><span class="n">trapframe</span><span class="p">;</span> <span class="c1">// data page for trampoline.S
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">context</span> <span class="n">context</span><span class="p">;</span>      <span class="c1">// swtch() here to run process
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">ofile</span><span class="p">[</span><span class="n">NOFILE</span><span class="p">];</span>  <span class="c1">// Open files
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">cwd</span><span class="p">;</span>           <span class="c1">// Current directory
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>               <span class="c1">// Process name (debugging)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">vma</span> <span class="n">vmas</span><span class="p">[</span><span class="n">NVMA</span><span class="p">];</span>       <span class="c1">// mmap virtual memory area
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>实现sys_mmap函数，读入传入的参数，注意使用argfd同时读入fd对应的file结构体，遍历vma数组找一块未被映射的vma，然后通过vmaend()去为它分配一段空闲的虚拟内存区域。这里我们将vma放到堆区之上，TRAPFRAME之下，从高地址向低地址扩展。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// sysfile.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sys_mmap</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint64</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">length</span><span class="p">;</span> <span class="c1">// 长度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">prot</span><span class="p">;</span>   <span class="c1">// 权限
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">flags</span><span class="p">;</span>  <span class="c1">// 类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>     <span class="c1">// 文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">offset</span><span class="p">;</span> <span class="c1">// 偏移量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">file</span><span class="o">*</span> <span class="n">file</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">argaddr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">argint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">argint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">prot</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">argint</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flags</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">argfd</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">file</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">argint</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">offset</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">length</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">prot</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">flags</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">fd</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">offset</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 如果是 MAP_SHARED 文件必须可写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">MAP_SHARED</span> <span class="o">&amp;&amp;</span> <span class="n">prot</span> <span class="o">&amp;</span> <span class="n">PROT_WRITE</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">writable</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 找一个未被映射的VMA
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">vma</span> <span class="o">*</span><span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">proc</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="nf">myproc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NVMA</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">valid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 未被映射的VMA
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">v</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 找一片区域给vma
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint64</span> <span class="n">end</span> <span class="o">=</span> <span class="nf">vmaend</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 初始化vma
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">v</span><span class="o">-&gt;</span><span class="n">valid</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v</span><span class="o">-&gt;</span><span class="n">start</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v</span><span class="o">-&gt;</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v</span><span class="o">-&gt;</span><span class="n">length</span> <span class="o">=</span> <span class="n">length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v</span><span class="o">-&gt;</span><span class="n">prot</span> <span class="o">=</span> <span class="n">prot</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="n">flags</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">=</span> <span class="n">fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v</span><span class="o">-&gt;</span><span class="n">file</span> <span class="o">=</span> <span class="n">file</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v</span><span class="o">-&gt;</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 增加文件的引用计数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nf">filedup</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以我们仍需遍历所有vma，找位于最低区域的vma，将新的vma放到它下面。具体就是比较v-&gt;start地址，找最低地址作为新vma的最高地址v-&gt;end。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// sysfile.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span>
+</span></span><span class="line"><span class="cl"><span class="nf">vmaend</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 从TRAPFRAME向下分配一片一片的vma
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 遍历所有已分配的vma 找最低地址作为新分配的end地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">proc</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="nf">myproc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint64</span> <span class="n">minstart</span> <span class="o">=</span> <span class="n">TRAPFRAME</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">vma</span> <span class="o">*</span><span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NVMA</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">valid</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">start</span> <span class="o">&lt;=</span> <span class="n">minstart</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">minstart</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">start</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="n">minstart</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nf">PGROUNDDOWN</span><span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>此时我们建立了vma虚拟内存到文件结构体file的映射关联，但是并没有分配物理页，而是依赖延时分配的机制在page fault时才去分配物理页，读入file对应的文件块。所以需要在usertrap中实现以上page fault的处理。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// trap.c
+</span></span></span><span class="line"><span class="cl"><span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span> <span class="k">else</span> <span class="nf">if</span><span class="p">((</span><span class="n">which_dev</span> <span class="o">=</span> <span class="nf">devintr</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// ok
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="nf">r_scause</span><span class="p">()</span> <span class="o">==</span> <span class="mi">13</span> <span class="o">||</span> <span class="nf">r_scause</span><span class="p">()</span> <span class="o">==</span> <span class="mi">15</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// page fault
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="nf">mmapfault</span><span class="p">(</span><span class="nf">r_stval</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;usertrap(): mmapfault scause 0x%lx pid=%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">r_scause</span><span class="p">(),</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;            sepc=0x%lx stval=0x%lx</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">r_sepc</span><span class="p">(),</span> <span class="nf">r_stval</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">setkilled</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>mmapfault这里需要注意一点，如果是写错误（r_scause() == 15），要判断文件权限、映射类型是否是只读的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// trap.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="nf">mmapfault</span><span class="p">(</span><span class="n">uint64</span> <span class="n">addr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">proc</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="nf">myproc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">vma</span> <span class="o">*</span><span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 找addr对应的vma
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NVMA</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">valid</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">start</span> <span class="o">&lt;=</span> <span class="n">addr</span> <span class="o">&amp;&amp;</span> <span class="n">addr</span> <span class="o">&lt;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">end</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 不能对只读文件进行写操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// r_scause() == 15 是写内存出错 r_scause() == 13 是读内存出错
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="nf">r_scause</span><span class="p">()</span> <span class="o">==</span> <span class="mi">15</span> <span class="o">&amp;&amp;</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">prot</span> <span class="o">&amp;</span> <span class="n">PROT_READ</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">prot</span> <span class="o">&amp;</span> <span class="n">PROT_WRITE</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">MAP_SHARED</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 分配物理页
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">char</span> <span class="o">*</span><span class="n">pa</span> <span class="o">=</span> <span class="nf">kalloc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pa</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">memset</span><span class="p">(</span><span class="n">pa</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">PGSIZE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 读取文件内容到物理内存中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">offset</span> <span class="o">+</span> <span class="nf">PGROUNDDOWN</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">-</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">ilock</span><span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nf">readi</span><span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">ip</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">pa</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">PGSIZE</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">iunlock</span><span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">iunlock</span><span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 设置页面权限
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint</span> <span class="n">perm</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">perm</span> <span class="o">=</span> <span class="n">PTE_V</span> <span class="o">|</span> <span class="n">PTE_U</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">prot</span> <span class="o">&amp;</span> <span class="n">PROT_READ</span><span class="p">)</span> <span class="n">perm</span> <span class="o">|=</span> <span class="n">PTE_R</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">prot</span> <span class="o">&amp;</span> <span class="n">PROT_WRITE</span><span class="p">)</span> <span class="n">perm</span> <span class="o">|=</span> <span class="n">PTE_W</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">prot</span> <span class="o">&amp;</span> <span class="n">PROT_EXEC</span><span class="p">)</span> <span class="n">perm</span> <span class="o">|=</span> <span class="n">PTE_X</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 设置映射
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nf">mappages</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">pagetable</span><span class="p">,</span> <span class="nf">PGROUNDDOWN</span><span class="p">(</span><span class="n">addr</span><span class="p">),</span> <span class="n">PGSIZE</span><span class="p">,</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">pa</span><span class="p">,</span> <span class="n">perm</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>至此完了mmap的部分，接下来实现munmap。munmap除了释放映射，还要判断MAP_SHARED进行写回。先读入传入的参数，这里使用函数munmap来封装具体操作，因为后边所提到的exit中也是同样的操作，可复用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// sysfile.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sys_munmap</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint64</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">argaddr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">argint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">length</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nf">munmap</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>munmap找到对应的vma区域并调用writeback函数释放映射并写回文件，提示中说到，munmap的范围有三种类型，从start开始释放、释放到end、start到end区域全释放。所以需要更新对应的vma，尤其是从start释放部分映射时，对应的文件偏移量offset也要相应增加，不然mmaptest中的部分测试用例是有问题的，比如释放了前一页，再释放后半页，最后读取文件时的首个字符却是后半页的首字符的情况，这是因为没有更新对应文件的offset，而把后半页写回到了文件的首页中。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// sysfile.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span>
+</span></span><span class="line"><span class="cl"><span class="nf">munmap</span><span class="p">(</span><span class="n">uint64</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">proc</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="nf">myproc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">vma</span> <span class="o">*</span><span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 找对应的vma区域
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NVMA</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">valid</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">start</span> <span class="o">&lt;=</span> <span class="n">addr</span> <span class="o">&amp;&amp;</span> <span class="n">addr</span> <span class="o">&lt;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">end</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// unmap并写回文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="nf">writeback</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">pagetable</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">addr</span> <span class="o">==</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 从start释放
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">v</span><span class="o">-&gt;</span><span class="n">start</span> <span class="o">+=</span> <span class="n">length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v</span><span class="o">-&gt;</span><span class="n">offset</span> <span class="o">+=</span> <span class="n">length</span><span class="p">;</span> <span class="c1">// 注意 文件也要对应偏移 否则部分释放有问题
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span><span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">addr</span> <span class="o">==</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">end</span> <span class="o">-</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 释放到end
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">v</span><span class="o">-&gt;</span><span class="n">end</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v</span><span class="o">-&gt;</span><span class="n">length</span> <span class="o">-=</span> <span class="n">length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 减少file引用计数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">length</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">fileclose</span><span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">file</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v</span><span class="o">-&gt;</span><span class="n">valid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>writeback函数参照filewrite，调用writei进行文件写入。这里也要注意写入文件不能超过文件原本的大小，mmap映射的文件大小已经固定，不能扩充文件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// sysfile.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="nf">writeback</span><span class="p">(</span><span class="kt">pagetable_t</span> <span class="n">pgtbl</span><span class="p">,</span> <span class="n">uint64</span> <span class="n">va</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">,</span> <span class="k">struct</span> <span class="n">vma</span><span class="o">*</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kt">pte_t</span><span class="o">*</span> <span class="n">pte</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint64</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 遍历vma区域页面
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">for</span> <span class="p">(</span><span class="n">addr</span> <span class="o">=</span> <span class="nf">PGROUNDDOWN</span><span class="p">(</span><span class="n">va</span><span class="p">);</span> <span class="n">addr</span> <span class="o">&lt;</span> <span class="nf">PGROUNDDOWN</span><span class="p">(</span><span class="n">va</span><span class="o">+</span><span class="n">length</span><span class="p">);</span> <span class="n">addr</span> <span class="o">+=</span> <span class="n">PGSIZE</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 获取对应PTE
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">((</span><span class="n">pte</span> <span class="o">=</span> <span class="nf">walk</span><span class="p">(</span><span class="n">pgtbl</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">va</span> <span class="o">-</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">start</span> <span class="o">&gt;</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 未分配物理页
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="o">*</span><span class="n">pte</span> <span class="o">&amp;</span> <span class="n">PTE_V</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 如果是MAP_SHARED 且可写 要写回文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// hint说明可以不考虑PTE_D
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">MAP_SHARED</span> <span class="o">&amp;&amp;</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">prot</span> <span class="o">&amp;</span> <span class="n">PROT_WRITE</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">begin_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">ilock</span><span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">uint</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">offset</span> <span class="o">+</span> <span class="n">addr</span> <span class="o">-</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 写入不能超过原文件大小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">uint</span> <span class="n">size</span> <span class="o">=</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">-</span> <span class="n">offset</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">PGSIZE</span><span class="p">)</span> <span class="n">size</span> <span class="o">=</span> <span class="n">PGSIZE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">writei</span><span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">ip</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">iunlock</span><span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 释放物理页及映射
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">kfree</span><span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="nf">PTE2PA</span><span class="p">(</span><span class="o">*</span><span class="n">pte</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="o">*</span><span class="n">pte</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>最后实现fork时的子进程也要copy父进程的vma区域，以及exit子进程退出时执行munmap操作。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// proc.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span>
+</span></span><span class="line"><span class="cl"><span class="nf">fork</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">pid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">proc</span> <span class="o">*</span><span class="n">np</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">proc</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="nf">myproc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// Allocate process.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span><span class="p">((</span><span class="n">np</span> <span class="o">=</span> <span class="nf">allocproc</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NVMA</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">valid</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">np</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">filedup</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">file</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// proc.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">exit</span><span class="p">(</span><span class="kt">int</span> <span class="n">status</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">proc</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="nf">myproc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="n">initproc</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">panic</span><span class="p">(</span><span class="s">&#34;init exiting&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 释放vma映射
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NVMA</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">valid</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nf">munmap</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">start</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">vmas</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">length</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">panic</span><span class="p">(</span><span class="s">&#34;exit munmap&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>至此，mmaptest全部通过。
+<figure><a class="lightgallery" href="/xv6/mmaptest.png" title="/xv6/mmaptest.png" data-thumbnail="/xv6/mmaptest.png" data-sub-html="<h2>mmaptest</h2>"><img loading="lazy" src='/xv6/mmaptest.png' alt="/xv6/mmaptest.png"></a><figcaption class="image-caption">mmaptest</figcaption>
+  </figure></p>
+<p>总结：mmap作为xv6的最后一个实验，综合了内存管理、进程管理、文件系统这三大块的内容，是一个综合性极佳的实验。首先认识到了为什么需要虚拟内存这一问题的答案，除了实现进程隔离防止多进程访问地址冲突、给进程提供一个看起来更大的地址空间以外，他还可以在此基础之上利用page fault陷入trap处理程序，从而实现延时分配（先提供虚拟空间，在访问时再去分配物理空间，比如sbrk扩充了虚拟地址空间大小，在访问扩充后的虚拟地址时才会实际分配物理页，这里是根本没有建立PTE映射，也就是没有PTE的page fault）、写时复制（fork时子进程copy父进程的页表，指向同一块虚拟地址空间，但将PTE设为不可写，当其中一个进程试图写入时，触发page fault再去分配物理页，copy原来的物理页，这里是建立了PTE，但权限为不可写）机制。以及去映射文件避免读写文件多次地从用户态到内核态的上下文切换（也就是本实验实现的，本质上是使用该系统调用将文件内容读到内存中，从而再次读写文件时不用频繁调用read、write系统调用）。</p>
+<p>PS：强烈推荐文中开头提到的文章，mmap这个概念其实一直困扰了我很久，就像文中说到的：
+<figure><a class="lightgallery" href="/xv6/%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84%e7%9a%84%e7%96%91%e9%97%ae.png" title="/xv6/文件映射的疑问.png" data-thumbnail="/xv6/文件映射的疑问.png" data-sub-html="<h2>文件映射的疑问</h2>"><img loading="lazy" src='/xv6/文件映射的疑问.png' alt="/xv6/文件映射的疑问.png"></a><figcaption class="image-caption">文件映射的疑问</figcaption>
+  </figure></p>
+<p>我脑子中就全是这些疑惑，看到这段话时，顿时感到终于有人懂我了。这篇文章真是跪着读完的，相比于网上查阅的大多数资料、gpt答案，简直是好太多，醍醐灌顶的感觉。</p>
+<p>以及网上参考的实验实现可能在xv6 2024版本的实验中有些已经过不了了，推测是这些老头在不断更新测试用例，查看test文件的代码很有帮助，比如mmaptest中过不了的测试可以回查源码，看它是在测试哪方面，对应哪里出了问题，能快速定位解决。</p>
+<p>参考：</p>
+<ol>
+<li><a href="https://mp.weixin.qq.com/s/AUsgFOaePwVsPozC3F6Wjw"target="_blank" rel="external nofollow noopener noreferrer">从内核世界透视 mmap 内存映射的本质（原理篇）</a></li>
+<li><a href="https://kerolt.work/posts/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/mit6.s081lab10-mmap/"target="_blank" rel="external nofollow noopener noreferrer">kerolt的实现</a></li>
+</ol></div><div class="collection-card">
+      <div class="collection-title text-secondary">收录于 <a href="/collections/xv6/"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> <span>合集・Xv6</span></span></a> 8</div>
+      <div class="collection-nav">
+        <a href="/posts/mit-lab-fs/" class="collection-nav-item" rel="prev" title="MIT6.1810 Lab:File System"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i><span>MIT6.1810 Lab:File System</span>
+          </a></div>
+    </div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod"><span title="更新于 2025-08-26 11:29:08">更新于 2025-08-26&nbsp;</span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/mit-lab-mmap/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span><span><a href="vscode://file/T:%5cBlog%5cmy-blog%5ccontent%5cposts%5cmit_lab_mmap.md" title="在编辑器中打开"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-vscode">在编辑器中打开</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="分享到 X" data-sharer="twitter" data-url="http://localhost:1313/posts/mit-lab-mmap/" data-title="MIT6.1810 Lab:Mmap" data-hashtags="MIT6.1810,Lab"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/mit-lab-mmap/" data-hashtag="MIT6.1810"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/mit-lab-mmap/" data-title="MIT6.1810 Lab:Mmap"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/mit6.1810/" class="post-tag" title="标签 - MIT6.1810">MIT6.1810</a><a href="/tags/lab/" class="post-tag" title="标签 - Lab">Lab</a></section>
+    <section><span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/mit-lab-fs/" class="post-nav-item" rel="prev" title="MIT6.1810 Lab:File System"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>MIT6.1810 Lab:File System</a></div>
+</div>
+<div class="post-reward">
+    <div class="comment"></div>
+    <input type="checkbox" class="reward-input" name="reward" id="fi-reward" hidden />
+    <label class="reward-button" for="fi-reward"><i class="fa-solid fa-qrcode fa-fw" aria-hidden="true"></i>赞赏</label>
+    <div class="reward-ways" data-mode="static"></div>
+  </div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="目录"></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.148.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.4.0-alpha-20250823084643-0f68046a">FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/UAreFree"target="_blank" rel="external nofollow noopener noreferrer">UAreFree</a></span></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='总访客数'><i class="fa-regular fa-user fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='总访问量'><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">该网站在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/fuse/fuse.min.js" defer></script><script src="/lib/twemoji/twemoji.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":100},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"twemoji":true,"version":"v0.4.0-alpha-20250823084643-0f68046a"};console.log('Page config:', window.config);</script><script src="/js/theme.min.js" defer></script></body>
+</html>

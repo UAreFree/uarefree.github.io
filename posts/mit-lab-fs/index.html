@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>MIT6.1810 Lab:File System -  Blog</title><meta name="author" content="UAreFree">
+<meta name="description" content="MIT6.1810 lab xv6 2024 fs
+"><meta name="keywords" content='MIT6.1810, Lab'>
+  <meta itemprop="name" content="MIT6.1810 Lab:File system">
+  <meta itemprop="description" content="MIT6.1810 lab xv6 2024 fs">
+  <meta itemprop="datePublished" content="2025-08-26T11:22:27+08:00">
+  <meta itemprop="dateModified" content="2025-08-26T11:22:27+08:00">
+  <meta itemprop="wordCount" content="2539">
+  <meta itemprop="keywords" content="MIT6.1810,Lab"><meta property="og:url" content="http://localhost:1313/posts/mit-lab-fs/">
+  <meta property="og:site_name" content=" Blog">
+  <meta property="og:title" content="MIT6.1810 Lab:File system">
+  <meta property="og:description" content="MIT6.1810 lab xv6 2024 fs">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-08-26T11:22:27+08:00">
+    <meta property="article:modified_time" content="2025-08-26T11:22:27+08:00">
+    <meta property="article:tag" content="MIT6.1810">
+    <meta property="article:tag" content="Lab">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="MIT6.1810 Lab:File system">
+  <meta name="twitter:description" content="MIT6.1810 lab xv6 2024 fs">
+<meta name="application-name" content="YouAreFree">
+<meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/mit-lab-fs/" title="MIT6.1810 Lab:File system -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/posts/mit-lab-lock/" title="MIT6.1810 Lab:Locks" /><link rel="next" type="text/html" href="http://localhost:1313/posts/mit-lab-mmap/" title="MIT6.1810 Lab:Mmap" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/mit-lab-fs/index.md" title="MIT6.1810 Lab:File system -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "MIT6.1810 Lab:File system",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/localhost:1313\/posts\/mit-lab-fs\/"
+    },"genre": "posts","keywords": "MIT6.1810, Lab","wordcount":  2539 ,
+    "url": "http:\/\/localhost:1313\/posts\/mit-lab-fs\/","datePublished": "2025-08-26T11:22:27+08:00","dateModified": "2025-08-26T11:22:27+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "UAreFree"
+      },"description": ""
+  }
+  </script><script src="/js/head/color-scheme.min.js"></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="32" width="32"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item">
+              <a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 所有分类</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 所有标签</a></li><li class="menu-item">
+              <a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="26" width="26"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item"><a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 所有分类</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 所有标签</a></li><li class="menu-item"><a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="fi-container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="合集"><div class="details collection-details open">
+      <div class="details-summary collection-summary">
+        <i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i>
+        <span class="collection-name" title="合集">Xv6</span>
+        <span class="collection-count">8</span><i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></div>
+      <div class="details-content collection-content">
+        <nav>
+          <ul class="collection-list"><li class="collection-item"><a href="/posts/mit-lab-util/" title="MIT6.1810 Lab:Xv6 and Unix Utilities">MIT6.1810 Lab:Xv6 and Unix Utilities</a></li><li class="collection-item"><a href="/posts/mit-lab-syscall/" title="MIT6.1810 Lab:System Calls">MIT6.1810 Lab:System Calls</a></li><li class="collection-item"><a href="/posts/mit-lab-pgtbl/" title="MIT6.1810 Lab:Page Tables">MIT6.1810 Lab:Page Tables</a></li><li class="collection-item"><a href="/posts/mit-lab-traps/" title="MIT6.1810 Lab:Traps">MIT6.1810 Lab:Traps</a></li><li class="collection-item"><a href="/posts/mit-lab-cow/" title="MIT6.1810 Lab:Copy-on-Write Fork for Xv6">MIT6.1810 Lab:Copy-on-Write Fork for Xv6</a></li><li class="collection-item"><a href="/posts/mit-lab-lock/" title="MIT6.1810 Lab:Locks">MIT6.1810 Lab:Locks</a></li><li class="collection-item"><span class="active" title="MIT6.1810 Lab:File System">MIT6.1810 Lab:File System</span></li><li class="collection-item"><a href="/posts/mit-lab-mmap/" title="MIT6.1810 Lab:Mmap">MIT6.1810 Lab:Mmap</a></li></ul>
+          <div class="collection-nav-simple"><a href="/posts/mit-lab-lock/" class="collection-nav-item" rel="prev" title="MIT6.1810 Lab:Locks"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i></a><span class="text-secondary">7/8</span><a href="/posts/mit-lab-mmap/" class="collection-nav-item" rel="next" title="MIT6.1810 Lab:Mmap"><i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+        </nav>
+      </div>
+    </div></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>MIT6.1810 Lab:File System</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-26 11:22:27"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-26">2025-08-26</time></span>&nbsp;<span title="2539 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2600 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#large-files">Large files</a></li>
+    <li><a href="#symbolic-links">Symbolic links</a></li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><p>MIT6.1810 lab xv6 2024 fs</p>
+<h2 class="heading-element" id="large-files"><span>Large files</span>
+  <a href="#large-files" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>增加xv6文件大小，一个文件的大小是由inode决定的，inode记录文件的元信息，其中的address数组记录磁盘的块号。我们知道，文件就是一堆磁盘块，磁盘块的数量越多文件越大，所以理论上address数组越大，文件越大。但inode也是占用一个块大小（xv6是1024字节）的，那么address的大小会被限制在二百多，很明显是不够的。这里inode限制address数组大小为13，前12个元素是直接块，即address索引（逻辑块号）与其值（磁盘块号）是一一对应的，第13个元素是间接块，即指向了一个磁盘块，那个磁盘块里又划分了（BSIZE / sizeof(uint)）大小的数组，每个元素指向一个磁盘块，这样就由1个磁盘块扩充为了256个磁盘块。
+<figure><a class="lightgallery" href="/xv6/%e9%97%b4%e6%8e%a5%e5%9d%97%e6%89%a9%e5%85%85%e6%96%87%e4%bb%b6.png" title="/xv6/间接块扩充文件.png" data-thumbnail="/xv6/间接块扩充文件.png" data-sub-html="<h2>间接块扩充文件</h2>"><img loading="lazy" src='/xv6/间接块扩充文件.png' alt="/xv6/间接块扩充文件.png"></a><figcaption class="image-caption">间接块扩充文件</figcaption>
+  </figure>
+按照类似的思路，我们可以将上述间接块指向的磁盘块改为间接块，这样建立二级间接块，在二级间接块上指向实际的磁盘块，从而将1个磁盘块扩充为了256*256个磁盘块（这里其实牺牲了部分磁盘块作为间接块而不是文件块）。具体实现代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">static</span> <span class="n">uint</span>
+</span></span><span class="line"><span class="cl"><span class="nf">bmap</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">ip</span><span class="p">,</span> <span class="n">uint</span> <span class="n">bn</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">addr</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">bp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="n">bn</span> <span class="o">&lt;</span> <span class="n">NDIRECT</span><span class="p">){</span> <span class="c1">// 小于直接块数目
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span><span class="p">((</span><span class="n">addr</span> <span class="o">=</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">bn</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">      <span class="n">addr</span> <span class="o">=</span> <span class="nf">balloc</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span> <span class="c1">// 分配一个磁盘块给文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span><span class="p">(</span><span class="n">addr</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">bn</span><span class="p">]</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">bn</span> <span class="o">-=</span> <span class="n">NDIRECT</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="n">bn</span> <span class="o">&lt;</span> <span class="n">NINDIRECT</span><span class="p">){</span> <span class="c1">// 小于间接块数目
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// Load indirect block, allocating if necessary.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span><span class="p">((</span><span class="n">addr</span> <span class="o">=</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">      <span class="n">addr</span> <span class="o">=</span> <span class="nf">balloc</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span> <span class="c1">// 分配一个磁盘块作为间接块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span><span class="p">(</span><span class="n">addr</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span><span class="p">]</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bp</span> <span class="o">=</span> <span class="nf">bread</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span> <span class="c1">// 从间接块里读
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint</span><span class="o">*</span><span class="p">)</span><span class="n">bp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span> <span class="c1">// 这里转为了uint* 一个指针指向其分配的磁盘块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span><span class="p">((</span><span class="n">addr</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">bn</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span> <span class="c1">// bp的size就是NINDIRECT BSIZE/sizeof(uint)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">addr</span> <span class="o">=</span> <span class="nf">balloc</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span> <span class="c1">// 分配一个磁盘块给文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span><span class="p">(</span><span class="n">addr</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">[</span><span class="n">bn</span><span class="p">]</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">log_write</span><span class="p">(</span><span class="n">bp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">brelse</span><span class="p">(</span><span class="n">bp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">bn</span> <span class="o">-=</span> <span class="n">NINDIRECT</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 0-256*256
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 0-255
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="n">bn</span> <span class="o">&lt;</span> <span class="n">NDBINDIRECT</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 小于二级间接块数目
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span><span class="p">((</span><span class="n">addr</span> <span class="o">=</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">      <span class="n">addr</span> <span class="o">=</span> <span class="nf">balloc</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span> <span class="c1">// 分配一个磁盘块作为一级间接块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span><span class="p">(</span><span class="n">addr</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">uint</span> <span class="n">cn</span> <span class="o">=</span> <span class="n">bn</span> <span class="o">/</span> <span class="n">NINDIRECT</span><span class="p">;</span> <span class="c1">// 在一级间接块的index
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">bp</span> <span class="o">=</span> <span class="nf">bread</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint</span><span class="o">*</span><span class="p">)</span><span class="n">bp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">((</span><span class="n">addr</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">cn</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">addr</span> <span class="o">=</span> <span class="nf">balloc</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span> <span class="c1">// 再分配一个磁盘块作为二级间接块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span><span class="p">(</span><span class="n">addr</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">[</span><span class="n">cn</span><span class="p">]</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">log_write</span><span class="p">(</span><span class="n">bp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">brelse</span><span class="p">(</span><span class="n">bp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">uint</span> <span class="n">index</span> <span class="o">=</span> <span class="n">bn</span> <span class="o">%</span> <span class="n">NINDIRECT</span><span class="p">;</span> <span class="c1">// 在二级间接块的index
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">bp</span> <span class="o">=</span> <span class="nf">bread</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint</span><span class="o">*</span><span class="p">)</span><span class="n">bp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">((</span><span class="n">addr</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">addr</span> <span class="o">=</span> <span class="nf">balloc</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span> <span class="c1">// 再分配一个磁盘块给文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">log_write</span><span class="p">(</span><span class="n">bp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">brelse</span><span class="p">(</span><span class="n">bp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">panic</span><span class="p">(</span><span class="s">&#34;bmap: out of range&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意更改fs.h中的对应宏定义。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#define NDIRECT 11
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define NINDIRECT (BSIZE / sizeof(uint))
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define NDBINDIRECT (NINDIRECT * NINDIRECT)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define MAXFILE (NDIRECT + NINDIRECT + NDBINDIRECT)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">dinode</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">short</span> <span class="n">type</span><span class="p">;</span>           <span class="c1">// File type
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">short</span> <span class="n">major</span><span class="p">;</span>          <span class="c1">// Major device number (T_DEVICE only)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">short</span> <span class="n">minor</span><span class="p">;</span>          <span class="c1">// Minor device number (T_DEVICE only)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">short</span> <span class="n">nlink</span><span class="p">;</span>          <span class="c1">// Number of links to inode in file system
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint</span> <span class="n">size</span><span class="p">;</span>            <span class="c1">// Size of file (bytes)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint</span> <span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span><span class="o">+</span><span class="mi">2</span><span class="p">];</span>   <span class="c1">// Data block addresses
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>以及file.h中inode的address数组的大小，这里要和dinode的address数组的大小相对应，不然fs.img构建会出错。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// in-memory copy of an inode
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="n">inode</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">dev</span><span class="p">;</span>           <span class="c1">// Device number
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint</span> <span class="n">inum</span><span class="p">;</span>          <span class="c1">// Inode number
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">ref</span><span class="p">;</span>            <span class="c1">// Reference count
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">sleeplock</span> <span class="n">lock</span><span class="p">;</span> <span class="c1">// protects everything below here
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">valid</span><span class="p">;</span>          <span class="c1">// inode has been read from disk?
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="kt">short</span> <span class="n">type</span><span class="p">;</span>         <span class="c1">// copy of disk inode
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">short</span> <span class="n">major</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">short</span> <span class="n">minor</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">short</span> <span class="n">nlink</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span><span class="o">+</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>还有根据提示要确保itrunc释放文件的所有块，类似的进行更改，至此能通过usertests。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">itrunc</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">ip</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">bp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="o">*</span><span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NDIRECT</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span> <span class="c1">// 释放所有的直接块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">i</span><span class="p">]){</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">bfree</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span><span class="p">]){</span> <span class="c1">// 如果一级间接块存在
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">bp</span> <span class="o">=</span> <span class="nf">bread</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint</span><span class="o">*</span><span class="p">)</span><span class="n">bp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">NINDIRECT</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span> <span class="c1">// 释放所有的文件块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">bfree</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">brelse</span><span class="p">(</span><span class="n">bp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">bfree</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span><span class="p">]);</span> <span class="c1">// 释放一级间接块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]){</span> <span class="c1">// 如果二级间接块存在
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">bp</span> <span class="o">=</span> <span class="nf">bread</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint</span><span class="o">*</span><span class="p">)</span><span class="n">bp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">NINDIRECT</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">bp2</span> <span class="o">=</span> <span class="nf">bread</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">uint</span><span class="o">*</span> <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint</span><span class="o">*</span><span class="p">)</span><span class="n">bp2</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">NINDIRECT</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">bfree</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="n">k</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">brelse</span><span class="p">(</span><span class="n">bp2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">bfree</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">brelse</span><span class="p">(</span><span class="n">bp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">bfree</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]);</span> <span class="c1">// 释放一级间接块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ip</span><span class="o">-&gt;</span><span class="n">addrs</span><span class="p">[</span><span class="n">NDIRECT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">ip</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">iupdate</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 class="heading-element" id="symbolic-links"><span>Symbolic links</span>
+  <a href="#symbolic-links" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>这个实验如果明白了符号链接的原理过程就能迎刃而解，本质上就是在path的路径创建了一个新文件（代码以inode表达），在文件里写入target路径，同时标记此文件为T_SYMLINK类型，遇到这种文件要读文件内容再一次以文件内容为path去找对应的inode，从而得到所指向文件的内容。代码具体实现：</p>
+<p>增加symlink系统调用，在path处创建一个T_SYMLINK类型的文件，writei写入target路径为文件内容。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">uint64</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sys_symlink</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">target</span><span class="p">[</span><span class="n">MAXPATH</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">path</span><span class="p">[</span><span class="n">MAXPATH</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">ip</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="nf">argstr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">MAXPATH</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nf">argstr</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">MAXPATH</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">//printf(&#34;link path: %s\n&#34;, path);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nf">begin_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 在path上创建一个文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">ip</span> <span class="o">=</span> <span class="nf">create</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">T_SYMLINK</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="n">ip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 文件内容为target
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span><span class="p">(</span><span class="nf">writei</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">target</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">target</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">iunlockput</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 成功
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改open系统调用，循环读取path，如果是符号链接文件，文件内容target读到path里，下个循环再去读指向target的内容。这里调试了个小bug，开始没有在readi之前memset(path, 0, MAXPATH);导致symlinktest过不了，报错：FAILURE: open() failed in many test。然后打印path发现：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl">open path: /testsymlink/aa
+</span></span><span class="line"><span class="cl"><span class="k">while</span> path: /testsymlink/aa
+</span></span><span class="line"><span class="cl"><span class="k">while</span> path: /testsymlink/4a
+</span></span><span class="line"><span class="cl">FAILURE: open<span class="o">()</span> failed in many test</span></span></code></pre></td></tr></table>
+</div>
+</div><p>分析在建立符号链接时是没有/testsymlink/4a这个path的，看symlinktest.c也知道是在测试从/testsymlink/aa到/testsymlink/az，这些符号链接指向的/testsymlink/4。很容易看出来是path在readi时只覆盖了/testsymlink/aa的/testsymlink/a这个区域为/testsymlink/4，而/testsymlink/aa最后一个a还残留在path里，所以增加memset进行了数据的清理，解决了这个问题。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">uint64</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sys_open</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">path</span><span class="p">[</span><span class="n">MAXPATH</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">omode</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">f</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">ip</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">argint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">omode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">((</span><span class="n">n</span> <span class="o">=</span> <span class="nf">argstr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">MAXPATH</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">//printf(&#34;open path: %s\n&#34;, path);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="nf">begin_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="n">omode</span> <span class="o">&amp;</span> <span class="n">O_CREATE</span><span class="p">){</span> <span class="c1">// 创建文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ip</span> <span class="o">=</span> <span class="nf">create</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">T_FILE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">ip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">depth</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">//printf(&#34;while path: %s\n&#34;, path);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span><span class="p">((</span><span class="n">ip</span> <span class="o">=</span> <span class="nf">namei</span><span class="p">(</span><span class="n">path</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="nf">ilock</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">T_SYMLINK</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">omode</span> <span class="o">&amp;</span> <span class="n">O_NOFOLLOW</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">++</span><span class="n">depth</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 限制循环链接深度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nf">iunlockput</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">          <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nf">memset</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MAXPATH</span><span class="p">);</span> <span class="c1">// 没有此句会出错 path可能会有之前的残留数据未被readi覆盖
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nf">readi</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">path</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MAXPATH</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 读文件内容 target路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nf">iunlockput</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">          <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">iunlockput</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span> <span class="c1">// 要释放ip
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">}</span><span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">T_DIR</span> <span class="o">&amp;&amp;</span> <span class="n">omode</span> <span class="o">!=</span> <span class="n">O_RDONLY</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">iunlockput</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">T_DEVICE</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">major</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">major</span> <span class="o">&gt;=</span> <span class="n">NDEV</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">iunlockput</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">((</span><span class="n">f</span> <span class="o">=</span> <span class="nf">filealloc</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="p">(</span><span class="n">fd</span> <span class="o">=</span> <span class="nf">fdalloc</span><span class="p">(</span><span class="n">f</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">fileclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">iunlockput</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">T_DEVICE</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="n">FD_DEVICE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">-&gt;</span><span class="n">major</span> <span class="o">=</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">major</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">=</span> <span class="n">FD_INODE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">-&gt;</span><span class="n">off</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">f</span><span class="o">-&gt;</span><span class="n">ip</span> <span class="o">=</span> <span class="n">ip</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">f</span><span class="o">-&gt;</span><span class="n">readable</span> <span class="o">=</span> <span class="o">!</span><span class="p">(</span><span class="n">omode</span> <span class="o">&amp;</span> <span class="n">O_WRONLY</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">f</span><span class="o">-&gt;</span><span class="n">writable</span> <span class="o">=</span> <span class="p">(</span><span class="n">omode</span> <span class="o">&amp;</span> <span class="n">O_WRONLY</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">omode</span> <span class="o">&amp;</span> <span class="n">O_RDWR</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">((</span><span class="n">omode</span> <span class="o">&amp;</span> <span class="n">O_TRUNC</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">T_FILE</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">itrunc</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">iunlock</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">end_op</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="collection-card">
+      <div class="collection-title text-secondary">收录于 <a href="/collections/xv6/"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> <span>合集・Xv6</span></span></a> 8</div>
+      <div class="collection-nav">
+        <a href="/posts/mit-lab-lock/" class="collection-nav-item" rel="prev" title="MIT6.1810 Lab:Locks"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i><span>MIT6.1810 Lab:Locks</span>
+          </a><a href="/posts/mit-lab-mmap/" class="collection-nav-item" rel="next" title="MIT6.1810 Lab:Mmap">
+            <span>MIT6.1810 Lab:Mmap</span><i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+    </div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod"><span title="更新于 2025-08-26 11:22:27">更新于 2025-08-26&nbsp;</span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/mit-lab-fs/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span><span><a href="vscode://file/T:%5cBlog%5cmy-blog%5ccontent%5cposts%5cmit_lab_fs.md" title="在编辑器中打开"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-vscode">在编辑器中打开</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="分享到 X" data-sharer="twitter" data-url="http://localhost:1313/posts/mit-lab-fs/" data-title="MIT6.1810 Lab:File System" data-hashtags="MIT6.1810,Lab"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/mit-lab-fs/" data-hashtag="MIT6.1810"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/mit-lab-fs/" data-title="MIT6.1810 Lab:File System"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/mit6.1810/" class="post-tag" title="标签 - MIT6.1810">MIT6.1810</a><a href="/tags/lab/" class="post-tag" title="标签 - Lab">Lab</a></section>
+    <section><span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/mit-lab-lock/" class="post-nav-item" rel="prev" title="MIT6.1810 Lab:Locks"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>MIT6.1810 Lab:Locks</a><a href="/posts/mit-lab-mmap/" class="post-nav-item" rel="next" title="MIT6.1810 Lab:Mmap">MIT6.1810 Lab:Mmap<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div class="post-reward">
+    <div class="comment"></div>
+    <input type="checkbox" class="reward-input" name="reward" id="fi-reward" hidden />
+    <label class="reward-button" for="fi-reward"><i class="fa-solid fa-qrcode fa-fw" aria-hidden="true"></i>赞赏</label>
+    <div class="reward-ways" data-mode="static"></div>
+  </div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="目录"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.148.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.4.0-alpha-20250823084643-0f68046a">FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/UAreFree"target="_blank" rel="external nofollow noopener noreferrer">UAreFree</a></span></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='总访客数'><i class="fa-regular fa-user fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='总访问量'><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">该网站在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/fuse/fuse.min.js" defer></script><script src="/lib/twemoji/twemoji.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":100},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"twemoji":true,"version":"v0.4.0-alpha-20250823084643-0f68046a"};console.log('Page config:', window.config);</script><script src="/js/theme.min.js" defer></script></body>
+</html>

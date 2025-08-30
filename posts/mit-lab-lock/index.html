@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>MIT6.1810 Lab:Locks -  Blog</title><meta name="author" content="UAreFree">
+<meta name="description" content="MIT6.1810 lab xv6 2024 locks
+"><meta name="keywords" content='MIT6.1810, Lab'>
+  <meta itemprop="name" content="MIT6.1810 Lab:Locks">
+  <meta itemprop="description" content="MIT6.1810 lab xv6 2024 locks">
+  <meta itemprop="datePublished" content="2025-08-26T11:18:35+08:00">
+  <meta itemprop="dateModified" content="2025-08-26T11:18:35+08:00">
+  <meta itemprop="wordCount" content="3124">
+  <meta itemprop="keywords" content="MIT6.1810,Lab"><meta property="og:url" content="http://localhost:1313/posts/mit-lab-lock/">
+  <meta property="og:site_name" content=" Blog">
+  <meta property="og:title" content="MIT6.1810 Lab:Locks">
+  <meta property="og:description" content="MIT6.1810 lab xv6 2024 locks">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-08-26T11:18:35+08:00">
+    <meta property="article:modified_time" content="2025-08-26T11:18:35+08:00">
+    <meta property="article:tag" content="MIT6.1810">
+    <meta property="article:tag" content="Lab">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="MIT6.1810 Lab:Locks">
+  <meta name="twitter:description" content="MIT6.1810 lab xv6 2024 locks">
+<meta name="application-name" content="YouAreFree">
+<meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/mit-lab-lock/" title="MIT6.1810 Lab:Locks -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/posts/mit-lab-cow/" title="MIT6.1810 Lab:Copy-on-Write Fork for xv6" /><link rel="next" type="text/html" href="http://localhost:1313/posts/mit-lab-fs/" title="MIT6.1810 Lab:File system" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/mit-lab-lock/index.md" title="MIT6.1810 Lab:Locks -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "MIT6.1810 Lab:Locks",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/localhost:1313\/posts\/mit-lab-lock\/"
+    },"genre": "posts","keywords": "MIT6.1810, Lab","wordcount":  3124 ,
+    "url": "http:\/\/localhost:1313\/posts\/mit-lab-lock\/","datePublished": "2025-08-26T11:18:35+08:00","dateModified": "2025-08-26T11:18:35+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "UAreFree"
+      },"description": ""
+  }
+  </script><script src="/js/head/color-scheme.min.js"></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="32" width="32"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item">
+              <a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 所有分类</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 所有标签</a></li><li class="menu-item">
+              <a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="26" width="26"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item"><a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 所有分类</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 所有标签</a></li><li class="menu-item"><a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="fi-container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="合集"><div class="details collection-details open">
+      <div class="details-summary collection-summary">
+        <i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i>
+        <span class="collection-name" title="合集">Xv6</span>
+        <span class="collection-count">8</span><i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></div>
+      <div class="details-content collection-content">
+        <nav>
+          <ul class="collection-list"><li class="collection-item"><a href="/posts/mit-lab-util/" title="MIT6.1810 Lab:Xv6 and Unix Utilities">MIT6.1810 Lab:Xv6 and Unix Utilities</a></li><li class="collection-item"><a href="/posts/mit-lab-syscall/" title="MIT6.1810 Lab:System Calls">MIT6.1810 Lab:System Calls</a></li><li class="collection-item"><a href="/posts/mit-lab-pgtbl/" title="MIT6.1810 Lab:Page Tables">MIT6.1810 Lab:Page Tables</a></li><li class="collection-item"><a href="/posts/mit-lab-traps/" title="MIT6.1810 Lab:Traps">MIT6.1810 Lab:Traps</a></li><li class="collection-item"><a href="/posts/mit-lab-cow/" title="MIT6.1810 Lab:Copy-on-Write Fork for Xv6">MIT6.1810 Lab:Copy-on-Write Fork for Xv6</a></li><li class="collection-item"><span class="active" title="MIT6.1810 Lab:Locks">MIT6.1810 Lab:Locks</span></li><li class="collection-item"><a href="/posts/mit-lab-fs/" title="MIT6.1810 Lab:File System">MIT6.1810 Lab:File System</a></li><li class="collection-item"><a href="/posts/mit-lab-mmap/" title="MIT6.1810 Lab:Mmap">MIT6.1810 Lab:Mmap</a></li></ul>
+          <div class="collection-nav-simple"><a href="/posts/mit-lab-cow/" class="collection-nav-item" rel="prev" title="MIT6.1810 Lab:Copy-on-Write Fork for Xv6"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i></a><span class="text-secondary">6/8</span><a href="/posts/mit-lab-fs/" class="collection-nav-item" rel="next" title="MIT6.1810 Lab:File System"><i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+        </nav>
+      </div>
+    </div></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>MIT6.1810 Lab:Locks</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-26 11:18:35"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-26">2025-08-26</time></span>&nbsp;<span title="3124 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3200 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 7 分钟</span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#buffer-cache">Buffer cache</a></li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><p>MIT6.1810 lab xv6 2024 locks</p>
+<h2 class="heading-element" id="buffer-cache"><span>Buffer cache</span>
+  <a href="#buffer-cache" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>如果多个进程密集使用文件系统，它们可能会争用bcache.lock，这是一个大锁，保护bcache中的buffers。修改bcache、bget、brelse使不同块中的并发查找和释放不太可能发生锁冲突。不能增加buffer的数量，也就是依旧30个buffer。不需要实现LRU缓存替换策略，但必须当缓存未命中时，能使用任何refcnt为零的buffer。这个refcnt表示当前有多少进程在使用这个buffer，每次bget()得到一个buffer后，会对这个buffer的refcnt加一，只有当refcnt变为0时，才会被回收。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">$ bcachetest
+</span></span><span class="line"><span class="cl">start test0
+</span></span><span class="line"><span class="cl">test0 results:
+</span></span><span class="line"><span class="cl">--- lock kmem/bcache stats
+</span></span><span class="line"><span class="cl">lock: kmem: <span class="c1">#test-and-set 0 #acquire() 33030</span>
+</span></span><span class="line"><span class="cl">lock: kmem: <span class="c1">#test-and-set 0 #acquire() 28</span>
+</span></span><span class="line"><span class="cl">lock: kmem: <span class="c1">#test-and-set 0 #acquire() 73</span>
+</span></span><span class="line"><span class="cl">lock: bcache: <span class="c1">#test-and-set 0 #acquire() 96</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 6229</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 6204</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 4298</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 4286</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 2302</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 4272</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 2695</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 4709</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 6512</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 6197</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 6196</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 6201</span>
+</span></span><span class="line"><span class="cl">lock: bcache.bucket: <span class="c1">#test-and-set 0 #acquire() 6201</span>
+</span></span><span class="line"><span class="cl">--- top <span class="m">5</span> contended locks:
+</span></span><span class="line"><span class="cl">lock: virtio_disk: <span class="c1">#test-and-set 1483888 #acquire() 1221</span>
+</span></span><span class="line"><span class="cl">lock: proc: <span class="c1">#test-and-set 38718 #acquire() 76050</span>
+</span></span><span class="line"><span class="cl">lock: proc: <span class="c1">#test-and-set 34460 #acquire() 76039</span>
+</span></span><span class="line"><span class="cl">lock: proc: <span class="c1">#test-and-set 31663 #acquire() 75963</span>
+</span></span><span class="line"><span class="cl">lock: wait_lock: <span class="c1">#test-and-set 11794 #acquire() 16</span>
+</span></span><span class="line"><span class="cl"><span class="nv">tot</span><span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">test0: OK</span></span></code></pre></td></tr></table>
+</div>
+</div><p>实验所期望的输出可以看出，lock: bcache的锁争用次数变为了0，且多了13个lock: bcache.bucket，每个bucket的锁争用次数也为0。</p>
+<p>需要以“bcache”开头为每个锁调用initlock方法。bcache是多个进程共享的，不能像kalloc一样将所有的buffer切割为每个进程所独享，很明显buffer是固定30个大小，多进程需要都能够访问的。建议使用哈希表来查找缓存中的块号，每个哈希桶持有一把锁。哈希表就是key-value对，那我的key就是hash(块号)，value就是存储的buffer，每个桶还要持有一把锁。</p>
+<p>这些锁冲突情况是可以接受的：</p>
+<ol>
+<li>两个进程去使用相同的块号。</li>
+<li>两个进程查bcache中的buffer（遍历找对应的块号），发现没有，需要查找未使用的块（refcnt=0）进行替换。</li>
+<li>两个进程同时使用哈希到一个bucket的块号。</li>
+</ol>
+<p>hints：</p>
+<ol>
+<li>哈希表大小设为13，固定值，印证了上述结果打印可以通过test。</li>
+<li>在哈希表中维护buffer操作必须是原子性的。</li>
+<li>删除双向链表形式的bcache且不实现LRU，在bget()中可以选择任何refcnt==0的buffer，在brelse()中也无需获取bcache.lock。</li>
+<li>遍历哈希表以及遍历bucket的元素去查找未使用的buffer是可以的。</li>
+<li>在驱逐一个buffer时需要持有bcache锁和每个bucket的锁。</li>
+<li>正常来说，驱逐一个buffer会将其搬到另一个槽位上（块号hash后得到不同的key），如果在同一个槽位上需要避免死锁。</li>
+<li>调试时需要保留全局bcache.lock的acquie/relse在bget()的开头和结尾，一旦代码正确remove这个全局锁。</li>
+<li>使用xv6的竞争检测器来找潜在的竞争。</li>
+</ol>
+<p>实验思路：</p>
+<p>建立大小为13的哈希表，要访问的buffer块哈希到桶上，每个桶一把锁，这样就将原来的一把大锁化为了13把小锁。当缓存命中时就直接拿取对应的锁进行更新操作，很容易处理，就是拿到自己桶对应的小锁即可；但当缓存未命中时，就要遍历buffer去找最久未使用的buffer进行驱逐替换处理。这里分为两种情况，如果要驱逐的buffer和新加入的buffer哈希到一个桶上，以及未哈希到一个桶上。不在同一个桶上就涉及链表断开、重分配的操作，在同一个桶上就不需要链表操作。</p>
+<p>实验要处理的上述代码逻辑主要体现在bget函数上，在bget中就是先获取桶A的锁，去遍历所有桶找最久未使用的buffer，然后拿到对应桶B的锁进行链表断开驱逐buffer操作，释放桶B的锁，将buffer挂在桶A上，再释放桶A的锁。这是我最开始的实现方式，运行xv6后会发现系统卡住不动了，分析是发生了死锁。这里由于是遍历所有桶，就有可能出现这种情况，即CPU1拿到桶A的锁，遍历发现要驱逐的buffer在桶B，于是申请桶B的锁，而同时CPU2拿到桶B的锁，同样遍历发现要驱逐的buffer在桶A，去申请桶A的锁。这样就是CPU1拿着桶A的锁去申请桶B的锁，CPU2拿着桶B的锁去申请桶A的锁，造成死锁。死锁的发生条件：互斥、请求保持、不可剥夺、循环等待。破坏上述4个条件之一就可以避免死锁，这里可以破坏请求保持条件，即在遍历查找要驱逐的buffer时释放自己的桶锁，后边重分配操作时再获取。</p>
+<p>上述处理方式虽然解决了死锁的问题，但又会带来一个问题，就是在释放桶A的锁之后，拿到桶B的锁之前，这个间隙可能会同时有一个线程也在对同一个要添加的块进行bget，那么就会同样判断缓存未命中，又去重复进行驱逐替换操作，导致同一区块有多份缓存的情况。那么怎么解决这个问题呢？这里采取的办法是使用一把驱逐锁保护这个间隙，让桶A释放自己的锁之后，拿到桶B的锁之前这个过程串行化。并且在获取这个驱逐锁后再次判断是否缓存命中，这样就保证只有第一个进入的线程对该块进行了缓存操作，以下是具体的代码实现。</p>
+<p>在buf结构体中新增lastuse成员变量，维护一个时间戳，方便查找最久未使用的buffer。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">buf</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">valid</span><span class="p">;</span>   <span class="c1">// has data been read from disk?
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">disk</span><span class="p">;</span>    <span class="c1">// does disk &#34;own&#34; buf?
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">uint</span> <span class="n">dev</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">blockno</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">sleeplock</span> <span class="n">lock</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">refcnt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">lastuse</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">//struct buf *prev; // LRU cache list
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uchar</span> <span class="n">data</span><span class="p">[</span><span class="n">BSIZE</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>bio.c代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;types.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;param.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;spinlock.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;sleeplock.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;riscv.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;defs.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;fs.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;buf.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define NBUCKET 13
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define HASH(dev, blockno) (((dev) &lt;&lt; 27 | (blockno)) % NBUCKET)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">buf</span> <span class="n">buf</span><span class="p">[</span><span class="n">NBUF</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">buf</span> <span class="n">bufmap</span><span class="p">[</span><span class="n">NBUCKET</span><span class="p">];</span> <span class="c1">// 哈希桶
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">spinlock</span> <span class="n">bucketlocks</span><span class="p">[</span><span class="n">NBUCKET</span><span class="p">];</span> <span class="c1">// 每个桶一把锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">spinlock</span> <span class="n">evictionlocks</span><span class="p">[</span><span class="n">NBUCKET</span><span class="p">];</span> <span class="c1">// 每个桶一把驱逐锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span> <span class="n">bcache</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">binit</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NBUCKET</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">initlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s">&#34;bcache_bucket_lock&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">initlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">evictionlocks</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s">&#34;bcache_eviction_lock&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bcache</span><span class="p">.</span><span class="n">bufmap</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">next</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NBUF</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">b</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">initsleeplock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">,</span> <span class="s">&#34;buffer&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span><span class="o">-&gt;</span><span class="n">lastuse</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span><span class="o">-&gt;</span><span class="n">refcnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// b接到0号bucket上
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">bcache</span><span class="p">.</span><span class="n">bufmap</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 挂上新的b
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">bcache</span><span class="p">.</span><span class="n">bufmap</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">next</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Look through buffer cache for block on device dev.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// If not found, allocate a buffer.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// In either case, return locked buffer.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">static</span> <span class="k">struct</span> <span class="n">buf</span><span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="nf">bget</span><span class="p">(</span><span class="n">uint</span> <span class="n">dev</span><span class="p">,</span> <span class="n">uint</span> <span class="n">blockno</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">key</span> <span class="o">=</span> <span class="nf">HASH</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">blockno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 拿到key对应的桶锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 缓存命中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">for</span> <span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="n">bcache</span><span class="p">.</span><span class="n">bufmap</span><span class="p">[</span><span class="n">key</span><span class="p">].</span><span class="n">next</span><span class="p">;</span> <span class="n">b</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">dev</span> <span class="o">==</span> <span class="n">dev</span> <span class="o">&amp;&amp;</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">blockno</span> <span class="o">==</span> <span class="n">blockno</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">b</span><span class="o">-&gt;</span><span class="n">refcnt</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 释放key桶锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">acquiresleep</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 缓存未命中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 先释放key桶锁 避免死锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 拿到桶的驱逐锁串行化 避免对同一个块进行多次缓存驱逐及重分配
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">evictionlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 再次检查 是避免第二个进程拿到锁后进行缓存驱逐及重分配
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">for</span> <span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="n">bcache</span><span class="p">.</span><span class="n">bufmap</span><span class="p">[</span><span class="n">key</span><span class="p">].</span><span class="n">next</span><span class="p">;</span> <span class="n">b</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">dev</span> <span class="o">==</span> <span class="n">dev</span> <span class="o">&amp;&amp;</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">blockno</span> <span class="o">==</span> <span class="n">blockno</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">b</span><span class="o">-&gt;</span><span class="n">refcnt</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">evictionlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">acquiresleep</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 没有缓存命中执行的操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">beforeleast</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">holdingbucket</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NBUCKET</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 拿到当前桶锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">newfound</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bufmap</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 遍历当前桶的buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="c1">// 没有文件引用的空闲块 找lastuse最小的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">refcnt</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="n">beforeleast</span> <span class="o">||</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">lastuse</span> <span class="o">&lt;</span> <span class="n">beforeleast</span><span class="o">-&gt;</span><span class="n">lastuse</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">beforeleast</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">newfound</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">newfound</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 没找到 释放当前桶锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 新桶找到了就更新 释放旧桶的锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="n">holdingbucket</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">holdingbucket</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">holdingbucket</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 遍历所有桶都没有找到
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">beforeleast</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">panic</span><span class="p">(</span><span class="s">&#34;bget: no buffers&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 找的对应buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">b</span> <span class="o">=</span> <span class="n">beforeleast</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 驱逐的buffer和新加的buffer不是一个桶
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="n">holdingbucket</span> <span class="o">!=</span> <span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 移除驱逐桶的buffer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">beforeleast</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">holdingbucket</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 重新拿到key桶的锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 挂到key桶上
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">bcache</span><span class="p">.</span><span class="n">bufmap</span><span class="p">[</span><span class="n">key</span><span class="p">].</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bcache</span><span class="p">.</span><span class="n">bufmap</span><span class="p">[</span><span class="n">key</span><span class="p">].</span><span class="n">next</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 是一个桶就不需要链表操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">b</span><span class="o">-&gt;</span><span class="n">dev</span> <span class="o">=</span> <span class="n">dev</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">b</span><span class="o">-&gt;</span><span class="n">blockno</span> <span class="o">=</span> <span class="n">blockno</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">b</span><span class="o">-&gt;</span><span class="n">refcnt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">b</span><span class="o">-&gt;</span><span class="n">valid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">evictionlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">acquiresleep</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Return a locked buf with the contents of the indicated block.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="n">buf</span><span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="nf">bread</span><span class="p">(</span><span class="n">uint</span> <span class="n">dev</span><span class="p">,</span> <span class="n">uint</span> <span class="n">blockno</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">b</span> <span class="o">=</span> <span class="nf">bget</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">blockno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">valid</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">virtio_disk_rw</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span><span class="o">-&gt;</span><span class="n">valid</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Write b&#39;s contents to disk.  Must be locked.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">bwrite</span><span class="p">(</span><span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">holdingsleep</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">panic</span><span class="p">(</span><span class="s">&#34;bwrite&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">virtio_disk_rw</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Release a locked buffer.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Move to the head of the most-recently-used list.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">brelse</span><span class="p">(</span><span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nf">holdingsleep</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">panic</span><span class="p">(</span><span class="s">&#34;brelse&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">releasesleep</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">key</span> <span class="o">=</span> <span class="nf">HASH</span><span class="p">(</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">blockno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">b</span><span class="o">-&gt;</span><span class="n">refcnt</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">refcnt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 更新时间戳
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">b</span><span class="o">-&gt;</span><span class="n">lastuse</span> <span class="o">=</span> <span class="n">ticks</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">bpin</span><span class="p">(</span><span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">key</span> <span class="o">=</span> <span class="nf">HASH</span><span class="p">(</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">blockno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">b</span><span class="o">-&gt;</span><span class="n">refcnt</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">bunpin</span><span class="p">(</span><span class="k">struct</span> <span class="n">buf</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint</span> <span class="n">key</span> <span class="o">=</span> <span class="nf">HASH</span><span class="p">(</span><span class="n">b</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">blockno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">b</span><span class="o">-&gt;</span><span class="n">refcnt</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bcache</span><span class="p">.</span><span class="n">bucketlocks</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>test结果：
+<figure><a class="lightgallery" href="/xv6/bcachetest.png" title="/xv6/bcachetest.png" data-thumbnail="/xv6/bcachetest.png" data-sub-html="<h2>bcachetest</h2>"><img loading="lazy" src='/xv6/bcachetest.png' alt="/xv6/bcachetest.png"></a><figcaption class="image-caption">bcachetest</figcaption>
+  </figure></p></div><div class="collection-card">
+      <div class="collection-title text-secondary">收录于 <a href="/collections/xv6/"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> <span>合集・Xv6</span></span></a> 8</div>
+      <div class="collection-nav">
+        <a href="/posts/mit-lab-cow/" class="collection-nav-item" rel="prev" title="MIT6.1810 Lab:Copy-on-Write Fork for Xv6"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i><span>MIT6.1810 Lab:Copy-on-Write Fork for Xv6</span>
+          </a><a href="/posts/mit-lab-fs/" class="collection-nav-item" rel="next" title="MIT6.1810 Lab:File System">
+            <span>MIT6.1810 Lab:File System</span><i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+    </div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod"><span title="更新于 2025-08-26 11:18:35">更新于 2025-08-26&nbsp;</span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/mit-lab-lock/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span><span><a href="vscode://file/T:%5cBlog%5cmy-blog%5ccontent%5cposts%5cmit_lab_locks.md" title="在编辑器中打开"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-vscode">在编辑器中打开</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="分享到 X" data-sharer="twitter" data-url="http://localhost:1313/posts/mit-lab-lock/" data-title="MIT6.1810 Lab:Locks" data-hashtags="MIT6.1810,Lab"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/mit-lab-lock/" data-hashtag="MIT6.1810"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/mit-lab-lock/" data-title="MIT6.1810 Lab:Locks"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/mit6.1810/" class="post-tag" title="标签 - MIT6.1810">MIT6.1810</a><a href="/tags/lab/" class="post-tag" title="标签 - Lab">Lab</a></section>
+    <section><span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/mit-lab-cow/" class="post-nav-item" rel="prev" title="MIT6.1810 Lab:Copy-on-Write Fork for Xv6"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>MIT6.1810 Lab:Copy-on-Write Fork for Xv6</a><a href="/posts/mit-lab-fs/" class="post-nav-item" rel="next" title="MIT6.1810 Lab:File System">MIT6.1810 Lab:File System<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div class="post-reward">
+    <div class="comment"></div>
+    <input type="checkbox" class="reward-input" name="reward" id="fi-reward" hidden />
+    <label class="reward-button" for="fi-reward"><i class="fa-solid fa-qrcode fa-fw" aria-hidden="true"></i>赞赏</label>
+    <div class="reward-ways" data-mode="static"></div>
+  </div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="目录"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.148.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.4.0-alpha-20250823084643-0f68046a">FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/UAreFree"target="_blank" rel="external nofollow noopener noreferrer">UAreFree</a></span></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='总访客数'><i class="fa-regular fa-user fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='总访问量'><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">该网站在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/fuse/fuse.min.js" defer></script><script src="/lib/twemoji/twemoji.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":100},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"twemoji":true,"version":"v0.4.0-alpha-20250823084643-0f68046a"};console.log('Page config:', window.config);</script><script src="/js/theme.min.js" defer></script></body>
+</html>

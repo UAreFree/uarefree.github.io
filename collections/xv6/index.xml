@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Xv6 - 合集 -  Blog</title>
+    <link>http://localhost:1313/collections/xv6/</link>
+    <description>这是一个个人博客网站</description>
+    <generator>Hugo 0.148.2 &amp; FixIt v0.4.0-alpha-20250823084643-0f68046a</generator>
+    <language>zh-CN</language>
+    <managingEditor>1022440588@qq.com (UAreFree)</managingEditor>
+    <webMaster>1022440588@qq.com (UAreFree)</webMaster>
+    <lastBuildDate>Tue, 26 Aug 2025 11:29:08 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/collections/xv6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MIT6.1810 Lab:Mmap</title>
+      <link>http://localhost:1313/posts/mit-lab-mmap/</link>
+      <pubDate>Tue, 26 Aug 2025 11:29:08 +0800</pubDate><author>1022440588@qq.com (UAreFree)</author>
+      <guid>http://localhost:1313/posts/mit-lab-mmap/</guid>
+      <category domain="http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</category>
+      <description>&lt;p&gt;MIT6.1810 lab xv6 2024 mmap&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MIT6.1810 Lab:File system</title>
+      <link>http://localhost:1313/posts/mit-lab-fs/</link>
+      <pubDate>Tue, 26 Aug 2025 11:22:27 +0800</pubDate><author>1022440588@qq.com (UAreFree)</author>
+      <guid>http://localhost:1313/posts/mit-lab-fs/</guid>
+      <category domain="http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</category>
+      <description>&lt;p&gt;MIT6.1810 lab xv6 2024 fs&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MIT6.1810 Lab:Locks</title>
+      <link>http://localhost:1313/posts/mit-lab-lock/</link>
+      <pubDate>Tue, 26 Aug 2025 11:18:35 +0800</pubDate><author>1022440588@qq.com (UAreFree)</author>
+      <guid>http://localhost:1313/posts/mit-lab-lock/</guid>
+      <category domain="http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</category>
+      <description>&lt;p&gt;MIT6.1810 lab xv6 2024 locks&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MIT6.1810 Lab:Copy-on-Write Fork for xv6</title>
+      <link>http://localhost:1313/posts/mit-lab-cow/</link>
+      <pubDate>Tue, 26 Aug 2025 11:15:35 +0800</pubDate><author>1022440588@qq.com (UAreFree)</author>
+      <guid>http://localhost:1313/posts/mit-lab-cow/</guid>
+      <category domain="http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</category>
+      <description>&lt;p&gt;MIT6.1810 lab xv6 2024 cow&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MIT6.1810 Lab:Traps</title>
+      <link>http://localhost:1313/posts/mit-lab-traps/</link>
+      <pubDate>Tue, 26 Aug 2025 11:00:03 +0800</pubDate><author>1022440588@qq.com (UAreFree)</author>
+      <guid>http://localhost:1313/posts/mit-lab-traps/</guid>
+      <category domain="http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</category>
+      <description>&lt;p&gt;MIT6.1810 lab xv6 2024 trap&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MIT6.1810 Lab:Page tables</title>
+      <link>http://localhost:1313/posts/mit-lab-pgtbl/</link>
+      <pubDate>Tue, 26 Aug 2025 10:30:51 +0800</pubDate><author>1022440588@qq.com (UAreFree)</author>
+      <guid>http://localhost:1313/posts/mit-lab-pgtbl/</guid>
+      <category domain="http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</category>
+      <description>&lt;p&gt;MIT6.1810 lab xv6 2024 pgtbl&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MIT6.1810 Lab:System calls</title>
+      <link>http://localhost:1313/posts/mit-lab-syscall/</link>
+      <pubDate>Tue, 26 Aug 2025 10:13:35 +0800</pubDate><author>1022440588@qq.com (UAreFree)</author>
+      <guid>http://localhost:1313/posts/mit-lab-syscall/</guid>
+      <category domain="http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</category>
+      <description>&lt;p&gt;MIT6.1810 lab xv6 2024 syscall&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MIT6.1810 Lab:Xv6 and Unix utilities</title>
+      <link>http://localhost:1313/posts/mit-lab-util/</link>
+      <pubDate>Tue, 26 Aug 2025 09:34:09 +0800</pubDate><author>1022440588@qq.com (UAreFree)</author>
+      <guid>http://localhost:1313/posts/mit-lab-util/</guid>
+      <category domain="http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</category>
+      <description>&lt;p&gt;MIT6.1810 lab xv6 2024 util&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
