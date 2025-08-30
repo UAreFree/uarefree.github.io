@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <meta name="robots" content="noodp" />
     <title>Xv6读书笔记 -  Blog</title><meta name="author" content="UAreFree">
-<meta name="description" content="book-riscv-rev4 : xv6: a simple, Unix-like teaching operating system
+<meta name="description" content="xv6: a simple, Unix-like teaching operating system (book-riscv-rev4)
 操作系统原型——xv6分析与实验 (罗秋明)
 "><meta name="keywords" content='xv6, 读书笔记'>
   <meta itemprop="name" content="xv6读书笔记">
-  <meta itemprop="description" content="book-riscv-rev4 : xv6: a simple, Unix-like teaching operating system
+  <meta itemprop="description" content="xv6: a simple, Unix-like teaching operating system (book-riscv-rev4)
 操作系统原型——xv6分析与实验 (罗秋明)">
   <meta itemprop="datePublished" content="2025-08-30T10:42:57+08:00">
   <meta itemprop="dateModified" content="2025-08-30T10:42:57+08:00">
-  <meta itemprop="wordCount" content="12253">
+  <meta itemprop="wordCount" content="12252">
   <meta itemprop="keywords" content="Xv6,读书笔记"><meta property="og:url" content="http://localhost:1313/posts/xv6-note/">
   <meta property="og:site_name" content=" Blog">
   <meta property="og:title" content="xv6读书笔记">
-  <meta property="og:description" content="book-riscv-rev4 : xv6: a simple, Unix-like teaching operating system
+  <meta property="og:description" content="xv6: a simple, Unix-like teaching operating system (book-riscv-rev4)
 操作系统原型——xv6分析与实验 (罗秋明)">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:type" content="article">
@@ -29,7 +29,7 @@
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="xv6读书笔记">
-  <meta name="twitter:description" content="book-riscv-rev4 : xv6: a simple, Unix-like teaching operating system
+  <meta name="twitter:description" content="xv6: a simple, Unix-like teaching operating system (book-riscv-rev4)
 操作系统原型——xv6分析与实验 (罗秋明)">
 <meta name="application-name" content="YouAreFree">
 <meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/xv6-note/" title="xv6读书笔记 -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/posts/mit-lab-mmap/" title="MIT6.1810 Lab:Mmap" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/xv6-note/index.md" title="xv6读书笔记 -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
@@ -43,7 +43,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/localhost:1313\/posts\/xv6-note\/"
-    },"genre": "posts","keywords": "xv6, 读书笔记","wordcount":  12253 ,
+    },"genre": "posts","keywords": "xv6, 读书笔记","wordcount":  12252 ,
     "url": "http:\/\/localhost:1313\/posts\/xv6-note\/","datePublished": "2025-08-30T10:42:57+08:00","dateModified": "2025-08-30T10:42:57+08:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -129,7 +129,7 @@
   <article class="page single">
     <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>Xv6读书笔记</span>
       </h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-30 10:42:57"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-30">2025-08-30</time></span>&nbsp;<span title="12253 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 12300 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 25 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-30 10:42:57"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-30">2025-08-30</time></span>&nbsp;<span title="12252 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 12300 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 25 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -151,7 +151,7 @@
     </li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><p>book-riscv-rev4 : xv6: a simple, Unix-like teaching operating system</p>
+      </div><div class="content" id="content"><p>xv6: a simple, Unix-like teaching operating system (book-riscv-rev4)</p>
 <p>操作系统原型——xv6分析与实验 (罗秋明)</p>
 <h2 class="heading-element" id="xv6-book-chapter-1"><span>xv6 book chapter 1</span>
   <a href="#xv6-book-chapter-1" class="heading-mark">

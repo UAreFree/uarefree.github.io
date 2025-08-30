@@ -1,7 +1,7 @@
 # Xv6读书笔记
 
 
-book-riscv-rev4 : xv6: a simple, Unix-like teaching operating system
+xv6: a simple, Unix-like teaching operating system (book-riscv-rev4)
 
 操作系统原型——xv6分析与实验 (罗秋明)
 
