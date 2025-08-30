@@ -28,7 +28,7 @@
   <meta name="twitter:title" content="MIT6.1810 Lab:Mmap">
   <meta name="twitter:description" content="MIT6.1810 lab xv6 2024 mmap">
 <meta name="application-name" content="YouAreFree">
-<meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/mit-lab-mmap/" title="MIT6.1810 Lab:Mmap -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/posts/mit-lab-fs/" title="MIT6.1810 Lab:File system" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/mit-lab-mmap/index.md" title="MIT6.1810 Lab:Mmap -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+<meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/mit-lab-mmap/" title="MIT6.1810 Lab:Mmap -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/posts/mit-lab-fs/" title="MIT6.1810 Lab:File system" /><link rel="next" type="text/html" href="http://localhost:1313/posts/xv6-note/" title="xv6读书笔记" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/mit-lab-mmap/index.md" title="MIT6.1810 Lab:Mmap -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
   {
@@ -113,11 +113,11 @@
       <div class="details-summary collection-summary">
         <i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i>
         <span class="collection-name" title="合集">Xv6</span>
-        <span class="collection-count">8</span><i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></div>
+        <span class="collection-count">9</span><i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></div>
       <div class="details-content collection-content">
         <nav>
-          <ul class="collection-list"><li class="collection-item"><a href="/posts/mit-lab-util/" title="MIT6.1810 Lab:Xv6 and Unix Utilities">MIT6.1810 Lab:Xv6 and Unix Utilities</a></li><li class="collection-item"><a href="/posts/mit-lab-syscall/" title="MIT6.1810 Lab:System Calls">MIT6.1810 Lab:System Calls</a></li><li class="collection-item"><a href="/posts/mit-lab-pgtbl/" title="MIT6.1810 Lab:Page Tables">MIT6.1810 Lab:Page Tables</a></li><li class="collection-item"><a href="/posts/mit-lab-traps/" title="MIT6.1810 Lab:Traps">MIT6.1810 Lab:Traps</a></li><li class="collection-item"><a href="/posts/mit-lab-cow/" title="MIT6.1810 Lab:Copy-on-Write Fork for Xv6">MIT6.1810 Lab:Copy-on-Write Fork for Xv6</a></li><li class="collection-item"><a href="/posts/mit-lab-lock/" title="MIT6.1810 Lab:Locks">MIT6.1810 Lab:Locks</a></li><li class="collection-item"><a href="/posts/mit-lab-fs/" title="MIT6.1810 Lab:File System">MIT6.1810 Lab:File System</a></li><li class="collection-item"><span class="active" title="MIT6.1810 Lab:Mmap">MIT6.1810 Lab:Mmap</span></li></ul>
-          <div class="collection-nav-simple"><a href="/posts/mit-lab-fs/" class="collection-nav-item" rel="prev" title="MIT6.1810 Lab:File System"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i></a><span class="text-secondary">8/8</span><i class="fa-solid fa-angle-right fa-fw collection-nav-item text-secondary" aria-hidden="true"></i></div>
+          <ul class="collection-list"><li class="collection-item"><a href="/posts/mit-lab-util/" title="MIT6.1810 Lab:Xv6 and Unix Utilities">MIT6.1810 Lab:Xv6 and Unix Utilities</a></li><li class="collection-item"><a href="/posts/mit-lab-syscall/" title="MIT6.1810 Lab:System Calls">MIT6.1810 Lab:System Calls</a></li><li class="collection-item"><a href="/posts/mit-lab-pgtbl/" title="MIT6.1810 Lab:Page Tables">MIT6.1810 Lab:Page Tables</a></li><li class="collection-item"><a href="/posts/mit-lab-traps/" title="MIT6.1810 Lab:Traps">MIT6.1810 Lab:Traps</a></li><li class="collection-item"><a href="/posts/mit-lab-cow/" title="MIT6.1810 Lab:Copy-on-Write Fork for Xv6">MIT6.1810 Lab:Copy-on-Write Fork for Xv6</a></li><li class="collection-item"><a href="/posts/mit-lab-lock/" title="MIT6.1810 Lab:Locks">MIT6.1810 Lab:Locks</a></li><li class="collection-item"><a href="/posts/mit-lab-fs/" title="MIT6.1810 Lab:File System">MIT6.1810 Lab:File System</a></li><li class="collection-item"><span class="active" title="MIT6.1810 Lab:Mmap">MIT6.1810 Lab:Mmap</span></li><li class="collection-item"><a href="/posts/xv6-note/" title="Xv6读书笔记">Xv6读书笔记</a></li></ul>
+          <div class="collection-nav-simple"><a href="/posts/mit-lab-fs/" class="collection-nav-item" rel="prev" title="MIT6.1810 Lab:File System"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i></a><span class="text-secondary">8/9</span><a href="/posts/xv6-note/" class="collection-nav-item" rel="next" title="Xv6读书笔记"><i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
         </nav>
       </div>
     </div></aside>
@@ -923,10 +923,11 @@ munmap函数声明：</li>
 <li><a href="https://mp.weixin.qq.com/s/AUsgFOaePwVsPozC3F6Wjw"target="_blank" rel="external nofollow noopener noreferrer">从内核世界透视 mmap 内存映射的本质（原理篇）</a></li>
 <li><a href="https://kerolt.work/posts/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/mit6.s081lab10-mmap/"target="_blank" rel="external nofollow noopener noreferrer">kerolt的实现</a></li>
 </ol></div><div class="collection-card">
-      <div class="collection-title text-secondary">收录于 <a href="/collections/xv6/"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> <span>合集・Xv6</span></span></a> 8</div>
+      <div class="collection-title text-secondary">收录于 <a href="/collections/xv6/"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> <span>合集・Xv6</span></span></a> 9</div>
       <div class="collection-nav">
         <a href="/posts/mit-lab-fs/" class="collection-nav-item" rel="prev" title="MIT6.1810 Lab:File System"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i><span>MIT6.1810 Lab:File System</span>
-          </a></div>
+          </a><a href="/posts/xv6-note/" class="collection-nav-item" rel="next" title="Xv6读书笔记">
+            <span>Xv6读书笔记</span><i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
     </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
@@ -947,7 +948,7 @@ munmap函数声明：</li>
     <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/mit6.1810/" class="post-tag" title="标签 - MIT6.1810">MIT6.1810</a><a href="/tags/lab/" class="post-tag" title="标签 - Lab">Lab</a></section>
     <section><span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
     </section>
-  </div><div class="post-nav"><a href="/posts/mit-lab-fs/" class="post-nav-item" rel="prev" title="MIT6.1810 Lab:File System"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>MIT6.1810 Lab:File System</a></div>
+  </div><div class="post-nav"><a href="/posts/mit-lab-fs/" class="post-nav-item" rel="prev" title="MIT6.1810 Lab:File System"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>MIT6.1810 Lab:File System</a><a href="/posts/xv6-note/" class="post-nav-item" rel="next" title="Xv6读书笔记">Xv6读书笔记<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 <div class="post-reward">
     <div class="comment"></div>
