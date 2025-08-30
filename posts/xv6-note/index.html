@@ -160,7 +160,7 @@
 </h2><p>xv6实现了Unix所引入的接口，还复刻了Unix的内部架构设计。</p>
 <p>当进程需要调用内核服务时，会调用系统调用（OS的一个接口调用），进入内核，内核执行完服务后再返回。当用户调用系统调用时，硬件会提升特权级别并启动内核中预先安排的功能（这里应该指的是trap）。</p>
 <p>xv6进程由用户内存空间（指令、数据和堆栈）以及进程状态组成。内核为每个进程分配一个进程标识符（PID），fork创建新进程，会将原进程的内存（包括指令、数据和堆栈）完全复制到新进程中，返回两个参数：在原进程中返回新进程的PID、在新进程中返回零。</p>
-<figure><a class="lightgallery" href="/xv6/xv6%20syscall.png" title="/xv6/xv6 syscall.png" data-thumbnail="/xv6/xv6 syscall.png" data-sub-html="<h2>xv6 syscall</h2>"><img loading="lazy" src='/xv6/xv6 syscall.png' alt="/xv6/xv6 syscall.png" height="auto" width="50%"></a><figcaption class="image-caption">xv6 syscall</figcaption>
+<figure><a class="lightgallery" href="/xv6/xv6%20syscall.png" title="/xv6/xv6 syscall.png" data-thumbnail="/xv6/xv6 syscall.png" data-sub-html="<h2>xv6 syscall</h2>"><img loading="lazy" src='/xv6/xv6 syscall.png' alt="/xv6/xv6 syscall.png" height="auto" width="80%"></a><figcaption class="image-caption">xv6 syscall</figcaption>
   </figure>
 <p>这里system call表中列出了sleep的描述，传入int类型整数，会暂停n个时钟周期。exit终止当前进程，释放资源，传入0表示成功，1表示失败；wait返回子进程exit后的PID，并将子进程的退出状态复制到传入的status参数，如果有子进程则等待一个退出，如果没有子进程立即返回-1;exec会从文件系统中加载一个文件替换调用进程的内存，该文件需为ELF格式，通常是编译程序后的结果，指令会从ELF声明的入口点开始执行，第二参数是字符串参数，通常字符串数组第一个元素是程序名称（被忽略掉），注意exec要求最后一个元素必须是0（NULL）表示参数列表的结束；sbrk将进程内存扩展n个字节，返回新内存的地址；read从文件描述符fd中读取n个字节复制到buf中，并返回已读取的字节数，每个文件描述符都关联一个偏移量，read会从当前文件描述符对应的文件偏移量读取数据，无法读取时返回0表示结束；write会将n个字节从缓冲区写入fd，也会从文件偏移量开始；dup复制一个现有文件描述符，返回一个指向原描述符对象的新描述符，两个描述符共享一个偏移量；pipe创建一个管道，p[0]放读fd，p[1]放写fd。</p>
 <h2 class="heading-element" id="xv6-book-chapter-2"><span>xv6 book chapter 2</span>
@@ -183,7 +183,7 @@
   </a>
 </h2><p>xv6主要用了两种技巧：1. 将相同内存（trampoline）映射到多个地址空间；2. 用未映射页来保护内核堆栈和用户堆栈。</p>
 <p>xv6基于Sv39 RISC-V运行，使用了低39位的虚拟地址。而这39位又划分为低12位及剩余的27位，27位可构成2^27个页表项（PTE），对应转换为44位的物理地址，低12位则为偏移量，直接复制到物理地址的低12位。</p>
-<figure><a class="lightgallery" href="/xv6/%e5%9c%b0%e5%9d%80%e8%bd%ac%e6%8d%a2.png" title="/xv6/地址转换.png" data-thumbnail="/xv6/地址转换.png" data-sub-html="<h2>地址转换</h2>"><img loading="lazy" src='/xv6/地址转换.png' alt="/xv6/地址转换.png" height="auto" width="50%"></a><figcaption class="image-caption">地址转换</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e5%9c%b0%e5%9d%80%e8%bd%ac%e6%8d%a2.png" title="/xv6/地址转换.png" data-thumbnail="/xv6/地址转换.png" data-sub-html="<h2>地址转换</h2>"><img loading="lazy" src='/xv6/地址转换.png' alt="/xv6/地址转换.png" height="auto" width="80%"></a><figcaption class="image-caption">地址转换</figcaption>
   </figure>
 <p>RISC-V CPU具体将虚拟地址转为物理地址的步骤：</p>
 <ol>
@@ -192,15 +192,15 @@
 <li>这样虽然节省了页面，但增加了CPU加载PTE的开销，每次要读取3个PTE，为避免开销，会将PTE缓存在TLB中。</li>
 <li>每个PTE的低10位是标志位，用于告知分页硬件如何使用相关虚拟地址，如是否有效、是否可读、是否可写等。</li>
 <li>要让CPU使用页表，就要将顶层页目录的物理地址写到satp寄存器中，从而读取到顶层页目录的内容进行后续查表。每个CPU有自己的satp寄存器，从而实现拥有自己的虚拟地址空间，进而同时运行不同的进程。
-<figure><a class="lightgallery" href="/xv6/%e5%a4%9a%e7%ba%a7%e9%a1%b5%e8%a1%a8.png" title="/xv6/多级页表.png" data-thumbnail="/xv6/多级页表.png" data-sub-html="<h2>多级页表</h2>"><img loading="lazy" src='/xv6/多级页表.png' alt="/xv6/多级页表.png" height="auto" width="50%"></a><figcaption class="image-caption">多级页表</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e5%a4%9a%e7%ba%a7%e9%a1%b5%e8%a1%a8.png" title="/xv6/多级页表.png" data-thumbnail="/xv6/多级页表.png" data-sub-html="<h2>多级页表</h2>"><img loading="lazy" src='/xv6/多级页表.png' alt="/xv6/多级页表.png" height="auto" width="80%"></a><figcaption class="image-caption">多级页表</figcaption>
   </figure></li>
 </ol>
 <p>内核页表只有一个，大部分直接映射到物理内存，从KERNBASE（0x80000000）开始到PHYSTOP（0x88000000）这部分是QEMU模拟的地址空间范围，主要存放kernel的代码段、数据段、堆区；在KERNBASE之下将IO设备接口以内存映射寄存器的方式暴露给软件，直接与硬件通信；trampoline和栈页不是直接映射的，由于栈页放在了虚拟地址的高地址，因此保留了一个未映射的保护页，当内核栈溢出时会触发异常。</p>
-<figure><a class="lightgallery" href="/xv6/%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e6%98%a0%e5%b0%84.png" title="/xv6/地址空间映射.png" data-thumbnail="/xv6/地址空间映射.png" data-sub-html="<h2>地址空间映射</h2>"><img loading="lazy" src='/xv6/地址空间映射.png' alt="/xv6/地址空间映射.png" height="auto" width="50%"></a><figcaption class="image-caption">地址空间映射</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e6%98%a0%e5%b0%84.png" title="/xv6/地址空间映射.png" data-thumbnail="/xv6/地址空间映射.png" data-sub-html="<h2>地址空间映射</h2>"><img loading="lazy" src='/xv6/地址空间映射.png' alt="/xv6/地址空间映射.png" height="auto" width="80%"></a><figcaption class="image-caption">地址空间映射</figcaption>
   </figure>
 <p>代码层面上，以kvm开头的操作内核页表，以uvm开头的操作用户页表，其他同时用于两者。RISC-V中包含一个名为sfence.vma的指令，用于刷新当前CPU的TLB，xv6会在重新加载satp寄存器之后，trampoline切换用户页表回到用户空间之间执行该指令（刷新内核页表的TLB）。kalloc维护物理内存链表，kinit将空闲链表初始化为内核结束到PHYSTOP之间的每个页面，kfree会将释放内存中每个字节都设为1，然后将该页添加到空闲链表头。</p>
 <p>用户页表针对每一个进程都有一个自己的页表，用户空间从0开始可扩展至MAXVA，通过设置PTE权限是强化用户进程安全的常用技术。用户栈空间占一页，栈顶包含命令行参数的字符串即指向这些参数的指针数组，紧邻下方的值允许程序像刚调用函数main(argc, argv)一样直接从main函数开始执行。同时为检测栈溢出，在栈下方设置了不可访问的保护页，当栈溢出并尝试使用保护页的地址时会生成页面错误异常。
-<figure><a class="lightgallery" href="/xv6/%e7%94%a8%e6%88%b7%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4.png" title="/xv6/用户地址空间.png" data-thumbnail="/xv6/用户地址空间.png" data-sub-html="<h2>用户地址空间</h2>"><img loading="lazy" src='/xv6/用户地址空间.png' alt="/xv6/用户地址空间.png" height="auto" width="50%"></a><figcaption class="image-caption">用户地址空间</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e7%94%a8%e6%88%b7%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4.png" title="/xv6/用户地址空间.png" data-thumbnail="/xv6/用户地址空间.png" data-sub-html="<h2>用户地址空间</h2>"><img loading="lazy" src='/xv6/用户地址空间.png' alt="/xv6/用户地址空间.png" height="auto" width="80%"></a><figcaption class="image-caption">用户地址空间</figcaption>
   </figure></p>
 <h2 class="heading-element" id="xv6-book-chapter-4"><span>xv6 book chapter 4</span>
   <a href="#xv6-book-chapter-4" class="heading-mark">
@@ -278,10 +278,10 @@
 <li>必须维护并发下的临界区（使用锁）</li>
 <li>必须维护一个内存与磁盘之间的缓存（使用buffer cache）
 采用七层组织架构，磁盘层负责在virtio硬盘驱动器上读写数据块。缓冲区缓存层对磁盘块进行缓存，并同步访问操作，确保同一时间只有一个内核进程能够修改特定数据块中存储的信息。日志层允许上层将多个数据块的更新打包成事务处理，并确保在系统崩溃时这些数据块能以原子方式更新（即要么全部更新成功，要么完全不更新）。索引节点层提供独立文件，每个文件由具有唯一索引编号（i-number）的inode和存储文件数据的若干数据块表示。目录层将每个目录实现为一种特殊类型的inode，其内容是由目录项组成的序列，每个目录项包含文件名和索引编号。路径名层支持如/usr/rtm/xv6/fs.c这样的层级路径命名，并通过递归查找进行解析。文件描述符层利用文件系统接口对多种Unix资源（如管道、设备、文件等）进行抽象，从而简化应用程序员的工作。
-<figure><a class="lightgallery" href="/xv6/%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e7%bb%84%e7%bb%87%e7%bb%93%e6%9e%84.png" title="/xv6/文件系统组织结构.png" data-thumbnail="/xv6/文件系统组织结构.png" data-sub-html="<h2>文件系统组织结构</h2>"><img loading="lazy" src='/xv6/文件系统组织结构.png' alt="/xv6/文件系统组织结构.png" height="auto" width="50%"></a><figcaption class="image-caption">文件系统组织结构</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e7%bb%84%e7%bb%87%e7%bb%93%e6%9e%84.png" title="/xv6/文件系统组织结构.png" data-thumbnail="/xv6/文件系统组织结构.png" data-sub-html="<h2>文件系统组织结构</h2>"><img loading="lazy" src='/xv6/文件系统组织结构.png' alt="/xv6/文件系统组织结构.png" height="auto" width="80%"></a><figcaption class="image-caption">文件系统组织结构</figcaption>
   </figure>
 磁盘硬件呈现为512个字节的块序列（每个扇区512字节），OS使用的块大小通常是扇区大小的整数倍,xv6块大小为1024字节。文件系统将磁盘划分为若干区域，如下图所示：
-<figure><a class="lightgallery" href="/xv6/xv6%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e7%bb%84%e7%bb%87.png" title="/xv6/xv6文件系统组织.png" data-thumbnail="/xv6/xv6文件系统组织.png" data-sub-html="<h2>xv6文件系统组织</h2>"><img loading="lazy" src='/xv6/xv6文件系统组织.png' alt="/xv6/xv6文件系统组织.png" height="auto" width="50%"></a><figcaption class="image-caption">xv6文件系统组织</figcaption>
+<figure><a class="lightgallery" href="/xv6/xv6%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e7%bb%84%e7%bb%87.png" title="/xv6/xv6文件系统组织.png" data-thumbnail="/xv6/xv6文件系统组织.png" data-sub-html="<h2>xv6文件系统组织</h2>"><img loading="lazy" src='/xv6/xv6文件系统组织.png' alt="/xv6/xv6文件系统组织.png" height="auto" width="80%"></a><figcaption class="image-caption">xv6文件系统组织</figcaption>
   </figure>
 Buffer cache有两个主要功能：</li>
 <li>实现对磁盘块的同步访问，确保内存中只保留一个块副本，且同一时间只有一个内核线程使用该副本；</li>
@@ -302,17 +302,17 @@ xv6通过一种简单的日志记录形式解决了文件系统崩溃问题。sy
 </h2><p>静态概念：磁盘文件系统的格式及其细节。</p>
 <p>动态概念：用户进程通过系统调用访问磁盘数据的过程及其所使用的代码。</p>
 <p>文件的逻辑结构：用户进程看来是一个线性可寻址的字节集合，只要给出具体的偏移量就可以访问到文件的任意内容。具体到操作系统文件则是使用file结构体表示，pos成员表示偏移量。在文件逻辑层维护了file文件结构体数组，其使用inode、dinode作为文件索引，对应到磁盘的块。类似于页表将虚拟内存地址映射到物理内存地址，inode索引将逻辑文件映射到物理磁盘块上。
-<figure><a class="lightgallery" href="/xv6/%e6%96%87%e4%bb%b6%e7%bb%93%e6%9e%84.png" title="/xv6/文件结构.png" data-thumbnail="/xv6/文件结构.png" data-sub-html="<h2>文件结构</h2>"><img loading="lazy" src='/xv6/文件结构.png' alt="/xv6/文件结构.png" height="auto" width="50%"></a><figcaption class="image-caption">文件结构</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e6%96%87%e4%bb%b6%e7%bb%93%e6%9e%84.png" title="/xv6/文件结构.png" data-thumbnail="/xv6/文件结构.png" data-sub-html="<h2>文件结构</h2>"><img loading="lazy" src='/xv6/文件结构.png' alt="/xv6/文件结构.png" height="auto" width="80%"></a><figcaption class="image-caption">文件结构</figcaption>
   </figure></p>
 <p>xv6磁盘文件系统的布局：启动块、超级块、日志块、inode块、位图块、数据块。其中超级块记录日志块、inode块、位图块、数据块的起始块号和数量。
-<figure><a class="lightgallery" href="/xv6/%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e7%bb%84%e7%bb%87.png" title="/xv6/文件系统组织.png" data-thumbnail="/xv6/文件系统组织.png" data-sub-html="<h2>文件系统组织</h2>"><img loading="lazy" src='/xv6/文件系统组织.png' alt="/xv6/文件系统组织.png" height="auto" width="50%"></a><figcaption class="image-caption">文件系统组织</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e7%bb%84%e7%bb%87.png" title="/xv6/文件系统组织.png" data-thumbnail="/xv6/文件系统组织.png" data-sub-html="<h2>文件系统组织</h2>"><img loading="lazy" src='/xv6/文件系统组织.png' alt="/xv6/文件系统组织.png" height="auto" width="80%"></a><figcaption class="image-caption">文件系统组织</figcaption>
   </figure></p>
 <p>目录也是文件，不过内容是（inode num，path）形式的目录项，指向了多个文件，也就形成了树状结构，相对于扁平的，更具有层次性。目录的前两个目录项都是一致的，是“.”和“..”，分别指向自己和父目录，那我们在查找文件时，输入path，就可以按照路径名从目录树中自顶向下查找，目录也是文件说明它也要有父目录，目录项指向它，这样有目录就必须要有父目录，为了避免这种先鸡后蛋的问题，定义根目录“/”（这个斜杠和除号一样，不是反斜杠）的inode为1，这样固定了根目录节点的inode就可以。</p>
 <p>由之前的章节我们知道，OS对文件的读写操作都是针对文件描述符的，所以进程操作的是文件描述符，而不是上述的file结构体或是inode结构体。xv6每个进程都有一个文件描述符表proc-&gt;ofile[]，每个文件描述符都指向了一个ftable的file结构体，这里为什么又增加一层，是因为文件描述符与file可能是多对一的关系，多个文件描述符可能指向同一个文件。
-<figure><a class="lightgallery" href="/xv6/%e6%96%87%e4%bb%b6%e6%8f%8f%e8%bf%b0%e7%ac%a6%e8%a1%a8.png" title="/xv6/文件描述符表.png" data-thumbnail="/xv6/文件描述符表.png" data-sub-html="<h2>文件描述符表</h2>"><img loading="lazy" src='/xv6/文件描述符表.png' alt="/xv6/文件描述符表.png" height="auto" width="50%"></a><figcaption class="image-caption">文件描述符表</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e6%96%87%e4%bb%b6%e6%8f%8f%e8%bf%b0%e7%ac%a6%e8%a1%a8.png" title="/xv6/文件描述符表.png" data-thumbnail="/xv6/文件描述符表.png" data-sub-html="<h2>文件描述符表</h2>"><img loading="lazy" src='/xv6/文件描述符表.png' alt="/xv6/文件描述符表.png" height="auto" width="80%"></a><figcaption class="image-caption">文件描述符表</figcaption>
   </figure></p>
 <p>dinode结构体包含type类型，可能是目录、磁盘文件、设备；nlink记录有多少目录项指向了该dinode，实际上代表这个文件有多少路径名；address数组，元素内容是磁盘块号，也就组织起来了一堆块为该dinode文件所属。书中的indirect block有128个元素，而xv6源码（2024）中是有256个元素的。
-<figure><a class="lightgallery" href="/xv6/dinode%e7%bb%93%e6%9e%84.png" title="/xv6/dinode结构.png" data-thumbnail="/xv6/dinode结构.png" data-sub-html="<h2>dinode结构</h2>"><img loading="lazy" src='/xv6/dinode结构.png' alt="/xv6/dinode结构.png" height="auto" width="50%"></a><figcaption class="image-caption">dinode结构</figcaption>
+<figure><a class="lightgallery" href="/xv6/dinode%e7%bb%93%e6%9e%84.png" title="/xv6/dinode结构.png" data-thumbnail="/xv6/dinode结构.png" data-sub-html="<h2>dinode结构</h2>"><img loading="lazy" src='/xv6/dinode结构.png' alt="/xv6/dinode结构.png" height="auto" width="80%"></a><figcaption class="image-caption">dinode结构</figcaption>
   </figure></p>
 <h3 class="heading-element" id="文件系统操作"><span>文件系统操作</span>
   <a href="#%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e6%93%8d%e4%bd%9c" class="heading-mark">
@@ -341,10 +341,10 @@ file.c提供filewrite()，然后调用writei()，传入file对应的inode和偏�
     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
   </a>
 </h3><p>这里指日志功能，xv6文件系统的日志确保写操作不会导致文件系统的破坏，进程的写操作是一种原子操作，要么全部完成，要么全不执行。当修改了内存中的块缓冲区后，log_write()同时在block数组中记录这个块需要写到磁盘的哪一块，但是没有立即写，当调用commit()时，调用write_log()将待写入的数据保存在日志区盘块上，并调用write_head()更新磁盘的日志记录，最后调用install_trans()真正的更新文件系统。此时，若发生崩溃会导致日志有非零的计数，以便重启后再次进行写操作，最后将计数变量置零，使日志失效并更新日志初始块。xv6日志读写支持并发操作，begin_op()检查日志是否在提交，如果在提交，则睡眠当前进程；如果不在提交，当没有任何进程操作log时调用commit提交日志。
-<figure><a class="lightgallery" href="/xv6/%e6%97%a5%e5%bf%97%e5%8c%ba.png" title="/xv6/日志区.png" data-thumbnail="/xv6/日志区.png" data-sub-html="<h2>日志区</h2>"><img loading="lazy" src='/xv6/日志区.png' alt="/xv6/日志区.png" height="auto" width="50%"></a><figcaption class="image-caption">日志区</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e6%97%a5%e5%bf%97%e5%8c%ba.png" title="/xv6/日志区.png" data-thumbnail="/xv6/日志区.png" data-sub-html="<h2>日志区</h2>"><img loading="lazy" src='/xv6/日志区.png' alt="/xv6/日志区.png" height="auto" width="80%"></a><figcaption class="image-caption">日志区</figcaption>
   </figure></p>
 <p>这个示意图在2024的xv6源码中应该是日志区在前，数据块在后，和上边所述的位置也不一致。不过不影响示意，其含义就是header记录了30个log块，block的内容是要写入的块位置。下图是对应的日志写盘过程。
-<figure><a class="lightgallery" href="/xv6/%e6%97%a5%e5%bf%97%e5%8a%9f%e8%83%bd%e7%a4%ba%e6%84%8f.png" title="/xv6/日志功能示意.png" data-thumbnail="/xv6/日志功能示意.png" data-sub-html="<h2>日志功能示意</h2>"><img loading="lazy" src='/xv6/日志功能示意.png' alt="/xv6/日志功能示意.png" height="auto" width="50%"></a><figcaption class="image-caption">日志功能示意</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e6%97%a5%e5%bf%97%e5%8a%9f%e8%83%bd%e7%a4%ba%e6%84%8f.png" title="/xv6/日志功能示意.png" data-thumbnail="/xv6/日志功能示意.png" data-sub-html="<h2>日志功能示意</h2>"><img loading="lazy" src='/xv6/日志功能示意.png' alt="/xv6/日志功能示意.png" height="auto" width="80%"></a><figcaption class="image-caption">日志功能示意</figcaption>
   </figure></p></div><div class="collection-card">
       <div class="collection-title text-secondary">收录于 <a href="/collections/xv6/"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> <span>合集・Xv6</span></span></a> 9</div>
       <div class="collection-nav">
