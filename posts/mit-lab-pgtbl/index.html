@@ -11,7 +11,7 @@
   <meta itemprop="description" content="MIT6.1810 lab xv6 2024 pgtbl">
   <meta itemprop="datePublished" content="2025-08-26T10:30:51+08:00">
   <meta itemprop="dateModified" content="2025-08-26T10:30:51+08:00">
-  <meta itemprop="wordCount" content="3732">
+  <meta itemprop="wordCount" content="3731">
   <meta itemprop="keywords" content="MIT6.1810,Lab"><meta property="og:url" content="http://localhost:1313/posts/mit-lab-pgtbl/">
   <meta property="og:site_name" content=" Blog">
   <meta property="og:title" content="MIT6.1810 Lab:Page tables">
@@ -39,7 +39,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/localhost:1313\/posts\/mit-lab-pgtbl\/"
-    },"genre": "posts","keywords": "MIT6.1810, Lab","wordcount":  3732 ,
+    },"genre": "posts","keywords": "MIT6.1810, Lab","wordcount":  3731 ,
     "url": "http:\/\/localhost:1313\/posts\/mit-lab-pgtbl\/","datePublished": "2025-08-26T10:30:51+08:00","dateModified": "2025-08-26T10:30:51+08:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -125,7 +125,7 @@
   <article class="page single">
     <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>MIT6.1810 Lab:Page Tables</span>
       </h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-26 10:30:51"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-26">2025-08-26</time></span>&nbsp;<span title="3732 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3800 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 8 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-26 10:30:51"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-26">2025-08-26</time></span>&nbsp;<span title="3731 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3800 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 8 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -625,7 +625,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">return</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">r</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
 </div>
-</div><p>实验题目提到通过sbrk()系统调用申请新分配的超级页，其所涉及到的调用路径是sys_sbrk()-&gt;growproc(n)-&gt;uvmalloc(p-&gt;pagetable, sz, sz + n, PTE_W)，在uvmalloc函数中判断size的大小，若申请的空间size大于等于2MB，说明是超级页，对应的就分配超级页物理内存（调用上述superkalloc），建立超级页映射（新建mapsuperpages）。</p>
+</div><p>实验题目提到通过sbrk()系统调用申请新分配的超级页，其所涉及到的调用路径是sys_sbrk()-&gt;growproc(n)-&gt;uvmalloc(p-&gt;pagetable, sz, sz + n, PTE_W)，在uvmalloc函数中判断size的大小，若申请的空间size大于等于2MB，说明是超级页，对应就分配超级页物理内存（调用上述superkalloc），建立超级页映射（新建mapsuperpages）。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1

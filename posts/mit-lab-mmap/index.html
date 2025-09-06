@@ -161,19 +161,19 @@
 <ol>
 <li>
 <p>私有匿名映射：MAP_PRIVATE | MAP_ANONYMOUS，glib库中封装的malloc函数申请内存大于128KB时使用mmap私有匿名映射方式来申请堆内存。这里mmap只是先申请一段VMA，还没有真正分配物理内存，PTE是空的，只有读写此区域时，才会触发缺页异常分配物理内存。私有匿名映射除了用于申请虚拟内存之外，还会用于execve系统调用中，内核需要删除释放旧的虚拟内存空间并情况页表，然后打开可执行文件，解析文件头，判断可执行文件的格式，对应函数进行加载。这个过程就需要私有匿名映射创建新的虚拟内存空间中的BSS段、堆和栈。
-<figure><a class="lightgallery" href="/xv6/%e7%a7%81%e6%9c%89%e5%8c%bf%e5%90%8d%e6%98%a0%e5%b0%84.png" title="/xv6/私有匿名映射.png" data-thumbnail="/xv6/私有匿名映射.png" data-sub-html="<h2>私有匿名映射</h2>"><img loading="lazy" src='/xv6/私有匿名映射.png' alt="/xv6/私有匿名映射.png"></a><figcaption class="image-caption">私有匿名映射</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e7%a7%81%e6%9c%89%e5%8c%bf%e5%90%8d%e6%98%a0%e5%b0%84.png" title="/xv6/私有匿名映射.png" data-thumbnail="/xv6/私有匿名映射.png" data-sub-html="<h2>私有匿名映射</h2>"><img loading="lazy" src='/xv6/私有匿名映射.png' alt="/xv6/私有匿名映射.png" height="60%" width="60%"></a><figcaption class="image-caption">私有匿名映射</figcaption>
   </figure></p>
 </li>
 <li>
 <p>私有文件映射：MAP_PRIVATE，mmap内存文件映射的本质是vm_area_struct结构体中传入参数fd所对应的file结构体指针，指向file结构体，file结构体中存有inode结构体成员，即该文件对应的inode索引，从而找到对应的磁盘块block。和私有匿名映射一样，它不会立即分配物理页面，而是利用缺页异常，进程1在建立PTE之后，再次访问这段文件内存映射时就相当于直接访问文件的page cache，这个过程是在用户态的，没有切态。进程2同样在访问这段文件时也触发缺页异常，建立PTE，但会直接指向进程1中的page cache。所有进程的PTE都设为只读，当任一进程试图写入时，又会触发缺页中断，会申请一个内存页，然后将page cache的内容拷贝到新内存页中，并更新PTE。当进程都有各自专属的物理内存页时，就和page cache脱离关系了，各自的修改在进程之间时互不可见的，且均不会回写到磁盘文件中。可执行文件的.text、.data就使用私有文件映射到了进程虚拟内存空间中的代码段和数据段中。
-<figure><a class="lightgallery" href="/xv6/%e7%a7%81%e6%9c%89%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84%e5%a4%9a%e8%bf%9b%e7%a8%8b.png" title="/xv6/私有文件映射多进程.png" data-thumbnail="/xv6/私有文件映射多进程.png" data-sub-html="<h2>私有文件映射多进程</h2>"><img loading="lazy" src='/xv6/私有文件映射多进程.png' alt="/xv6/私有文件映射多进程.png"></a><figcaption class="image-caption">私有文件映射多进程</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e7%a7%81%e6%9c%89%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84%e5%a4%9a%e8%bf%9b%e7%a8%8b.png" title="/xv6/私有文件映射多进程.png" data-thumbnail="/xv6/私有文件映射多进程.png" data-sub-html="<h2>私有文件映射多进程</h2>"><img loading="lazy" src='/xv6/私有文件映射多进程.png' alt="/xv6/私有文件映射多进程.png" height="60%" width="60%"></a><figcaption class="image-caption">私有文件映射多进程</figcaption>
   </figure>
-<figure><a class="lightgallery" href="/xv6/%e7%a7%81%e6%9c%89%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84%e8%bf%9b%e7%a8%8b%e7%a9%ba%e9%97%b4.png" title="/xv6/私有文件映射进程空间.png" data-thumbnail="/xv6/私有文件映射进程空间.png" data-sub-html="<h2>私有文件映射进程空间</h2>"><img loading="lazy" src='/xv6/私有文件映射进程空间.png' alt="/xv6/私有文件映射进程空间.png"></a><figcaption class="image-caption">私有文件映射进程空间</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e7%a7%81%e6%9c%89%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84%e8%bf%9b%e7%a8%8b%e7%a9%ba%e9%97%b4.png" title="/xv6/私有文件映射进程空间.png" data-thumbnail="/xv6/私有文件映射进程空间.png" data-sub-html="<h2>私有文件映射进程空间</h2>"><img loading="lazy" src='/xv6/私有文件映射进程空间.png' alt="/xv6/私有文件映射进程空间.png" height="60%" width="60%"></a><figcaption class="image-caption">私有文件映射进程空间</figcaption>
   </figure></p>
 </li>
 <li>
 <p>共享文件映射：MAP_SHARED，和私有文件映射过程一样，唯一不同的点是，多进程中的虚拟内存映射区通过缺页中断会映射到同一page cache中，且是可读可写，不会再次触发缺页中断去各自分配新的物理页。多进程对共享映射区的任何修改都会通过内核回写线程pdflush刷新到磁盘文件中。根据 mmap 共享文件映射多进程之间读写共享（不会发生写时复制）的特点，常用于多进程之间共享内存（page cache），多进程之间的通讯。
-<figure><a class="lightgallery" href="/xv6/%e5%85%b1%e4%ba%ab%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84.png" title="/xv6/共享文件映射.png" data-thumbnail="/xv6/共享文件映射.png" data-sub-html="<h2>共享文件映射</h2>"><img loading="lazy" src='/xv6/共享文件映射.png' alt="/xv6/共享文件映射.png"></a><figcaption class="image-caption">共享文件映射</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e5%85%b1%e4%ba%ab%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84.png" title="/xv6/共享文件映射.png" data-thumbnail="/xv6/共享文件映射.png" data-sub-html="<h2>共享文件映射</h2>"><img loading="lazy" src='/xv6/共享文件映射.png' alt="/xv6/共享文件映射.png" height="60%" width="60%"></a><figcaption class="image-caption">共享文件映射</figcaption>
   </figure></p>
 </li>
 <li>
@@ -909,11 +909,11 @@ munmap函数声明：</li>
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>至此，mmaptest全部通过。
-<figure><a class="lightgallery" href="/xv6/mmaptest.png" title="/xv6/mmaptest.png" data-thumbnail="/xv6/mmaptest.png" data-sub-html="<h2>mmaptest</h2>"><img loading="lazy" src='/xv6/mmaptest.png' alt="/xv6/mmaptest.png"></a><figcaption class="image-caption">mmaptest</figcaption>
+<figure><a class="lightgallery" href="/xv6/mmaptest.png" title="/xv6/mmaptest.png" data-thumbnail="/xv6/mmaptest.png" data-sub-html="<h2>mmaptest</h2>"><img loading="lazy" src='/xv6/mmaptest.png' alt="/xv6/mmaptest.png" height="20%" width="20%"></a><figcaption class="image-caption">mmaptest</figcaption>
   </figure></p>
 <p>总结：mmap作为xv6的最后一个实验，综合了内存管理、进程管理、文件系统这三大块的内容，是一个综合性极佳的实验。首先认识到了为什么需要虚拟内存这一问题的答案，除了实现进程隔离防止多进程访问地址冲突、给进程提供一个看起来更大的地址空间以外，他还可以在此基础之上利用page fault陷入trap处理程序，从而实现延时分配（先提供虚拟空间，在访问时再去分配物理空间，比如sbrk扩充了虚拟地址空间大小，在访问扩充后的虚拟地址时才会实际分配物理页，这里是根本没有建立PTE映射，也就是没有PTE的page fault）、写时复制（fork时子进程copy父进程的页表，指向同一块虚拟地址空间，但将PTE设为不可写，当其中一个进程试图写入时，触发page fault再去分配物理页，copy原来的物理页，这里是建立了PTE，但权限为不可写）机制。以及去映射文件避免读写文件多次地从用户态到内核态的上下文切换（也就是本实验实现的，本质上是使用该系统调用将文件内容读到内存中，从而再次读写文件时不用频繁调用read、write系统调用）。</p>
 <p>PS：强烈推荐文中开头提到的文章，mmap这个概念其实一直困扰了我很久，就像文中说到的：
-<figure><a class="lightgallery" href="/xv6/%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84%e7%9a%84%e7%96%91%e9%97%ae.png" title="/xv6/文件映射的疑问.png" data-thumbnail="/xv6/文件映射的疑问.png" data-sub-html="<h2>文件映射的疑问</h2>"><img loading="lazy" src='/xv6/文件映射的疑问.png' alt="/xv6/文件映射的疑问.png"></a><figcaption class="image-caption">文件映射的疑问</figcaption>
+<figure><a class="lightgallery" href="/xv6/%e6%96%87%e4%bb%b6%e6%98%a0%e5%b0%84%e7%9a%84%e7%96%91%e9%97%ae.png" title="/xv6/文件映射的疑问.png" data-thumbnail="/xv6/文件映射的疑问.png" data-sub-html="<h2>文件映射的疑问</h2>"><img loading="lazy" src='/xv6/文件映射的疑问.png' alt="/xv6/文件映射的疑问.png" height="60%" width="60%"></a><figcaption class="image-caption">文件映射的疑问</figcaption>
   </figure></p>
 <p>我脑子中就全是这些疑惑，看到这段话时，顿时感到终于有人懂我了。这篇文章真是跪着读完的，相比于网上查阅的大多数资料、gpt答案，简直是好太多，醍醐灌顶的感觉。</p>
 <p>以及网上参考的实验实现可能在xv6 2024版本的实验中有些已经过不了了，推测是这些老头在不断更新测试用例，查看test文件的代码很有帮助，比如mmaptest中过不了的测试可以回查源码，看它是在测试哪方面，对应哪里出了问题，能快速定位解决。</p>

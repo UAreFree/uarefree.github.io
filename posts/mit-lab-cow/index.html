@@ -597,7 +597,7 @@
 </span></span><span class="line"><span class="cl">  <span class="kt">pte_t</span> <span class="o">*</span><span class="n">pte</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 内核态虚拟内存拷贝到用户态
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 其实是在像用户态内存进行写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 其实是在向用户态内存进行写
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 此时不会触发缺页异常 所以要在此函数实现
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 判断用户页是否是COW页 如果是进行COW操作
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">while</span><span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>

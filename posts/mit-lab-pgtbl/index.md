@@ -252,7 +252,7 @@ superkalloc(void)
   return (void*)r;
 }
 ```
-实验题目提到通过sbrk()系统调用申请新分配的超级页，其所涉及到的调用路径是sys_sbrk()->growproc(n)->uvmalloc(p->pagetable, sz, sz + n, PTE_W)，在uvmalloc函数中判断size的大小，若申请的空间size大于等于2MB，说明是超级页，对应的就分配超级页物理内存（调用上述superkalloc），建立超级页映射（新建mapsuperpages）。
+实验题目提到通过sbrk()系统调用申请新分配的超级页，其所涉及到的调用路径是sys_sbrk()->growproc(n)->uvmalloc(p->pagetable, sz, sz + n, PTE_W)，在uvmalloc函数中判断size的大小，若申请的空间size大于等于2MB，说明是超级页，对应就分配超级页物理内存（调用上述superkalloc），建立超级页映射（新建mapsuperpages）。
 ```C
 uint64
 uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)

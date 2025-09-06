@@ -11,7 +11,7 @@
   <meta itemprop="description" content="MIT6.1810 lab xv6 2024 syscall">
   <meta itemprop="datePublished" content="2025-08-26T10:13:35+08:00">
   <meta itemprop="dateModified" content="2025-08-26T10:13:35+08:00">
-  <meta itemprop="wordCount" content="2738">
+  <meta itemprop="wordCount" content="2737">
   <meta itemprop="keywords" content="MIT6.1810,Lab"><meta property="og:url" content="http://localhost:1313/posts/mit-lab-syscall/">
   <meta property="og:site_name" content=" Blog">
   <meta property="og:title" content="MIT6.1810 Lab:System calls">
@@ -39,7 +39,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/localhost:1313\/posts\/mit-lab-syscall\/"
-    },"genre": "posts","keywords": "MIT6.1810, Lab","wordcount":  2738 ,
+    },"genre": "posts","keywords": "MIT6.1810, Lab","wordcount":  2737 ,
     "url": "http:\/\/localhost:1313\/posts\/mit-lab-syscall\/","datePublished": "2025-08-26T10:13:35+08:00","dateModified": "2025-08-26T10:13:35+08:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -125,7 +125,7 @@
   <article class="page single">
     <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>MIT6.1810 Lab:System Calls</span>
       </h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-26 10:13:35"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-26">2025-08-26</time></span>&nbsp;<span title="2738 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2800 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-26 10:13:35"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-26">2025-08-26</time></span>&nbsp;<span title="2737 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2800 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -143,7 +143,7 @@
     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
   </a>
 </h2><p>实现系统调用trace，trace接受一个参数（整数掩码），如果系统调用号在掩码中设置，需要修改xv6内核，使其在每个系统调用即将返回时打印一行（进程ID、系统调用名称、返回值）。</p>
-<p>用户程序需要调用system call，那么所提供的system call的函数声明在user.h，而实际的定义实现却是在kernel中，要知道用户态的代码和内核态的代码是隔离的，那么是用户程序是如何调用内核的代码实现的呢？答案是user.pl，user.pl是在用户空间的脚本，作为桥梁，在makefile时生成user.S，这个汇编代码include了syscall.h，syscall.h声明了系统调用号（对应kernel system call 函数），把这个编号放到寄存器a7中，然后ecall进内核，在ecall时会将a7寄存器的值存到trapframe中，从而传到内核中，这样内核从trapframe中加载a7寄存器的值，从而调用对应的system call。</p>
+<p>用户程序需要调用system call，那么所提供的system call的函数声明在user.h，而实际的定义实现却是在kernel中，要知道用户态的代码和内核态的代码是隔离的，那么用户程序是如何调用内核的代码实现的呢？答案是user.pl，user.pl是在用户空间的脚本，作为桥梁，在makefile时生成user.S，这个汇编代码include了syscall.h，syscall.h声明了系统调用号（对应kernel system call 函数），把这个编号放到寄存器a7中，然后ecall进内核，在ecall时会将a7寄存器的值存到trapframe中，从而传到内核中，这样内核从trapframe中加载a7寄存器的值，从而调用对应的system call。</p>
 <p>本实验是要实现system call，但是需要shell去测试验证，所以依旧需要先实现一个用户程序trace，在这个程序中调用system call，这里源代码已经提供了trace用户程序。需要增加的是上述关于调用内核system call的操作。</p>
 <p>ecall会调用trampoline.S代码，这段代码会执行内核的usertrap函数，当r_scause() == 8时会调用syscall()，syscall()会取a7寄存器的值，然后调用对应syscall函数数组索引的系统调用函数，返回值存在trapframe的a0寄存器里。所以就在syscall()里判断是否是要跟踪的系统调用号，如果是，打印进程ID、系统调用名称和返回值。</p>
 <p>整体实现过程就是：1. 添加新增的与syscall有关的函数存根、声明等。2. 在syscall()中拿到用户参数掩码，与当前系统调用号进行按位与运算，如果是1则打印。3. 注意根据提示，增加系统调用名称数组以及在fork时将父进程的mask也copy到子进程中。</p>

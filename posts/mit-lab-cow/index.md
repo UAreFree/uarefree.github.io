@@ -227,7 +227,7 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
   pte_t *pte;
 
   // 内核态虚拟内存拷贝到用户态
-  // 其实是在像用户态内存进行写
+  // 其实是在向用户态内存进行写
   // 此时不会触发缺页异常 所以要在此函数实现
   // 判断用户页是否是COW页 如果是进行COW操作
   while(len > 0){

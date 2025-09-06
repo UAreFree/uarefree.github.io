@@ -11,7 +11,7 @@
   <meta itemprop="description" content="MIT6.1810 lab xv6 2024 trap">
   <meta itemprop="datePublished" content="2025-08-26T11:00:03+08:00">
   <meta itemprop="dateModified" content="2025-08-26T11:00:03+08:00">
-  <meta itemprop="wordCount" content="2049">
+  <meta itemprop="wordCount" content="2048">
   <meta itemprop="keywords" content="MIT6.1810,Lab"><meta property="og:url" content="http://localhost:1313/posts/mit-lab-traps/">
   <meta property="og:site_name" content=" Blog">
   <meta property="og:title" content="MIT6.1810 Lab:Traps">
@@ -39,7 +39,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/localhost:1313\/posts\/mit-lab-traps\/"
-    },"genre": "posts","keywords": "MIT6.1810, Lab","wordcount":  2049 ,
+    },"genre": "posts","keywords": "MIT6.1810, Lab","wordcount":  2048 ,
     "url": "http:\/\/localhost:1313\/posts\/mit-lab-traps\/","datePublished": "2025-08-26T11:00:03+08:00","dateModified": "2025-08-26T11:00:03+08:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -125,7 +125,7 @@
   <article class="page single">
     <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>MIT6.1810 Lab:Traps</span>
       </h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-26 11:00:03"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-26">2025-08-26</time></span>&nbsp;<span title="2049 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2100 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 5 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-26 11:00:03"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-26">2025-08-26</time></span>&nbsp;<span title="2048 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2100 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 5 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -182,8 +182,10 @@
 <pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mh">0x00646c72</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;H%x Wo%s&#34;</span><span class="p">,</span> <span class="mi">57616</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">);</span></span></span></code></pre></td></tr></table>
 </div>
-</div><p>输出：HE110 World。强转为char*是指从变量i的地址处按字节读取变量i，如果不取i的地址，那就是在0x00646c72地址处按字节读取变量i，这是错的。当前是小端序，低字节低地址，所以按0x72、0x6c、0x64、0x00的顺序读，转换为rld。若是大端序，则将i设为0x726c6400才能得到相同的输出。57616不需要变，因为对应的十六进制不会改变。
-6. 代码“y=”之后会打印什么？</p>
+</div><p>输出：HE110 World。强转为char*是指从变量i的地址处按字节读取变量i，如果不取i的地址，那就是在0x00646c72地址处按字节读取变量i，这是错的。当前是小端序，低字节低地址，所以按0x72、0x6c、0x64、0x00的顺序读，转换为rld。若是大端序，则将i设为0x726c6400才能得到相同的输出。57616不需要变，因为对应的十六进制不会改变。</p>
+<ol start="6">
+<li>代码“y=”之后会打印什么？</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1

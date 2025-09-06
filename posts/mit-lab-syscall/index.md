@@ -8,7 +8,7 @@ MIT6.1810 lab xv6 2024 syscall
 ## System call tracing
 实现系统调用trace，trace接受一个参数（整数掩码），如果系统调用号在掩码中设置，需要修改xv6内核，使其在每个系统调用即将返回时打印一行（进程ID、系统调用名称、返回值）。
 
-用户程序需要调用system call，那么所提供的system call的函数声明在user.h，而实际的定义实现却是在kernel中，要知道用户态的代码和内核态的代码是隔离的，那么是用户程序是如何调用内核的代码实现的呢？答案是user.pl，user.pl是在用户空间的脚本，作为桥梁，在makefile时生成user.S，这个汇编代码include了syscall.h，syscall.h声明了系统调用号（对应kernel system call 函数），把这个编号放到寄存器a7中，然后ecall进内核，在ecall时会将a7寄存器的值存到trapframe中，从而传到内核中，这样内核从trapframe中加载a7寄存器的值，从而调用对应的system call。
+用户程序需要调用system call，那么所提供的system call的函数声明在user.h，而实际的定义实现却是在kernel中，要知道用户态的代码和内核态的代码是隔离的，那么用户程序是如何调用内核的代码实现的呢？答案是user.pl，user.pl是在用户空间的脚本，作为桥梁，在makefile时生成user.S，这个汇编代码include了syscall.h，syscall.h声明了系统调用号（对应kernel system call 函数），把这个编号放到寄存器a7中，然后ecall进内核，在ecall时会将a7寄存器的值存到trapframe中，从而传到内核中，这样内核从trapframe中加载a7寄存器的值，从而调用对应的system call。
 
 本实验是要实现system call，但是需要shell去测试验证，所以依旧需要先实现一个用户程序trace，在这个程序中调用system call，这里源代码已经提供了trace用户程序。需要增加的是上述关于调用内核system call的操作。
 
