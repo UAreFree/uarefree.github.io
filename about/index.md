@@ -17,7 +17,6 @@ C++受虐狂
 
 Linux键盘侠
 
-EarthOnline差等生
 
 ---
 

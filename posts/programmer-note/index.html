@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>程序员的自我修养读书笔记 -  Blog</title><meta name="author" content="UAreFree">
+<meta name="description" content="《程序员的自我修养——链接、装载与库》
+"><meta name="keywords" content='读书笔记'>
+  <meta itemprop="name" content="程序员的自我修养读书笔记">
+  <meta itemprop="description" content="《程序员的自我修养——链接、装载与库》">
+  <meta itemprop="datePublished" content="2025-04-06T14:47:58+08:00">
+  <meta itemprop="dateModified" content="2025-09-08T14:47:58+08:00">
+  <meta itemprop="wordCount" content="9858">
+  <meta itemprop="keywords" content="读书笔记"><meta property="og:url" content="http://localhost:1313/posts/programmer-note/">
+  <meta property="og:site_name" content=" Blog">
+  <meta property="og:title" content="程序员的自我修养读书笔记">
+  <meta property="og:description" content="《程序员的自我修养——链接、装载与库》">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-06T14:47:58+08:00">
+    <meta property="article:modified_time" content="2025-09-08T14:47:58+08:00">
+    <meta property="article:tag" content="读书笔记">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="程序员的自我修养读书笔记">
+  <meta name="twitter:description" content="《程序员的自我修养——链接、装载与库》">
+<meta name="application-name" content="YouAreFree">
+<meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/programmer-note/" title="程序员的自我修养读书笔记 -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/posts/cpp-smart-pointer/" title="C&#43;&#43; 智能指针" /><link rel="next" type="text/html" href="http://localhost:1313/posts/link/" title="链接" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/programmer-note/index.md" title="程序员的自我修养读书笔记 -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "程序员的自我修养读书笔记",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/localhost:1313\/posts\/programmer-note\/"
+    },"genre": "posts","keywords": "读书笔记","wordcount":  9858 ,
+    "url": "http:\/\/localhost:1313\/posts\/programmer-note\/","datePublished": "2025-04-06T14:47:58+08:00","dateModified": "2025-09-08T14:47:58+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "UAreFree"
+      },"description": ""
+  }
+  </script><script src="/js/head/color-scheme.min.js"></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="32" width="32"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item">
+              <a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item">
+              <a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="26" width="26"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item"><a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item"><a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="fi-container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="合集"><div class="details collection-details open">
+      <div class="details-summary collection-summary">
+        <i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i>
+        <span class="collection-name" title="合集">编译原理</span>
+        <span class="collection-count">2</span><i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></div>
+      <div class="details-content collection-content">
+        <nav>
+          <ul class="collection-list"><li class="collection-item"><span class="active" title="程序员的自我修养读书笔记">程序员的自我修养读书笔记</span></li><li class="collection-item"><a href="/posts/link/" title="链接">链接</a></li></ul>
+          <div class="collection-nav-simple"><i class="fa-solid fa-angle-left fa-fw collection-nav-item text-secondary" aria-hidden="true"></i><span class="text-secondary">1/2</span><a href="/posts/link/" class="collection-nav-item" rel="next" title="链接"><i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+        </nav>
+      </div>
+    </div></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>程序员的自我修养读书笔记</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 计算机系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 计算机系统</a> 和 <a href="/collections/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" class="post-collection" title="合集 - 编译原理"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> 编译原理</a></span></div><div class="post-meta-line"><span title="发布于 2025-04-06 14:47:58"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-04-06">2025-04-06</time></span>&nbsp;<span title="更新于 2025-09-08 14:47:58"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-09-08">2025-09-08</time></span>&nbsp;<span title="9858 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 9900 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 20 分钟</span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#静态链接">静态链接</a>
+      <ul>
+        <li><a href="#被隐藏了的过程">被隐藏了的过程</a>
+          <ul>
+            <li><a href="#预处理">预处理</a></li>
+            <li><a href="#编译">编译</a></li>
+            <li><a href="#汇编">汇编</a></li>
+            <li><a href="#链接">链接</a></li>
+          </ul>
+        </li>
+        <li><a href="#编译器做了什么">编译器做了什么</a></li>
+        <li><a href="#链接器年龄比编译器长">链接器年龄比编译器长</a></li>
+        <li><a href="#模块拼接静态链接">模块拼接——静态链接</a></li>
+      </ul>
+    </li>
+    <li><a href="#目标文件里有什么">目标文件里有什么</a></li>
+    <li><a href="#静态链接过程">静态链接过程</a></li>
+    <li><a href="#装载与动态链接">装载与动态链接</a></li>
+    <li><a href="#windows下动态链接">Windows下动态链接</a></li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><p>《程序员的自我修养——链接、装载与库》</p>
+<h2 class="heading-element" id="简介"><span>简介</span>
+  <a href="#%e7%ae%80%e4%bb%8b" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>对于系统程序开发者来说，计算机硬件设备中有三个部件最为关键，分别是中央处理器CPU、内存和I/O控制芯片。连接所有高速芯片的是北桥，专门处理低速设备的是南桥，北桥连接着PCI总线，南桥连接着ISA总线。南桥挂在PCI总线上，从而与北桥交换数据。人们希望计算机越来越快，有两种方法，一是提升CPU频率，一是增加CPU数量。</p>
+<p>“计算机科学领域的任何问题都可以通过增加一个间接的中间层来解决”，计算机软件体系结构就是分层的：
+<figure><a class="lightgallery" href="/programmer/%e8%ae%a1%e7%ae%97%e6%9c%ba%e8%bd%af%e4%bb%b6%e4%bd%93%e7%b3%bb%e7%bb%93%e6%9e%84.png" title="/programmer/计算机软件体系结构.png" data-thumbnail="/programmer/计算机软件体系结构.png" data-sub-html="<h2>计算机软件体系结构</h2>"><img loading="lazy" src='/programmer/计算机软件体系结构.png' alt="/programmer/计算机软件体系结构.png" height="45%" width="45%"></a><figcaption class="image-caption">计算机软件体系结构</figcaption>
+  </figure></p>
+<p>层与层之间通信的协议称为接口，接口下面那层是接口的提供者，接口上面那层是接口的使用者，每个中间层都是对它下面那层的包装和扩展。</p>
+<p>多任务系统：OS以进程的方式运行在比系统权限更低的级别，抢占式分配CPU资源，CPU在多个进程间快速切换，造成很多进程都在同时运行的假象。目前几乎所有现代OS都采用这种方式。</p>
+<p>设备驱动：OS作为硬件的上层，是对硬件的管理和抽象。我们希望不论硬件型号如何，对应用程序开发者来说，都只需要调用一个统一的函数接口，而不是针对每个型号的硬件都去单独实现。硬件驱动程序是OS的一部分，但交由硬件生产厂商完成。</p>
+<p>之后的有关内存的讲述在有了OS基础后都可以看懂，参考OSTEP读书笔记文章。</p>
+<p>线程：轻量级进程，是程序执行流的最小单元。一个线程由线程ID、PC指针、寄存器和堆栈组成。使用线程的原因：</p>
+<ol>
+<li>等待网络响应，等待的线程会进入睡眠状态，无法继续执行，而多线程执行可以有效利用等待的时间。</li>
+<li>耗时长的计算操作，多线程可以让一个线程负责交互，另一个线程负责计算。</li>
+<li>程序逻辑本身要求并发操作。</li>
+<li>多核计算机本身具备同时执行多个线程的能力，有必要充分发挥。</li>
+<li>相对于多进程，多线程在数据共享方面效率很高。</li>
+</ol>
+<p>线程的私有存储空间：</p>
+<ul>
+<li>栈</li>
+<li>线程局部存储（TLS），某些OS为线程单独提供的私有空间，但通常只有有限的容量</li>
+<li>寄存器，执行流的基本数据</li>
+</ul>
+<p>现代OS基本使用多任务系统，多个进程看起来同时运行，每个进程有自己独立的内存资源，CPU在多个进程间快速切换。线程调度自上述多任务系统问世来就不断被提出不同的方案和算法，主流的都带有优先级调度和时间片轮转调度的痕迹。系统会根据线程的表现自动调整优先级，通常情况下，相对于CPU密集型的现程，CPU更喜欢先运行IO密集型的线程，IO密集型的线程涉及频繁的等待。</p>
+<p>Windows内核有明确的线程和进程的概念，可以使用明确的API：CreateProcess和CreateThread来创建进程和线程，并有一系列的API来操纵它们。但Linux对多线程的支持颇为贫乏，Linux内核中并不存在真正的线程概念，将所有执行实体都称为任务（Task），不同task之间可以选择共享内存空间，那么这些task就构成了类似的一个进程的多个线程。</p>
+<p>过度优化：</p>
+<ol>
+<li>编译器为了提高速度将一个变量缓存到寄存器中而不写回。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Thread1</span>    <span class="n">Thread2</span>
+</span></span><span class="line"><span class="cl"><span class="nf">lock</span><span class="p">();</span>    <span class="nf">lock</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">++</span><span class="p">;</span>        <span class="n">x</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nf">unlock</span><span class="p">();</span>   <span class="nf">unlock</span><span class="p">();</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里两个线程使用了锁来保护共享变量x，但也不一定能保证线程安全。如果Thread1读取x的值到寄存器中，进行了x++操作，但并没有立即写回到内存中，释放了锁；Thread2去读x的值，依旧是0，读的是之前在内存中的值。</p>
+<ol>
+<li>编译器调整指令顺序。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Thread1</span>    <span class="n">Thread2</span>
+</span></span><span class="line"><span class="cl"><span class="n">r1</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>    <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>     <span class="n">r2</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>显然，r1和r2至少一个为1，逻辑上不可能为0。然而，编译器在优化时，可能为了效率而不交换毫不相干的两条相邻指令的执行顺序，那么r1=r2=0就完全可能了。
+解决办法：使用volatile关键字，volatile可以完美解决第一种情况。但第二种情况，虽然可以阻止编译器调整volatile变量的指令顺序，但无法阻止CPU动态调度换序。
+单例模式的double-check：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">volatile</span> <span class="n">T</span><span class="o">*</span> <span class="n">pInst</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="nf">GetInstance</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">pInst</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">lock</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">pInst</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pInst</span> <span class="o">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">unlock</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">pInst</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里插一下为什么需要double-check，如果不double-check的话，代码是这样的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">volatile</span> <span class="n">T</span><span class="o">*</span> <span class="n">pInst</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="nf">GetInstance</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">pInst</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">lock</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pInst</span> <span class="o">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">unlock</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">pInst</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果当前实例为空，就上锁new一个对象，防止多线程同时new多个对象。但是如果两个线程同时判断了pInst == NULL，线程A先拿到锁，new了对象，线程B依旧会执行条件判断里的语句，new一个对象，所以要再次判断。</p>
+<p>书中指出，这样的代码依然是有问题的，C++ 的new包含两个步骤：1. 分配内存；2. 调用构造函数。所以pInst = new T;包含三步：1. 分配内存；2. 在内存的位置上调用构造函数; 3. 将内存地址赋值给pInst。CPU乱序执行会导致2、3步骤交换，如果先将地址赋值给pInst，而构造函数还没调用完成，对象没有构造出来，此时并发的调用GetInstance()会发现pInst不为空，从而直接将未构造完成的对象返回给用户使用。对于阻止CPU乱序执行的方法，通常是调用CPU提供的一条指令barrier来保证线程安全。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">volatile</span> <span class="n">T</span><span class="o">*</span> <span class="n">pInst</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="nf">GetInstance</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">pInst</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">lock</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">pInst</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">T</span><span class="o">*</span> <span class="n">temp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">T</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">barrier</span><span class="p">();</span> <span class="c1">// 保证对象构造完成 再返回地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">pInst</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">unlock</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">pInst</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里题外话，推荐使用局部静态变量（自带线程安全初始化）来实现单例模式，而不用双检查锁。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">T</span><span class="o">*</span> <span class="nf">GetInstance</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="n">T</span> <span class="n">pInst</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">&amp;</span><span class="n">pInst</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>多线程内部情况：用户使用的线程并不是内核线程，而是存在于用户态的用户线程。用户线程并不一定在OS内核里对应同等数量的内核线程，例如某些轻量级的线程库，三个用户线程对内核来说可能只有一个线程。</p>
+<ol>
+<li>一对一模型，一个用户线程对应一个内核线程，线程之间是真正的并发。一般直接使用API或系统调用创建的线程均为一对一的线程。缺点：用户线程数量受OS限制；内核线程调度上下文开销大，导致用户线程执行效率下降。</li>
+<li>多对一模型，将多个用户线程映射到一个内核线程，线程切换由用户态代码进行，快速很多，高效的上下文切换和几乎无限制的线程数量。缺点：其中一个用户线程阻塞，所有线程都将无法执行；处理器增多也不会有明显的性能提升。</li>
+<li>多对多模型，将多个用户线程映射到少数但不止一个内核线程上，上述两者模型的折中，优缺点也对应折中。</li>
+</ol>
+<h2 class="heading-element" id="静态链接"><span>静态链接</span>
+  <a href="#%e9%9d%99%e6%80%81%e9%93%be%e6%8e%a5" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><h3 class="heading-element" id="被隐藏了的过程"><span>被隐藏了的过程</span>
+  <a href="#%e8%a2%ab%e9%9a%90%e8%97%8f%e4%ba%86%e7%9a%84%e8%bf%87%e7%a8%8b" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><figure><a class="lightgallery" href="/programmer/%e9%9d%99%e6%80%81%e9%93%be%e6%8e%a5%e8%bf%87%e7%a8%8b.png" title="/programmer/静态链接过程.png" data-thumbnail="/programmer/静态链接过程.png" data-sub-html="<h2>静态链接过程</h2>"><img loading="lazy" src='/programmer/静态链接过程.png' alt="/programmer/静态链接过程.png" height="45%" width="45%"></a><figcaption class="image-caption">静态链接过程</figcaption>
+  </figure>
+<h4 class="heading-element" id="预处理"><span>预处理</span>
+  <a href="#%e9%a2%84%e5%a4%84%e7%90%86" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><p>命令：gcc -E hello.c -o hello.i</p>
+<ul>
+<li>删除所有的&quot;#define&quot;，并展开所有宏定义</li>
+<li>处理所有条件预编译指令，如&quot;#if&quot;、&quot;#ifdef&quot;等</li>
+<li>处理&quot;#include&quot;预编译指令，将被包含的文件插入到该预编译指令的位置</li>
+<li>删除所有的注释&quot;//&ldquo;和&rdquo;/**/&quot;</li>
+<li>添加行号和文件名标识</li>
+<li>保留所有的#pragma编译器指令</li>
+</ul>
+<p>预处理后的.i文件所有宏已经被展开，且包含的文件也已经被插入到.i文件中。当无法判断宏定义是否正确或头文件是否正确时，可以查看预编译后的文件来确定问题。</p>
+<h4 class="heading-element" id="编译"><span>编译</span>
+  <a href="#%e7%bc%96%e8%af%91" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><p>命令：gcc -S hello.i -o hello.s
+具体步骤在下一节简单介绍。
+gcc命令只是后台程序的包装，它会根据不同的参数要求去调用预编译编译程序cc1、汇编器as、连接器ld。</p>
+<h4 class="heading-element" id="汇编"><span>汇编</span>
+  <a href="#%e6%b1%87%e7%bc%96" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><p>命令：gcc -c hello.s -o hello.o
+将汇编代码转变成机器可以执行的指令，每一个汇编语句几乎对应一条机器指令，调用汇编器as来完成。</p>
+<h4 class="heading-element" id="链接"><span>链接</span>
+  <a href="#%e9%93%be%e6%8e%a5" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">ld -static crt1.o crti.o crtbeginT.o hello.o -start-group -lgcc -lgcc_eh -lc 
+</span></span><span class="line"><span class="cl">-end-group crtend.o crtn.o</span></span></code></pre></td></tr></table>
+</div>
+</div><p>本书主要介绍上述链接的内容。</p>
+<h3 class="heading-element" id="编译器做了什么"><span>编译器做了什么</span>
+  <a href="#%e7%bc%96%e8%af%91%e5%99%a8%e5%81%9a%e4%ba%86%e4%bb%80%e4%b9%88" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>源代码通过词法分析、语法分析、语义分析构建语法树，并进行优化，转为中间代码，它是语法树的顺序表示。中间代码使得编译器可以被分为前端和后端，前端负责产生机器无关的中间代码，后端将中间代码转换成目标机器代码，实现跨平台。代码生成器将中间代码转换为目标代码，这样源代码被编译成了目标代码。</p>
+<p>以C语言的源代码为例：<code>array[index] = (index + 4) * (2 + 6)</code>为例，它会编译成为目标代码，但目标代码中的index和array的地址还没确定，要把目标代码编译成能在机器上执行的指令，必须要确定index和array的地址。如果index和array跟源代码在同一个编译单元，那么编译器可以为它们分配空间，确定它们的地址。但是如果定义在其他程序模块，最终运行时的绝对地址都要在最终链接的时候才能确定。所以现代编译器可以将一个源代码文件编译成一个未链接的目标文件，然后由链接器将这些目标文件链接起来形成可执行文件。</p>
+<h3 class="heading-element" id="链接器年龄比编译器长"><span>链接器年龄比编译器长</span>
+  <a href="#%e9%93%be%e6%8e%a5%e5%99%a8%e5%b9%b4%e9%be%84%e6%af%94%e7%bc%96%e8%af%91%e5%99%a8%e9%95%bf" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>目标文件的指令可能不会一成不变，对应的地址也会发生改变，重新计算各个目标的地址过程叫做重定位。汇编语言将机器指令难以记住的形式变为易于理解记忆的符号，符号用来表示一个地址，这个地址可能是一个变量的其实地址，也可能是一段子程序（函数）的起始地址。不同源代码文件构成不同模块，这些模块组合成程序。最常见的模块通信方式有两种，一种是模块间的函数调用，一种是模块间的变量访问。函数访问需要知道目标函数的地址，变量访问也需要知道目标变量的地址。所以这两种方式都归结为一种，就是模块间符号的引用。这个模块拼接的过程就是链接。</p>
+<h3 class="heading-element" id="模块拼接静态链接"><span>模块拼接——静态链接</span>
+  <a href="#%e6%a8%a1%e5%9d%97%e6%8b%bc%e6%8e%a5%e9%9d%99%e6%80%81%e9%93%be%e6%8e%a5" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>从原理上讲，它的工作无非就是把一些指令对其他符号地址的引用加以修正。链接过程主要包括了地址和空间分配、符号决议和重定位等这些步骤。</p>
+<p>PS：符号决议也可称作符号绑定，决议更倾向于静态链接，绑定更倾向于动态链接。</p>
+<p>目标文件和库一起链接形成最终可执行文件，而最常见的库是运行时库，它是支持程序运行的基本函数的集合。库其实是一组目标文件的包，就是一些最常用的代码编译成目标文件后打包存放。</p>
+<p>main.c模块如果调用了另一个func.c模块的函数foo，在编译时main.c并不知道foo的地址，它暂时搁置，等最后链接的时候链接器填这个foo的地址，而不是手动填。这个地址修正的过程也被叫做重定位，每个要被修正的地方叫一个重定位入口。重定位所做的就是给程序中每个这样的绝对地址引用的位置“打补丁”，使它们指向正确的地址。</p>
+<h2 class="heading-element" id="目标文件里有什么"><span>目标文件里有什么</span>
+  <a href="#%e7%9b%ae%e6%a0%87%e6%96%87%e4%bb%b6%e9%87%8c%e6%9c%89%e4%bb%80%e4%b9%88" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>现在PC流行的可执行文件格式主要是Windows下的PE和Linux下的ELF。目标文件跟可执行文件的内容与结构很相似，一般一起采用一种格式存储，可以广义地将目标文件和可执行文件看成是一种类型的文件。动态链接库及静态链接库文件都按照可执行文件格式存储。
+<figure><a class="lightgallery" href="/programmer/ELF%e6%96%87%e4%bb%b6%e7%b1%bb%e5%9e%8b.png" title="/programmer/ELF文件类型.png" data-thumbnail="/programmer/ELF文件类型.png" data-sub-html="<h2>ELF文件类型</h2>"><img loading="lazy" src='/programmer/ELF文件类型.png' alt="/programmer/ELF文件类型.png" height="45%" width="45%"></a><figcaption class="image-caption">ELF文件类型</figcaption>
+  </figure>
+<figure><a class="lightgallery" href="/programmer/ELF%e6%96%87%e4%bb%b6%e7%b1%bb%e5%9e%8b%e7%bb%ad%e8%a1%a8.png" title="/programmer/ELF文件类型续表.png" data-thumbnail="/programmer/ELF文件类型续表.png" data-sub-html="<h2>ELF文件类型续表</h2>"><img loading="lazy" src='/programmer/ELF文件类型续表.png' alt="/programmer/ELF文件类型续表.png" height="45%" width="45%"></a><figcaption class="image-caption">ELF文件类型续表</figcaption>
+  </figure></p>
+<p>ELF文件格式分段：文件头（文件元数据）、.text段（代码）、.data段（数据）和.bss段（未初始化的全局变量和局部静态变量）。</p>
+<p>指令和数据分开的好处：</p>
+<ol>
+<li>指令和数据分别被映射到两个虚拟内存区域，数据区是可读可写的，指令区是只读的，对应权限分开。</li>
+<li>利于提高程序的局部性，现代CPU缓存设计为数据缓存和指令缓存分离，所以程序的数据和指令分开存放对CPU缓存命中率提高有好处。</li>
+<li>最重要的原因，共享指令，系统运行多个该程序的副本时，内存只需要保存一份该程序的指令部分，数据部分是私有的。特别是有动态链接的系统可以节省大量的内存。</li>
+</ol>
+<p>Linux命令objdump查看.o文件内部结构，objdump -h把ELF文件的各个段的基本信息打印出来，objdump -s -d将文件内容以十六进制方式打印并将所有指令段反汇编。Linux工具readelf是针对ELF格式的解析器。</p>
+<p>在链接中，将函数和变量统称为符号，函数名或变量名就是符号名。每个目标文件都会有一个相应的符号表，表里记录了所有用到的符号，及其对应的地址。除了函数和变量，还存在其他几种不常用到的符号，如定义在本文件中的全局符号、外部符号、段名、局部符号、行号信息。链接只关心全局符号的相互粘合，所以段名、局部符号、行号信息无关紧要。使用nm可以查看.o文件的符号表，打印符号及其地址。</p>
+<p>C++  符号修饰：C++  支持函数重载、多态，函数重载是函数同名但参数列表不同，那么编译器和链接器怎么区分这两个函数对应的符号呢？</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="nf">func</span><span class="p">(</span><span class="kt">float</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">C</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">class</span> <span class="nc">C2</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">N</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">class</span> <span class="nc">C</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这段代码中有6个同名函数，编译器在将C++ 源代码编译成目标文件时，会将函数和变量的名字进行修饰，形成符号名。上面6个函数签名在GCC编译器下，对应的修饰后名称如下表所示：
+<figure><a class="lightgallery" href="/programmer/%e5%87%bd%e6%95%b0%e7%ad%be%e5%90%8d.png" title="/programmer/函数签名.png" data-thumbnail="/programmer/函数签名.png" data-sub-html="<h2>函数签名</h2>"><img loading="lazy" src='/programmer/函数签名.png' alt="/programmer/函数签名.png" height="45%" width="45%"></a><figcaption class="image-caption">函数签名</figcaption>
+  </figure></p>
+<p>它们依照GCC的C++ 名称修饰方法进行修饰，签名和名称修饰机制不光被使用到函数上，全局变量和静态变量也有同样的机制。不同编译器厂商的名称修饰方法也可能不同，有时可能需要将一个修饰后名字转换成函数签名，比如在链接、调试时可能会用到。这里给出几种将符号名转为函数签名的方法：</p>
+<ol>
+<li>使用demangler工具（函数签名修饰的过程叫做mangler，反过来叫做demangler）</li>
+<li>Linux下GCC编译器使用C++ filt命令，如C++ filt _Z4funci命令输出：int func(int)</li>
+<li>Windows下MSVC编译器使用undname命令</li>
+</ol>
+<p>此外，这里也体现了由于不同编译器采用不同的名字修饰方法，必然会导致由不同编译器产生的目标文件无法正常相互连接，这是导致不同编译器之间不能相互操作的主要原因之一。</p>
+<p>C++ 为了和C兼容，在C++ 中调用C代码，使用extern &ldquo;C&quot;关键字用法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">extern</span> <span class="s">&#34;C&#34;</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">var</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样，extern &ldquo;C&quot;中的函数和变量就会按照C语言的符号修饰，也就能成功链接到其对应的C函数。</p>
+<p>很多时候，我们在引入C语言的库头文件时，文件内又会引用其他C语言函数，比如string.h中声明memset函数，在C语言中的string.h是没有编译问题的，但C++ 调用memset时，会用C++ 符号修饰规则进行修饰，所以必须将memset函数声明为extern &ldquo;C&rdquo;，但string.h是C语言，C语言中又不支持extern &ldquo;C&quot;语法。解决方法是使用C++ 的宏&rdquo;__cplusplus&rdquo;，C++ 编译器会在编译C++ 程序时默认定义这个宏。所以在所有头文件中使用该宏定义进行判断是C代码还是C++ 代码来实现：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#ifdef __cplusplus
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">extern</span> <span class="s">&#34;C&#34;</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="nf">memset</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="n">size_t</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#ifdef __cplusplus
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 class="heading-element" id="静态链接过程"><span>静态链接过程</span>
+  <a href="#%e9%9d%99%e6%80%81%e9%93%be%e6%8e%a5%e8%bf%87%e7%a8%8b" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>当我们有两个目标文件时，如何将它们链接起来形成一个可执行文件？这个过程发生了什么？这就是链接的核心内容：静态链接。可执行文件的代码段和数据段都是由目标文件中合并而来的，那么对于多个可执行文件，链接器如何将它们各自段合并到输出文件？</p>
+<p>按序叠加：
+<figure><a class="lightgallery" href="/programmer/%e6%8c%89%e5%ba%8f%e5%8f%a0%e5%8a%a0.png" title="/programmer/按序叠加.png" data-thumbnail="/programmer/按序叠加.png" data-sub-html="<h2>按序叠加</h2>"><img loading="lazy" src='/programmer/按序叠加.png' alt="/programmer/按序叠加.png" height="45%" width="45%"></a><figcaption class="image-caption">按序叠加</figcaption>
+  </figure></p>
+<p>这样一个规模较大的应用程序可能会有数百个目标文件，就会有成百上千个零散的段，每个段又要做到空间对齐（比如页对齐），造成有大量的内部碎片。</p>
+<p>相似段合并：
+<figure><a class="lightgallery" href="/programmer/%e7%9b%b8%e4%bc%bc%e6%ae%b5%e5%90%88%e5%b9%b6.png" title="/programmer/相似段合并.png" data-thumbnail="/programmer/相似段合并.png" data-sub-html="<h2>相似段合并</h2>"><img loading="lazy" src='/programmer/相似段合并.png' alt="/programmer/相似段合并.png" height="45%" width="45%"></a><figcaption class="image-caption">相似段合并</figcaption>
+  </figure></p>
+<p>将相同性质的段合并到一起，链接器为目标文件分配地址和空间。这里的地址和空间有两个含义：1. 在输出的可执行文件中的空间；2. 在装载后的虚拟地址中的虚拟地址空间。对于有实际数据的段，比如.text和.data段来说，它们在文件和虚拟地址中都要分配空间；而对于.bss段来说，分配空间只在虚拟地址空间，因为它在文件中并没有内容（这里是指.bss段只是为未初始化的全局变量和局部静态变量预留位置，它没有内容，所以在文件中也不占据空间，未初始化的全局变量和局部静态变量默认值都为0，本来也要放在.data段的，但是因为都是0，所以没有必要在.data中分配空间并全填0，但程序运行时它们的确要占内存空间，并且需要记录所有未初始化的全局变量和局部静态变量的大小总和，记为.bss段）。</p>
+<p>两步链接法：</p>
+<ol>
+<li>空间与地址分配：扫描所有输入目标文件，并获得各个段的长度、属性和位置，并收集输入目标文件中的符号表，统一放到一个全局符号表中。并且计算出输出文件中各个段合并后的长度与位置，并建立映射关系。</li>
+<li>符号解析与重定位：读取输入文件中段的数据、重定位信息，并进行符号解析与重定位、调整代码中的位置。</li>
+</ol>
+<p><figure><a class="lightgallery" href="/programmer/%e4%b8%a4%e6%ad%a5%e9%93%be%e6%8e%a5%e6%b3%95.png" title="/programmer/两步链接法.png" data-thumbnail="/programmer/两步链接法.png" data-sub-html="<h2>两步链接法</h2>"><img loading="lazy" src='/programmer/两步链接法.png' alt="/programmer/两步链接法.png" height="45%" width="45%"></a><figcaption class="image-caption">两步链接法</figcaption>
+  </figure>
+上图将两个.o文件进行合并计算得到虚拟地址空间后，链接器开始计算各个符号的虚拟地址。因为各个符号在段内的相对位置是固定的，所以在上述段起始地址基础上加上符号对应的相对位置偏移量即可。</p>
+<p>静态链接的核心内容：符号解析与重定位。</p>
+<p>.o文件引用了外部符号，比如&quot;a.c&quot;文件使用了&quot;b.c&quot;文件中的shared变量和swap函数，编译器在编译&quot;a.c&quot;时，会对shared变量地址暂时用&quot;0x00000000&rdquo;，swap函数地址暂时用&quot;0xFFFFFFFC&quot;替代，把真正的地址计算工作留给了链接器。在经过上一步骤计算得到每个符号的虚拟地址后，就可以重定位上述指令中的外部符号，填为正确的地址。</p>
+<p>对于可重定位的ELF文件来说，它必须包含有重定位表，用来描述如何修改相应段里的内容。比如，&quot;.rel.text&quot;保存代码段的重定位表，&quot;.rel.data&quot;保存数据段的重定位表。</p>
+<p>main函数被调用之前，要先初始化进程执行环境，比如堆分配初始化（malloc、free）等，C++ 的全局对象构造函数也是这一时期被执行的。C++ 的全局对象的构造函数在main之前被执行，析构函数在main之后被执行。</p>
+<p>Linux系统下一般程序的入口是&quot;_start&quot;，这个函数是Glibc的一部分，当我们的程序与Glibc链接成一个可执行文件后，&quot;_start&quot;就是程序的初始化入口，完成一系列初始化过程之后，会调用main函数执行程序的主体。main函数执行完成后会返回到初始化部分，进行一些清理工作，然后结束进程。因此，ELF文件还定义了两种特殊的段：</p>
+<ul>
+<li>.init段，保存可执行指令，构成进程的初始化代码，在main函数被调用之前，Glibc的初始化部分安排执行这个段的代码</li>
+<li>.fini段，保存进程终止代码指令，在main函数正常退出时，Glibc安排执行这个段的代码</li>
+</ul>
+<p>C++ 的全局构造和析构函数就放到上述两个段中，由此实现。</p>
+<p>静态链接库可以看成一组目标文件的集合，把零散的目标文件直接提供给库的使用者，很大程度上会造成文件传输、管理和组织的不便，于是人们使用&quot;ar&quot;将这些目标文件压缩到一起，并对其进行编号和索引，以便查找和检索，就形成了libc.a这个静态库文件。使用objdump -t lib.a反汇编查找你想要找的函数符号所在的.o文件。</p>
+<p>而且libc.a中的.o文件是存在依赖的，不是只解压其中一个用到的.o文件进行链接就可以，其中的.o文件可能还依赖其他.o文件。直接与lib.a静态库进行链接也是不可以的，还需要用到其他一些辅助性质的目标文件和库。</p>
+<h2 class="heading-element" id="装载与动态链接"><span>装载与动态链接</span>
+  <a href="#%e8%a3%85%e8%bd%bd%e4%b8%8e%e5%8a%a8%e6%80%81%e9%93%be%e6%8e%a5" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>由于ELF文件格式的文件是分段的，存在页面对齐的问题，即可能会产生页面内部碎片，在装载时，会将具有相同权限的不同段进行合并。所有相同属性的“Section”被归类为一个“Segment”，并且映射到同一个VMA。当我们谈到ELF装载时，“段”专门指“Segment”；其他情况下，“段”指的是“Section”。
+<figure><a class="lightgallery" href="/programmer/ELF%e6%96%87%e4%bb%b6%e8%a3%85%e8%bd%bd.png" title="/programmer/ELF文件装载.png" data-thumbnail="/programmer/ELF文件装载.png" data-sub-html="<h2>ELF文件装载</h2>"><img loading="lazy" src='/programmer/ELF文件装载.png' alt="/programmer/ELF文件装载.png" height="45%" width="45%"></a><figcaption class="image-caption">ELF文件装载</figcaption>
+  </figure></p>
+<p>可执行文件最终是要被OS装载运行的，这个装载的过程一般是通过虚拟内存的页映射机制完成的。Linux内核装载ELF文件的过程：用户层面，bash进程调用fork()系统调用创建一个新的进程，然后调用execve()系统调用执行指定的ELF文件，execve()系统调用相应的入口是sys_execve()，它进行一些参数的检查复制之后，调用do_execve()，首先查找被执行的文件，如果找到文件，则读取文件的前128个字节，这前128个字节的目的是判断文件的格式。然后调用search_binary_handle()去搜索和匹配合适的可执行文件装载处理过程。每个格式文件有其对应的处理函数，以load_elf_binary()为例，它的主要步骤是：</p>
+<ol>
+<li>检查ELF文件格式的有效性</li>
+<li>寻找动态链接的“.interp”段，设置动态链接器路径</li>
+<li>根据ELF可执行文件的程序头的描述，对ELF文件进行映射</li>
+<li>初始化ELF进程环境</li>
+<li>将系统调用的返回地址修改为ELF文件的入口点，对于静态链接的ELF文件，入口点是e_entry所指的地址；对于动态链接的ELF文件，入口点是动态链接器</li>
+</ol>
+<p>所以当sys_execve()系统调用从内核态返回到用户态时，跳转到了ELF程序的入口地址，新的程序开始运行，ELF文件装载完成。</p>
+<p>为什么要动态链接？</p>
+<p>静态链接的优点：静态链接使得不同的程序开发者和部门能相对独立地开发和测试自己的程序模块，从而大大促进程序开发的效率。</p>
+<p>静态链接的缺点：浪费内存和磁盘空间、模块更新困难。
+<figure><a class="lightgallery" href="/programmer/%e9%9d%99%e6%80%81%e9%93%be%e6%8e%a5%e8%a3%85%e8%bd%bd.png" title="/programmer/静态链接装载.png" data-thumbnail="/programmer/静态链接装载.png" data-sub-html="<h2>静态链接装载</h2>"><img loading="lazy" src='/programmer/静态链接装载.png' alt="/programmer/静态链接装载.png" height="45%" width="45%"></a><figcaption class="image-caption">静态链接装载</figcaption>
+  </figure></p>
+<p>以上图为例，在静态链接的情况下，Program1和Program2都用到了Lib.o这个模块，当同时运行Program1和Program2时，Lib.o在磁盘和内存中有两份副本。当系统中存在大量的被多个程序共享的目标文件时，其中很大一部分空间就被浪费了。</p>
+<p>静态链接的另一个问题是对程序的更新、部署和发布也会带来很多麻烦。比如上图中的Lib.o是由一个第三方厂商提供的，当该厂商更新了Lib.o的时候，那么Program1就需要拿到最新的Lib.o，然后将其与Program1链接后，将新的Program1发布给用户。这样做的缺点是，一旦程序中有任何模块更新，整个程序就要重新链接、发布给用户。如果程序都使用静态链接，那么网络来更新程序将会非常不便。</p>
+<p>要解决空间浪费和更新困难这两个问题最简单的办法是把程序的模块互相分割，形成独立地文件。把链接的过程推迟到了运行时再进行，这就是动态链接的基本思想。
+<figure><a class="lightgallery" href="/programmer/%e5%85%b1%e4%ba%ab%e7%9b%ae%e6%a0%87%e6%96%87%e4%bb%b6.png" title="/programmer/共享目标文件.png" data-thumbnail="/programmer/共享目标文件.png" data-sub-html="<h2>共享目标文件</h2>"><img loading="lazy" src='/programmer/共享目标文件.png' alt="/programmer/共享目标文件.png" height="45%" width="45%"></a><figcaption class="image-caption">共享目标文件</figcaption>
+  </figure></p>
+<p>如上图所示，Program2在运行时只需要加载Program1之前加载的Lib.o，而不需要重新加载了，系统要做的只是将Program2.o和Lib.o链接起来。动态链接不仅是节省内存，还可以减少物理页的换入换出，增加CPU缓存的命中率，因为不同进程间的数据和指令访问都集中在了同一个共享模块上。</p>
+<p>动态链接还有一个特点就是程序运行时可以动态选择加载各种程序模块，这个优点就是后来被人们用来制作程序的插件。比如某个产品按照一定的规则制定好程序的接口，其他公司或开发者可以按照这种接口来编写符合要求的动态链接文件。</p>
+<p>动态链接还可以加强程序的兼容性，一个程序在不同平台运行时可以动态地链接到OS提供的动态链接库，这些动态链接库相当于在程序和操作系统之间增加了一个中间层，从而消除了程序对不同平台之间依赖的差异性。</p>
+<p>动态链接的缺点：当程序所依赖的某个模块更新后，由于新的模块与旧的模块之间接口不兼容，导致原有程序无法运行。在早期Windows版本中，缺乏有效的共享库管理机制，出现“DLL Hell”。</p>
+<p>在Linux中，ELF动态链接文件被称为动态共享对象，一般以“.so”为扩展名；而在Windows中，动态链接文件被称为动态链接库，以“.dll”为扩展名。当系统被装载时，系统的动态链接器会将程序所需要的所有动态链接库装载到进程的地址空间，并将程序中所有未决议的符号绑定到相应的动态链接库中，并进行重定位工作。</p>
+<p>程序与lib.so之间真正的链接工作是由动态链接器完成的，而不是由我们之前看到的静态链接器ld完成的。动态链接把链接过程从本来的程序装载前被推迟到了装载的时候。这样每次被装载时都要重新进行链接，会带来一些性能损失，相比静态链接，性能损失大约在5%以下，是值得的。</p>
+<p><code>gcc -fPIC -shared -o Lib.so Lib.c</code>将Lib.c编译成一个共享对象文件。动态链接过程：
+<figure><a class="lightgallery" href="/programmer/%e5%8a%a8%e6%80%81%e9%93%be%e6%8e%a5%e8%bf%87%e7%a8%8b.png" title="/programmer/动态链接过程.png" data-thumbnail="/programmer/动态链接过程.png" data-sub-html="<h2>动态链接过程</h2>"><img loading="lazy" src='/programmer/动态链接过程.png' alt="/programmer/动态链接过程.png" height="45%" width="45%"></a><figcaption class="image-caption">动态链接过程</figcaption>
+  </figure></p>
+<p>共享对象的最终装载地址在编译时是不确定的，而是在装载时，装载器根据当前地址空间的空闲情况，动态分配一块足够大小的虚拟地址空间给相应的共享对象。静态链接的重定位叫做链接时重定位，为了能使共享对象在任意地址装载，能想到的是在链接时，对所有绝对地址的引用不做重定位，推迟到装载时再完成。一旦装载地址确定，系统就对程序中所有的绝对地址引用进行重定位。而这种情况称为装载时重定位。</p>
+<h2 class="heading-element" id="windows下动态链接"><span>Windows下动态链接</span>
+  <a href="#windows%e4%b8%8b%e5%8a%a8%e6%80%81%e9%93%be%e6%8e%a5" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>整个Windows系统本身即基于动态链接机制，Windows的API也以DLL的形式提供给程序开发者，而不是像Linux等系统是以系统调用作为OS的最终入口。</p>
+<p>MSVC编译器可以通过“__declspec”关键字修饰某个函数或变量，使用“__declspec(dllexport)”表示符号是从本DLL导出的符号，使用“__declspec(dllimport)”表示该符号是从别的DLL导入的符号。</p></div><div class="collection-card">
+      <div class="collection-title text-secondary">收录于 <a href="/collections/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> <span>合集・编译原理</span></span></a> 2</div>
+      <div class="collection-nav">
+        <a href="/posts/link/" class="collection-nav-item" rel="next" title="链接">
+            <span>链接</span><i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+    </div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod"><span title="更新于 2025-09-08 14:47:58">更新于 2025-09-08&nbsp;</span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/programmer-note/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="分享到 X" data-sharer="twitter" data-url="http://localhost:1313/posts/programmer-note/" data-title="程序员的自我修养读书笔记" data-hashtags="读书笔记"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/programmer-note/" data-hashtag="读书笔记"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/programmer-note/" data-title="程序员的自我修养读书笔记"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-tag" title="标签 - 读书笔记">读书笔记</a></section>
+    <section><span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/cpp-smart-pointer/" class="post-nav-item" rel="prev" title="C&#43;&#43; 智能指针"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>C&#43;&#43; 智能指针</a><a href="/posts/link/" class="post-nav-item" rel="next" title="链接">链接<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div class="post-reward">
+    <div class="comment"></div>
+    <input type="checkbox" class="reward-input" name="reward" id="fi-reward" hidden />
+    <label class="reward-button" for="fi-reward"><i class="fa-solid fa-qrcode fa-fw" aria-hidden="true"></i>赞赏</label>
+    <div class="reward-ways" data-mode="static"></div>
+  </div><div id="comments"><div id="giscus" class="comment">
+          <script
+            src="https://giscus.app/client.js"
+            data-repo=""
+            data-repo-id=""
+            data-category=""
+            data-category-id=""
+            data-mapping=""
+            data-strict="0"
+            
+            data-theme="preferred_color_scheme"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-lang="zh-CN"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async
+            defer
+          ></script>
+        </div>
+        <noscript>
+          Please enable JavaScript to view the comments powered by <a href="https://giscus.app/" rel="external nofollow noopener noreferrer">giscus</a>.
+        </noscript></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="目录"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.148.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.4.0-alpha-20250823084643-0f68046a">FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/UAreFree"target="_blank" rel="external nofollow noopener noreferrer">UAreFree</a></span></div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">该网站在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/fuse/fuse.min.js" defer></script><script src="/lib/twemoji/twemoji.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":100},"comment":{"enable":true,"expired":false,"giscus":{"darkTheme":"dark","lightTheme":"light","origin":"https://giscus.app"}},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"twemoji":true,"version":"v0.4.0-alpha-20250823084643-0f68046a"};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

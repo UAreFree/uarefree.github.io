@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>C&#43;&#43; Static -  Blog</title><meta name="author" content="UAreFree">
+<meta name="description" content="这是一个个人博客网站"><meta name="keywords" content='C&#43;&#43;, static'>
+  <meta itemprop="name" content="C&#43;&#43; Static">
+  <meta itemprop="description" content="这是一个个人博客网站">
+  <meta itemprop="datePublished" content="2025-02-23T15:31:49+08:00">
+  <meta itemprop="dateModified" content="2025-09-08T15:31:49+08:00">
+  <meta itemprop="wordCount" content="1740">
+  <meta itemprop="keywords" content="C&#43;&#43;,Static"><meta property="og:url" content="http://localhost:1313/posts/cpp-static/">
+  <meta property="og:site_name" content=" Blog">
+  <meta property="og:title" content="C&#43;&#43; Static">
+  <meta property="og:description" content="这是一个个人博客网站">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-02-23T15:31:49+08:00">
+    <meta property="article:modified_time" content="2025-09-08T15:31:49+08:00">
+    <meta property="article:tag" content="C&#43;&#43;">
+    <meta property="article:tag" content="Static">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="C&#43;&#43; Static">
+  <meta name="twitter:description" content="这是一个个人博客网站">
+<meta name="application-name" content="YouAreFree">
+<meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/cpp-static/" title="C&#43;&#43; Static -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/posts/mit-lab-mmap/" title="MIT6.1810 Lab:Mmap" /><link rel="next" type="text/html" href="http://localhost:1313/posts/cpp-smart-pointer/" title="C&#43;&#43; 智能指针" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/cpp-static/index.md" title="C++ Static -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "C++ Static",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/localhost:1313\/posts\/cpp-static\/"
+    },"genre": "posts","keywords": "C\u002b\u002b, static","wordcount":  1740 ,
+    "url": "http:\/\/localhost:1313\/posts\/cpp-static\/","datePublished": "2025-02-23T15:31:49+08:00","dateModified": "2025-09-08T15:31:49+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "UAreFree"
+      },"description": ""
+  }
+  </script><script src="/js/head/color-scheme.min.js"></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="32" width="32"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item">
+              <a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item">
+              <a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="26" width="26"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item"><a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item"><a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="fi-container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="合集"><div class="details collection-details open">
+      <div class="details-summary collection-summary">
+        <i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i>
+        <span class="collection-name" title="合集">C&#43;&#43;</span>
+        <span class="collection-count">2</span><i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></div>
+      <div class="details-content collection-content">
+        <nav>
+          <ul class="collection-list"><li class="collection-item"><span class="active" title="C&#43;&#43; Static">C&#43;&#43; Static</span></li><li class="collection-item"><a href="/posts/cpp-smart-pointer/" title="C&#43;&#43; 智能指针">C&#43;&#43; 智能指针</a></li></ul>
+          <div class="collection-nav-simple"><i class="fa-solid fa-angle-left fa-fw collection-nav-item text-secondary" aria-hidden="true"></i><span class="text-secondary">1/2</span><a href="/posts/cpp-smart-pointer/" class="collection-nav-item" rel="next" title="C&#43;&#43; 智能指针"><i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+        </nav>
+      </div>
+    </div></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>C&#43;&#43; Static</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="post-category" title="分类 - 编程语言"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 编程语言</a> 和 <a href="/collections/c++/" class="post-collection" title="合集 - C++"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> C++</a></span></div><div class="post-meta-line"><span title="发布于 2025-02-23 15:31:49"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-02-23">2025-02-23</time></span>&nbsp;<span title="更新于 2025-09-08 15:31:49"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-09-08">2025-09-08</time></span>&nbsp;<span title="1740 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 1800 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 4 分钟</span>&nbsp;</div>
+    </div><div class="content" id="content"><p>static是C++中非常常见的关键字，以下总结static关键字的使用场景，即什么时候使用static。
+首先说static是静态的意思，什么是静态呢？你可能会听过静态存储区，一段内存的区域，我们来看看C程序的内存分布。
+<figure><a class="lightgallery" href="/cpp/%e7%a8%8b%e5%ba%8f%e5%86%85%e5%ad%98%e5%88%86%e5%b8%83.png" title="/cpp/程序内存分布.png" data-thumbnail="/cpp/程序内存分布.png" data-sub-html="<h2>程序内存分布</h2>"><img loading="lazy" src='/cpp/程序内存分布.png' alt="/cpp/程序内存分布.png" height="45%" width="45%"></a><figcaption class="image-caption">程序内存分布</figcaption>
+  </figure></p>
+<p>C程序内存地址从低到高依次为代码区、初始化的数据区（.data段）、未被初始化的数据区(.bss段)、堆和栈，静态存储区就位于数据区，这里的数据区主要有全局变量、static变量，而一般的变量会被放在堆或栈区，栈主要存函数中的局部变量、堆主要存new的内存。</p>
+<table>
+  <thead>
+      <tr>
+          <th>内存区域</th>
+          <th>存储内容</th>
+          <th>特点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>代码区</td>
+          <td>程序指令</td>
+          <td>1. 只读<br>2. 所有线程共享</td>
+      </tr>
+      <tr>
+          <td>初始化数据区</td>
+          <td>1. 全局变量<br>2. static变量</td>
+          <td>1. 编译时显示赋值<br>2. 程序加载时分配内存，读取可执行文件存储的初始值</td>
+      </tr>
+      <tr>
+          <td>未初始化的数据区</td>
+          <td>1. 未初始化的全局变量<br>2. 未初始化的static变量</td>
+          <td>1. 程序加载时被自动初始化为零（数值类型为 0，指针类型为 NULL）<br>2. 程序加载时分配内存，但可执行文件不会存储未初始化的数据</td>
+      </tr>
+      <tr>
+          <td>堆区</td>
+          <td>动态分配函数（如malloc、calloc或new）分配的内存</td>
+          <td>1. 动态分配，由程序员管理<br>2. 生存周期由程序控制，可以跨函数代码块使用</td>
+      </tr>
+      <tr>
+          <td>栈区</td>
+          <td>局部变量、函数参数、返回地址</td>
+          <td>1. 由编译器自动分配，遵循“先进后出”的结构<br>2. 生命周期为函数调用期间的执行周期</td>
+      </tr>
+  </tbody>
+</table>
+<p>initialized data 和 uninitialized data 有什么区别？</p>
+<ol>
+<li>初始化状态，顾名思义，初始化区的变量会显示赋值初始化，未被初始化区的变量未被显示赋值初始化。</li>
+<li>可执行文件存储，未被初始化区变量的数据不会存储到可执行文件中，而是直接将分配的内存赋值为零。</li>
+</ol>
+<p>所以static变量的生命周期就和全局变量一样是程序运行的整个生命周期，那static变量和全局变量又有什么区别呢？我们想用多个函数操作同一个变量就用全局变量不就可以了？为什么还要有static变量呢？</p>
+<p>对于static局部变量，它和全局变量的区别是：</p>
+<ol>
+<li>作用域不同，局部变量限制其作用域在函数内，仅在函数内可见，外部无法访问，提高了封装性。</li>
+<li>static局部变量的动态初始化在第一次执行到声明语句时初始化，而全局变量在程序启动时就初始化，避免了资源浪费，静态初始化与全局变量一致。</li>
+</ol>
+<p>对于static全局变量，它就是在全局变量的基础上限制了作用域为当前文件，即使使用extern外部文件也无法使用。这可以减少同命名变量冲突，减少模块的耦合度。</p>
+<p>在这里对static变量有了初步的认识，那我们加上类。</p>
+<p>类static变量，顾名思义声明于某个类内的static变量，那它和普通成员变量有什么区别呢？类比上述非类的情况，类static变量的生命周期是整个程序，也就不像对象的成员变量随对象创建消亡，那么它的初始化就要在类外定义和初始化，所有对象共享一个static成员变量。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">int</span> <span class="n">count</span><span class="p">;</span> <span class="c1">//类内声明    
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">A</span><span class="o">::</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//类外定义初始化
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>接下来是static函数，对于类外的static函数，其作用是限制其作用域为本文件内；对于类内的static成员函数，类似于类内的static成员变量，它不属于具体的对象，而是属于类本身，没有具体的this指针，不能访问非static成员变量和非static成员函数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">int</span> <span class="n">count</span><span class="p">;</span> <span class="c1">//类内声明   
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">display</span><span class="p">(){</span> <span class="c1">//static成员函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;A::count: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">count</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">A</span><span class="o">::</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//类外定义初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="o">::</span><span class="n">display</span><span class="p">();</span> <span class="c1">//直接通过类名调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>static成员函数的作用其实更像是提供类级别的函数，实现与类具体对象无关的通用功能。它避免了实例化对象，减少了this指针的开销。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">int</span> <span class="n">count</span><span class="p">;</span> <span class="c1">//类内声明   
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">static</span> <span class="kt">void</span> <span class="nf">display</span><span class="p">(){</span> <span class="c1">//static成员函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;A::count: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">count</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">A</span><span class="o">::</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//类外定义初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="o">::</span><span class="n">display</span><span class="p">();</span> <span class="c1">//直接通过类名调用
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">A</span><span class="o">::</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">//实现通用功能
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>扩展，C++中有四种存储周期：</p>
+<table>
+  <thead>
+      <tr>
+          <th>存储周期</th>
+          <th>声明周期</th>
+          <th>示例</th>
+          <th>用法</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>静态 static</td>
+          <td>程序开始到程序结束</td>
+          <td>全局变量，static局部变量，类的静态成员</td>
+          <td>用于全局状态变量或需要跨函数的持久状态</td>
+      </tr>
+      <tr>
+          <td>动态 dynamic</td>
+          <td>显示分配到显示释放</td>
+          <td>使用 new 或 malloc 分配的变量</td>
+          <td>用于在运行时需要灵活分配内存的场景</td>
+      </tr>
+      <tr>
+          <td>自动 automatic</td>
+          <td>定义时离开作用域</td>
+          <td>函数内的普通局部变量</td>
+          <td>用于临时计算或局部操作，效率高</td>
+      </tr>
+      <tr>
+          <td>线程 thread_local</td>
+          <td>线程启动到线程结束</td>
+          <td><code>thread_local</code> 修饰的变量</td>
+          <td>用于线程独立的变量存储，避免多线程冲突</td>
+      </tr>
+  </tbody>
+</table>
+<p>参考：<a href="https://www.geeksforgeeks.org/c/memory-layout-of-c-program/"target="_blank" rel="external nofollow noopener noreferrer">Memory Layout of C Programs</a></p></div><div class="collection-card">
+      <div class="collection-title text-secondary">收录于 <a href="/collections/c++/"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> <span>合集・C++</span></span></a> 2</div>
+      <div class="collection-nav">
+        <a href="/posts/cpp-smart-pointer/" class="collection-nav-item" rel="next" title="C&#43;&#43; 智能指针">
+            <span>C&#43;&#43; 智能指针</span><i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+    </div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod"><span title="更新于 2025-09-08 15:31:49">更新于 2025-09-08&nbsp;</span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/cpp-static/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="分享到 X" data-sharer="twitter" data-url="http://localhost:1313/posts/cpp-static/" data-title="C&#43;&#43; Static" data-hashtags="C&#43;&#43;,static"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/cpp-static/" data-hashtag="C&#43;&#43;"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/cpp-static/" data-title="C&#43;&#43; Static"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/c&#43;&#43;/" class="post-tag" title="标签 - C&#43;&#43;">C&#43;&#43;</a><a href="/tags/static/" class="post-tag" title="标签 - Static">Static</a></section>
+    <section><span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/mit-lab-mmap/" class="post-nav-item" rel="prev" title="MIT6.1810 Lab:Mmap"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>MIT6.1810 Lab:Mmap</a><a href="/posts/cpp-smart-pointer/" class="post-nav-item" rel="next" title="C&#43;&#43; 智能指针">C&#43;&#43; 智能指针<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div class="post-reward">
+    <div class="comment"></div>
+    <input type="checkbox" class="reward-input" name="reward" id="fi-reward" hidden />
+    <label class="reward-button" for="fi-reward"><i class="fa-solid fa-qrcode fa-fw" aria-hidden="true"></i>赞赏</label>
+    <div class="reward-ways" data-mode="static"></div>
+  </div><div id="comments"><div id="giscus" class="comment">
+          <script
+            src="https://giscus.app/client.js"
+            data-repo=""
+            data-repo-id=""
+            data-category=""
+            data-category-id=""
+            data-mapping=""
+            data-strict="0"
+            
+            data-theme="preferred_color_scheme"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-lang="zh-CN"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async
+            defer
+          ></script>
+        </div>
+        <noscript>
+          Please enable JavaScript to view the comments powered by <a href="https://giscus.app/" rel="external nofollow noopener noreferrer">giscus</a>.
+        </noscript></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="目录"></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.148.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.4.0-alpha-20250823084643-0f68046a">FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/UAreFree"target="_blank" rel="external nofollow noopener noreferrer">UAreFree</a></span></div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">该网站在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/fuse/fuse.min.js" defer></script><script src="/lib/twemoji/twemoji.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":100},"comment":{"enable":true,"expired":false,"giscus":{"darkTheme":"dark","lightTheme":"light","origin":"https://giscus.app"}},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"twemoji":true,"version":"v0.4.0-alpha-20250823084643-0f68046a"};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

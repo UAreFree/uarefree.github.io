@@ -124,6 +124,121 @@ acquire(struct spinlock* lk)
 
 Real world中提到用锁编程充满挑战，若用锁编程，明智的做法是使用能检测竞态条件的工具。虽然无需原子指令也能实现锁机制，但这种方式代价太高，因此绝大多数OS仍选择采用原子指令。为避免锁带来的开销，许多OS采用无锁数据结构和算法，但无锁编程比基于锁的编程更为复杂，例如必须考虑指令与内存重排序的问题。
 
+## xv6 book chapter 7
+OS运行的进程数往往大于CPU数量，所以需要多路复用机制来实现在进程看来拥有自己独立的CPU。
+
+xv6通过两种机制实现多进程并发：1. 当进程发出阻塞系统调用时，xv6的睡眠和唤醒机制会自动切换CPU；2. 针对长期运行但不会阻塞的进程，xv6会定期进行CPU切换。前者属于自愿切换，后者属于非自愿切换。
+
+用户进程切换的完整流程：首先trap进内核，进行上下文切换至当前CPU的调度线程，随后再次切换到新进程的内核线程，最终返回用户进程。xv6通过独立线程（保存寄存器和堆栈）来执行调度程序，因为让调度程序直接在任意进程的内核堆栈上运行存在安全隐患，其他CPU可能随时唤醒并运行该进程，若两个不同的CPU使用同一堆栈将引发灾难性后果。每个CPU都有专门的调度线程，处理多个CPU同时运行且需要释放资源的进程。
+
+从一个线程切换到另一个线程需要保存旧线程的CPU寄存器，并恢复新线程之前保存的寄存器；由于堆栈指针和程序计数器被保存和恢复，意味着CPU将切换堆栈并切换正在执行的代码。
+
+swtch函数保存并恢复寄存器（上下文），当进程放弃CPU时，进程内核线程会调用swtch函数保存它自己的上下文并恢复调度器的上下文。每个上下文都包含在context结构体中，该结构体又包含在进程的proc结构体或CPU的结构体cpu中。swtch函数接受两个参数：context* old和context* new，它保存当前的old，加载new中的寄存器并返回。
+
+usertrap其中之一是yield，yield会调用sched，sched会调用swtch保存当前上下文到p->context中，并切换之前保存在cpu->context中的调度器上下文。
+
+swtch没有保存程序计数器，而是保存ra寄存器，该寄存器保存调用swtch的返回地址。当swtch返回时，它会返回到ra寄存器保存的返回地址，即之前调用swtch的新线程。此外，swtch也会返回sp堆栈指针指向的线程栈。
+
+每个CPU都有一个专用线程作为调度器，运行scheduler函数，选择下一个要运行的进程。当进程想要让出CPU时必须获取它自己的锁p->lock，释放它持有的其他锁，更新它自己的状态p->state，然后调用sched函数。这个操作流程同样存在于yield、sleep和exit函数中。sched调用swtch保存当前上下文p->context，切换调度器上下文cpu->context。随后调度器一直循环，找到要运行的进程并切换，如此循环往复。
+
+scheduler运行一个循环：找到一个进程来运行，运行它知道让出，重复。scheduler遍历进程表寻找可运行的进程，即p->state == RUNNABLE的进程。一旦找到一个进程，就设置每个CPU的当前进程变量c->proc，将进程标记为RUNNING，然后调用swtch启动运行。
+
+睡眠和唤醒：信号量PV操作作为条件同步的一种机制，xv6中信号量维护计数并提供两种操作：V操作（生产者）增加计数值，P操作（消费者）减少计数值。如果只有一个生产者一个消费者线程，其最初实现为：
+```C
+struct semaphore{
+    struct spinlock lock;
+    int count;
+};
+
+void
+V(struct semphore *s){
+    acquire(&s->lock);
+    s->count += 1;
+    release(&s->lock);
+}
+
+void
+P(struct semphore *s){
+    while(s->count == 0)
+        ;
+    acquire(&s->lock);
+    s->count -= 1;
+    release(&s->lock);
+}
+```
+这种实现P操作一直自旋，为了避免陷入忙等待，可以使用sleep调用将调用进程置于睡眠状态和wakeup调用唤醒进程，实现如下：
+```C
+struct semaphore{
+    struct spinlock lock;
+    int count;
+};
+
+void
+V(struct semphore *s){
+    acquire(&s->lock);
+    s->count += 1;
+    wakeup(s);
+    release(&s->lock);
+}
+
+void
+P(struct semphore *s){
+    while(s->count == 0)
+        sleep(s);
+    acquire(&s->lock);
+    s->count -= 1;
+    release(&s->lock);
+}
+```
+但是这样存在虚假唤醒的问题，进程A在P操作判断s->count == 0之后，sleep之前，另一进程B同时调用了V操作增加count并wakeup，导致此时进程A没有被唤醒。然后进程A继续执行P操作从而sleep睡眠。为了避免虚假唤醒，可以在P操作判断s->count == 0时也加上锁。比如如下实现：
+```C
+struct semaphore{
+    struct spinlock lock;
+    int count;
+};
+
+void
+V(struct semphore *s){
+    acquire(&s->lock);
+    s->count += 1;
+    wakeup(s);
+    release(&s->lock);
+}
+
+void
+P(struct semphore *s){
+    acquire(&s->lock);
+    while(s->count == 0)
+        sleep(s);
+    s->count -= 1;
+    release(&s->lock);
+}
+```
+但这样很明显又会带来死锁问题，进程B在执行P操作时睡眠持有锁，进程A永远无法拿到锁执行V操作，所以需要再sleep中传入锁，当进程被标记为睡眠状态并在睡眠通道等待时，sleep释放锁。最后的实现如下：
+```C
+struct semaphore{
+    struct spinlock lock;
+    int count;
+};
+
+void
+V(struct semphore *s){
+    acquire(&s->lock);
+    s->count += 1;
+    wakeup(s);
+    release(&s->lock);
+}
+
+void
+P(struct semphore *s){
+    acquire(&s->lock);
+    while(s->count == 0)
+        sleep(s, &s->lock);
+    s->count -= 1;
+    release(&s->lock);
+}
+```
+
 ## xv6 book chapter 8
 xv6文件系统提供了类Unix的文件、目录和路径名，并将其数据持久化储存在virtio磁盘上。xv6的文件系统解决的几个挑战：
 1. 需要磁盘上的数据结构来标识目录、文件，记录哪些磁盘块是空闲的、哪些是对应文件的（使用inode、idnode、dirent等）

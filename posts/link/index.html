@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>链接 -  Blog</title><meta name="author" content="UAreFree">
+<meta name="description" content="链接：将代码和数据收集并组合成一个可执行文件，加载到内存中执行。
+学习链接可以解决的问题：
+构造大型程序，遇到由于缺少库文件或者库文件版本不兼容而导致的链接错误。 避免一些难以发现的编程错误。 理解编程语言中的作用域规则是如何实现的。 理解重要的系统概念。 更好的利用共享库。 "><meta name="keywords" content='链接'>
+  <meta itemprop="name" content="链接">
+  <meta itemprop="description" content="链接：将代码和数据收集并组合成一个可执行文件，加载到内存中执行。
+学习链接可以解决的问题：
+构造大型程序，遇到由于缺少库文件或者库文件版本不兼容而导致的链接错误。 避免一些难以发现的编程错误。 理解编程语言中的作用域规则是如何实现的。 理解重要的系统概念。 更好的利用共享库。">
+  <meta itemprop="datePublished" content="2025-05-11T16:00:06+08:00">
+  <meta itemprop="dateModified" content="2025-09-08T16:00:06+08:00">
+  <meta itemprop="wordCount" content="4268">
+  <meta itemprop="keywords" content="链接"><meta property="og:url" content="http://localhost:1313/posts/link/">
+  <meta property="og:site_name" content=" Blog">
+  <meta property="og:title" content="链接">
+  <meta property="og:description" content="链接：将代码和数据收集并组合成一个可执行文件，加载到内存中执行。
+学习链接可以解决的问题：
+构造大型程序，遇到由于缺少库文件或者库文件版本不兼容而导致的链接错误。 避免一些难以发现的编程错误。 理解编程语言中的作用域规则是如何实现的。 理解重要的系统概念。 更好的利用共享库。">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-05-11T16:00:06+08:00">
+    <meta property="article:modified_time" content="2025-09-08T16:00:06+08:00">
+    <meta property="article:tag" content="链接">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="链接">
+  <meta name="twitter:description" content="链接：将代码和数据收集并组合成一个可执行文件，加载到内存中执行。
+学习链接可以解决的问题：
+构造大型程序，遇到由于缺少库文件或者库文件版本不兼容而导致的链接错误。 避免一些难以发现的编程错误。 理解编程语言中的作用域规则是如何实现的。 理解重要的系统概念。 更好的利用共享库。">
+<meta name="application-name" content="YouAreFree">
+<meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/link/" title="链接 -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/posts/programmer-note/" title="程序员的自我修养读书笔记" /><link rel="next" type="text/html" href="http://localhost:1313/posts/spdlog-analysis/" title="spdlog源码解析" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/link/index.md" title="链接 -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "链接",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/localhost:1313\/posts\/link\/"
+    },"genre": "posts","keywords": "链接","wordcount":  4268 ,
+    "url": "http:\/\/localhost:1313\/posts\/link\/","datePublished": "2025-05-11T16:00:06+08:00","dateModified": "2025-09-08T16:00:06+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "UAreFree"
+      },"description": ""
+  }
+  </script><script src="/js/head/color-scheme.min.js"></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="32" width="32"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item">
+              <a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item">
+              <a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="26" width="26"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item"><a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item"><a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="fi-container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="合集"><div class="details collection-details open">
+      <div class="details-summary collection-summary">
+        <i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i>
+        <span class="collection-name" title="合集">编译原理</span>
+        <span class="collection-count">2</span><i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></div>
+      <div class="details-content collection-content">
+        <nav>
+          <ul class="collection-list"><li class="collection-item"><a href="/posts/programmer-note/" title="程序员的自我修养读书笔记">程序员的自我修养读书笔记</a></li><li class="collection-item"><span class="active" title="链接">链接</span></li></ul>
+          <div class="collection-nav-simple"><a href="/posts/programmer-note/" class="collection-nav-item" rel="prev" title="程序员的自我修养读书笔记"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i></a><span class="text-secondary">2/2</span><i class="fa-solid fa-angle-right fa-fw collection-nav-item text-secondary" aria-hidden="true"></i></div>
+        </nav>
+      </div>
+    </div></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>链接</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 计算机系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 计算机系统</a> 和 <a href="/collections/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" class="post-collection" title="合集 - 编译原理"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> 编译原理</a></span></div><div class="post-meta-line"><span title="发布于 2025-05-11 16:00:06"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-05-11">2025-05-11</time></span>&nbsp;<span title="更新于 2025-09-08 16:00:06"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-09-08">2025-09-08</time></span>&nbsp;<span title="4268 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 4300 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 9 分钟</span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#编译器驱动程序-gcc">编译器驱动程序 GCC</a></li>
+    <li><a href="#目标文件">目标文件</a></li>
+    <li><a href="#可重定位目标文件">可重定位目标文件</a>
+      <ul>
+        <li><a href="#elf-header">ELF header</a></li>
+        <li><a href="#sections">Sections</a></li>
+        <li><a href="#section-header-table">Section header table</a></li>
+      </ul>
+    </li>
+    <li><a href="#符号和符号表">符号和符号表</a></li>
+    <li><a href="#符号解析">符号解析</a>
+      <ul>
+        <li><a href="#符号同名冲突">符号同名冲突</a></li>
+        <li><a href="#静态链接">静态链接</a></li>
+        <li><a href="#重定位">重定位</a></li>
+      </ul>
+    </li>
+    <li><a href="#可执行文件">可执行文件</a></li>
+    <li><a href="#动态链接">动态链接</a>
+      <ul>
+        <li><a href="#动态链接的过程">动态链接的过程</a></li>
+        <li><a href="#应用">应用</a></li>
+        <li><a href="#实现运行时加载和链接共享库">实现运行时加载和链接共享库</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><p>链接：将代码和数据收集并组合成一个可执行文件，加载到内存中执行。</p>
+<p>学习链接可以解决的问题：</p>
+<ol>
+<li>构造大型程序，遇到由于缺少库文件或者库文件版本不兼容而导致的链接错误。</li>
+<li>避免一些难以发现的编程错误。</li>
+<li>理解编程语言中的作用域规则是如何实现的。</li>
+<li>理解重要的系统概念。</li>
+<li>更好的利用共享库。</li>
+</ol>
+<h2 class="heading-element" id="编译器驱动程序-gcc"><span>编译器驱动程序 GCC</span>
+  <a href="#%e7%bc%96%e8%af%91%e5%99%a8%e9%a9%b1%e5%8a%a8%e7%a8%8b%e5%ba%8f-gcc" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>GNU 编译器集合 GCC 会调用语言预处理器、编译器、汇编器和链接器。<code>gcc -Og -o prog main.c sum.c</code>调用gcc编译，-Og启动适中优化、-o生成可执行文件。./prog调用操作系统中的加载器函数，将可执行文件prog中的代码和数据复制到内存，然后将控制转移到这个程序的开头。</p>
+<p>GNU是一个自由软件项目，旨在开发完全自由的操作系统。GCC 是 GNU 项目下的一组编译工具的集合。</p>
+<table>
+  <thead>
+      <tr>
+          <th>命令</th>
+          <th>作用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>gcc -Og -E prog main.c sum.c</code></td>
+          <td>预处理生成 <code>.i</code></td>
+      </tr>
+      <tr>
+          <td><code>gcc -Og -S prog main.c sum.c</code></td>
+          <td>编译成汇编文件 <code>.s</code></td>
+      </tr>
+      <tr>
+          <td><code>gcc -Og -c prog main.c sum.c</code></td>
+          <td>汇编成可重定位目标文件 <code>.o</code></td>
+      </tr>
+      <tr>
+          <td><code>gcc -Og -v prog main.c sum.c</code></td>
+          <td>链接成可执行目标文件 <code>.out</code></td>
+      </tr>
+  </tbody>
+</table>
+<h2 class="heading-element" id="目标文件"><span>目标文件</span>
+  <a href="#%e7%9b%ae%e6%a0%87%e6%96%87%e4%bb%b6" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>注意不只是.o文件，目标文件有以下三种：</p>
+<ol>
+<li>可重定位目标文件：包含二进制代码和数据，.o文件可与其他.o文件链接</li>
+<li>可执行目标文件：包含二进制代码和数据，.out文件可直接复制到内存并执行</li>
+<li>共享目标文件：特殊的可重定位目标文件，可以在加载或者运行时被动态地加载进内存并链接
+目标文件是按照特定的格式来组织的，各个系统的目标文件格式都不相同。现代 x86-64 Linux 和 Unix 系统使用可执行可链接格式（Executable and Linkable Format，ELF）。</li>
+</ol>
+<h2 class="heading-element" id="可重定位目标文件"><span>可重定位目标文件</span>
+  <a href="#%e5%8f%af%e9%87%8d%e5%ae%9a%e4%bd%8d%e7%9b%ae%e6%a0%87%e6%96%87%e4%bb%b6" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>ELF 格式的可重定位目标文件由 ELF header、Sections、Section header table组成。
+<figure><a class="lightgallery" href="/link/ELF%e6%96%87%e4%bb%b6%e6%a0%bc%e5%bc%8f.png" title="/link/ELF文件格式.png" data-thumbnail="/link/ELF文件格式.png" data-sub-html="<h2>ELF文件格式</h2>"><img loading="lazy" src='/link/ELF文件格式.png' alt="/link/ELF文件格式.png" height="45%" width="45%"></a><figcaption class="image-caption">ELF文件格式</figcaption>
+  </figure></p>
+<h3 class="heading-element" id="elf-header"><span>ELF header</span>
+  <a href="#elf-header" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p><figure><a class="lightgallery" href="/link/ELF%e5%a4%b4.png" title="/link/ELF头.png" data-thumbnail="/link/ELF头.png" data-sub-html="<h2>ELF头</h2>"><img loading="lazy" src='/link/ELF头.png' alt="/link/ELF头.png" height="45%" width="45%"></a><figcaption class="image-caption">ELF头</figcaption>
+  </figure>
+ELF header 的长度是64个字节。</p>
+<h3 class="heading-element" id="sections"><span>Sections</span>
+  <a href="#sections" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>.text：已编译程序的机器代码。</p>
+<p>.data：已初始化 的全局和静态变量。</p>
+<p>.bss：未初始化的全局和静态变量，以及所有被 初始化为0 的全局或静态变量。在目标文件中这个节不占据实际的空间，它仅仅是一个占位符（better save space）。目标文件格式区分已初始化和未初始化变量是为了空间效率：在目标文件中，未初始化变量不需要占据任何实际的磁盘空间。运行 时，在内存中分配这些变量，初始值为 0。COMMON存放未初始化的全局变量。</p>
+<p>.rodata:存放 只读 数据。如printf中的格式串和switch语句中的跳转表。</p>
+<p>.symtab：符号表，存放在程序中定义和引用的函数和全局变量的信息。</p>
+<h3 class="heading-element" id="section-header-table"><span>Section header table</span>
+  <a href="#section-header-table" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>存放 sections 中每个 section 的起始位置、大小、类型等信息。</p>
+<h2 class="heading-element" id="符号和符号表"><span>符号和符号表</span>
+  <a href="#%e7%ac%a6%e5%8f%b7%e5%92%8c%e7%ac%a6%e5%8f%b7%e8%a1%a8" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>链接的本质是把多个不同的目标文件粘合在一起，而符号是链接中的粘合剂。符号表就是 GOT (Global Offset Table)。</p>
+<p>使用<code>readelf -S file.o</code>查看段头信息（包含每个段的名称、大小、类型等），使用<code>readelf -s file.o</code>查看符号表（包括符号的名称、类型、值等），使用<code>readelf -r file.o</code>查看重定位信息（指示代码中哪些地方需要在链接时调整）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">yaf@yaf-VMware-Virtual-Platform:~/projects/csapp$ readelf -s main.o
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Symbol table <span class="s1">&#39;.symtab&#39;</span> contains <span class="m">6</span> entries:
+</span></span><span class="line"><span class="cl">   Num:    Value          Size Type    Bind   Vis      Ndx Name
+</span></span><span class="line"><span class="cl">     0: <span class="m">0000000000000000</span>     <span class="m">0</span> NOTYPE  LOCAL  DEFAULT  UND 
+</span></span><span class="line"><span class="cl">     1: <span class="m">0000000000000000</span>     <span class="m">0</span> FILE    LOCAL  DEFAULT  ABS main.c
+</span></span><span class="line"><span class="cl">     2: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">1</span> .text
+</span></span><span class="line"><span class="cl">     3: <span class="m">0000000000000000</span>    <span class="m">30</span> FUNC    GLOBAL DEFAULT    <span class="m">1</span> main
+</span></span><span class="line"><span class="cl">     4: <span class="m">0000000000000000</span>     <span class="m">8</span> OBJECT  GLOBAL DEFAULT    <span class="m">3</span> array
+</span></span><span class="line"><span class="cl">     5: <span class="m">0000000000000000</span>     <span class="m">0</span> NOTYPE  GLOBAL DEFAULT  UND sum</span></span></code></pre></td></tr></table>
+</div>
+</div><p>符号main是位于.text节（Ndx = 1）偏移量为 0 （value = 0）处的 30 字节函数；符号array是位于.data节（Ndx = 3）偏移量为 0 （value = 0）处的 8 字节对象；符号sum是对外部符号的引用（Ndx = UND）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">// 初始化的全局变量 .data
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">value</span><span class="p">;</span> <span class="c1">// 未初始化的全局变量  .bss
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">sum</span><span class="p">){</span> <span class="c1">// 全局函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;sum = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">sum</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// 初始化的静态变量 .data
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">static</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 初始化的静态变量 .bss
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// 局部变量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">func</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">   Num:    Value          Size Type    Bind   Vis      Ndx Name
+</span></span><span class="line"><span class="cl">     0: <span class="m">0000000000000000</span>     <span class="m">0</span> NOTYPE  LOCAL  DEFAULT  UND 
+</span></span><span class="line"><span class="cl">     1: <span class="m">0000000000000000</span>     <span class="m">0</span> FILE    LOCAL  DEFAULT  ABS main.c
+</span></span><span class="line"><span class="cl">     2: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">1</span> .text
+</span></span><span class="line"><span class="cl">     3: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">3</span> .data
+</span></span><span class="line"><span class="cl">     4: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">4</span> .bss
+</span></span><span class="line"><span class="cl">     5: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">5</span> .rodata
+</span></span><span class="line"><span class="cl">     6: <span class="m">0000000000000004</span>     <span class="m">4</span> OBJECT  LOCAL  DEFAULT    <span class="m">3</span> a.1
+</span></span><span class="line"><span class="cl">     7: <span class="m">0000000000000004</span>     <span class="m">4</span> OBJECT  LOCAL  DEFAULT    <span class="m">4</span> b.0
+</span></span><span class="line"><span class="cl">     8: <span class="m">0000000000000000</span>     <span class="m">4</span> OBJECT  GLOBAL DEFAULT    <span class="m">3</span> count
+</span></span><span class="line"><span class="cl">     9: <span class="m">0000000000000000</span>     <span class="m">4</span> OBJECT  GLOBAL DEFAULT    <span class="m">4</span> value
+</span></span><span class="line"><span class="cl">    10: <span class="m">0000000000000000</span>    <span class="m">43</span> FUNC    GLOBAL DEFAULT    <span class="m">1</span> func
+</span></span><span class="line"><span class="cl">    11: <span class="m">0000000000000000</span>     <span class="m">0</span> NOTYPE  GLOBAL DEFAULT  UND <span class="nb">printf</span>
+</span></span><span class="line"><span class="cl">    12: 000000000000002b    <span class="m">52</span> FUNC    GLOBAL DEFAULT    <span class="m">1</span> main</span></span></code></pre></td></tr></table>
+</div>
+</div><p>a.1和b.0是名称修饰，为了防止静态变量的名字冲突。局部变量符号表里是没有的，由于在栈上，符号表并不关心。</p>
+<p>符号类型：</p>
+<ol>
+<li>全局符号，由该模块定义，同时能被其他模块引用。</li>
+<li>外部符号，被其他模块定义，同时被该模块引用。</li>
+<li>局部符号，只能被该模块定义和引用。
+<ul>
+<li>区别局部符号和全局符号：static属性。</li>
+</ul>
+</li>
+</ol>
+<h2 class="heading-element" id="符号解析"><span>符号解析</span>
+  <a href="#%e7%ac%a6%e5%8f%b7%e8%a7%a3%e6%9e%90" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>将程序中的符号（如变量名、函数名等）与它们在内存或程序中的实际地址进行关联的过程。</p>
+<h3 class="heading-element" id="符号同名冲突"><span>符号同名冲突</span>
+  <a href="#%e7%ac%a6%e5%8f%b7%e5%90%8c%e5%90%8d%e5%86%b2%e7%aa%81" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ol>
+<li>多个同名的强符号
+<ul>
+<li>找死，出 error</li>
+</ul>
+</li>
+<li>一个强符号和多个同名的弱符号
+<ul>
+<li>没事，隐藏 bug</li>
+</ul>
+</li>
+<li>多个同名的弱符号
+<ul>
+<li>warning，不易察觉的运行时 error</li>
+<li>编译时添加-fno -common的编译选项，多个重名触发错误；或-Werror把所有警告变成错误</li>
+</ul>
+</li>
+</ol>
+<p>强符号：函数和已初始化的全局变量。</p>
+<p>弱符号：未初始化的全局变量。</p>
+<h3 class="heading-element" id="静态链接"><span>静态链接</span>
+  <a href="#%e9%9d%99%e6%80%81%e9%93%be%e6%8e%a5" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>printf、atoi等函数存放在libc.a中，静态库以一种称为archive的特殊文件格式存放在磁盘上。使用<code>ar rcs libvector.a addvec.o multvec.o</code>构造静态库，使用<code>gcc -static -o prog main.o ./libvector.a</code>链接静态库。根据main.o中的符号，将所用到的符号对应的.o文件复制进可执行文件。
+<figure><a class="lightgallery" href="/link/%e9%9d%99%e6%80%81%e9%93%be%e6%8e%a5%e8%bf%87%e7%a8%8b.png" title="/link/静态链接过程.png" data-thumbnail="/link/静态链接过程.png" data-sub-html="<h2>静态链接过程</h2>"><img loading="lazy" src='/link/静态链接过程.png' alt="/link/静态链接过程.png" height="45%" width="45%"></a><figcaption class="image-caption">静态链接过程</figcaption>
+  </figure>
+目标文件是字节块的集合，有代码块、数据块、引导链接器和加载器的数据结构。</p>
+<p>链接器必须完成的两个主要任务：</p>
+<ol>
+<li>符号解析：</li>
+<li>按命令行从左到右扫描可重定位文件和静态库文件
+<ul>
+<li>可重定位文件放到集合 E 中，最后合并起来</li>
+<li>引用了当尚未定义的符号放到集合 U 中</li>
+<li>文件中已定义的符号放到集合 D 中
+使用静态链接，命令行文件的输入顺序十分重要，一般将库放到命令行结尾。而且如果库是独立的，必须对它们进行排序</li>
+</ul>
+</li>
+<li>重定位</li>
+</ol>
+<h3 class="heading-element" id="重定位"><span>重定位</span>
+  <a href="#%e9%87%8d%e5%ae%9a%e4%bd%8d" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>链接器合并输入模块，并为每个符号分配运行时地址。</p>
+<ol>
+<li>重定位节和符号定义
+<ul>
+<li>把所有相同类型的 section 合并为一个新的 section</li>
+<li>每条指令和全局变量都有了唯一的运行时内存地址</li>
+</ul>
+</li>
+<li>重定位节中的符号引用
+<ul>
+<li>修改对符号的引用使其指向正确的运行时地址
+重定位条目：告诉链接器在合成可执行文件时应该如何修改这个引用，.rel.text是代码的重定位条目，.rel.data是已初始化数据的重定位条目</li>
+</ul>
+</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">long</span> <span class="n">offset</span><span class="p">;</span> <span class="c1">// 引用的节偏移量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">long</span> <span class="nl">type</span><span class="p">:</span><span class="mi">32</span><span class="p">,</span> <span class="c1">// 重定位类型 相对地址重定位、绝对地址重定位
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nl">symbol</span><span class="p">:</span><span class="mi">32</span><span class="p">;</span> <span class="c1">// 修改哪个符号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">long</span> <span class="n">addend</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">ELF64_Rela</span><span class="p">;</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>最开始编译出来的.o文件 call 了外部函数是不知道具体地址的，需要填后32位为“S+A-P”，使得满足约束断言：（转到调用函数的实际地址）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="nf">assert</span><span class="p">(</span><span class="n">hello</span> <span class="o">==</span> <span class="n">main</span> <span class="o">+</span> <span class="mh">0xf</span> <span class="o">+</span> <span class="c1">// call hello 的 next pc
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="o">+</span> <span class="p">(</span><span class="n">main</span> <span class="o">+</span> <span class="mh">0xb</span><span class="p">)</span> <span class="c1">// call 指令的 offset
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">);</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 class="heading-element" id="可执行文件"><span>可执行文件</span>
+  <a href="#%e5%8f%af%e6%89%a7%e8%a1%8c%e6%96%87%e4%bb%b6" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p><figure><a class="lightgallery" href="/link/%e5%8f%af%e6%89%a7%e8%a1%8c%e6%96%87%e4%bb%b6%e6%ae%b5%e5%88%86%e5%b8%83.png" title="/link/可执行文件段分布.png" data-thumbnail="/link/可执行文件段分布.png" data-sub-html="<h2>可执行文件段分布</h2>"><img loading="lazy" src='/link/可执行文件段分布.png' alt="/link/可执行文件段分布.png" height="45%" width="45%"></a><figcaption class="image-caption">可执行文件段分布</figcaption>
+  </figure>
+.init节定义了_init函数，程序初始化代码调用_init函数进行初始化。程序执行时代码段和数据段加载到内存执行，其他不被加载到内存。</p>
+<p>程序头部表描述了代码段、数据段与内存的映射关系。.bss中的数据不占用可执行文件的空间，但在运行时需要被初始化为0，所以加载到内存需要增加空间。
+<figure><a class="lightgallery" href="/link/%e6%ae%b5%e6%8f%8f%e8%bf%b0.png" title="/link/段描述.png" data-thumbnail="/link/段描述.png" data-sub-html="<h2>段描述</h2>"><img loading="lazy" src='/link/段描述.png' alt="/link/段描述.png" height="45%" width="45%"></a><figcaption class="image-caption">段描述</figcaption>
+  </figure>
+./prog运行可执行文件的过程（加载）：</p>
+<ol>
+<li>调用execve()调用加载器</li>
+<li>加载器将可执行文件中的代码和数据从磁盘复制到内存</li>
+<li>跳转到程序入口运行该程序
+<ul>
+<li>ctrl.o系统目标文件中定义了程序入口函数_start()</li>
+<li>_start()调用libc.so中的_libc_start_main()初始化执行环境</li>
+<li>调用用户层中可执行程序prog中的main()，函数返回值返回给_libc_start_main()，且在需要时把控制权返回给操作系统Kernel
+每一个 Linux 程序都有一个运行时内存镜像，如下图所示。
+<figure><a class="lightgallery" href="/link/%e8%bf%90%e8%a1%8c%e6%97%b6%e7%a8%8b%e5%ba%8f%e5%86%85%e5%ad%98%e5%88%86%e5%b8%83.png" title="/link/运行时程序内存分布.png" data-thumbnail="/link/运行时程序内存分布.png" data-sub-html="<h2>运行时程序内存分布</h2>"><img loading="lazy" src='/link/运行时程序内存分布.png' alt="/link/运行时程序内存分布.png" height="45%" width="45%"></a><figcaption class="image-caption">运行时程序内存分布</figcaption>
+  </figure></li>
+</ul>
+</li>
+<li>数据段有地址对齐的要求，所以数据段和代码段之间是有间隙的</li>
+<li>为防止程序受到攻击，在分配栈、共享库以及堆的运行时地址时，链接器会使用地址空间随机化的策略，所以每次运行时地址都会变，但相对位置不变</li>
+</ol>
+<h2 class="heading-element" id="动态链接"><span>动态链接</span>
+  <a href="#%e5%8a%a8%e6%80%81%e9%93%be%e6%8e%a5" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>静态链接库的缺点：</p>
+<ol>
+<li>需要定期维护和更新</li>
+<li>几乎每个 C 程序都需要使用标准的 I/O 函数，每个进程都需要把其所用到的静态库复制到内存中，对于运行成百上千个进程的系统，这是对内存资源的极大浪费</li>
+</ol>
+<p>共享库是一种特殊的可重定位目标文件，在 Linux 系统中用.so表示，windows 系统中用 .dll表示。共享库在运行或加载时可以被加载到任意的内存地址，还能和一个在内存中的程序链接起来，这个过程称为动态链接，具体是由动态链接器来执行的。</p>
+<p>使用<code>gcc -shared -fpic -o libvector.so addvec.c multvec.c</code>生成动态链接库，-shared创建共享的目标文件，-fpic生成位置无关的代码。</p>
+<p>链接器并没有把libvector.so中的代码和数据复制到可执行文件中，而是只复制了符号表和一些重定位信息。在可执行程序运行时，加载器会发现可执行程序中存在一个名为.interp的section，这个section中包含了动态链接器的路径名，加载器将动态链接器加载到内存中运行，由其执行重定位代码和数据的工作。</p>
+<p>动态链接器：本质上也是一个共享目标文件（ld-linux.so）</p>
+<h3 class="heading-element" id="动态链接的过程"><span>动态链接的过程</span>
+  <a href="#%e5%8a%a8%e6%80%81%e9%93%be%e6%8e%a5%e7%9a%84%e8%bf%87%e7%a8%8b" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ol>
+<li>将libc.so的代码和数据重定位到某个内存段</li>
+<li>重定位libvector.so的代码和数据到另一个内存段</li>
+<li>重定位 proc2 中由libc.so和libvector.so定义的符号引用
+<ul>
+<li>应用程序a.out里会有一个表PLT存放符号的地址，从而指向符号代码</li>
+<li>懒加载，用到了的符号才回去查表间接跳转</li>
+</ul>
+</li>
+</ol>
+<p>以上是编译、加载的过程，应用程序还可能在运行时要求动态链接器加载和链接某个共享库。</p>
+<p>实现位置无关代码 PIC ：
+PLT（过程链接表）：每个外部函数的调用都通过 PLT 表进行跳转，PLT 条目中存储了跳转的目标地址（初始时指向 GOT 表），并通过延迟绑定在运行时解析。</p>
+<p>GOT（全局偏移量表）：GOT 存储了指向实际函数或数据的地址，每个函数调用之前，GOT 会被动态链接器填充为正确的地址。</p>
+<p>在运行时，动态链接器负责将程序中的外部符号链接到实际的共享库函数地址。位置无关代码通过延迟绑定（lazy binding）机制优化了性能。只有当程序第一次调用某个共享库函数时，动态链接器才会解析该函数的地址，并更新 GOT 表。之后的调用不需要再进行重定位，直接通过 PLT 表进行跳转。</p>
+<h3 class="heading-element" id="应用"><span>应用</span>
+  <a href="#%e5%ba%94%e7%94%a8" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ol>
+<li>分发软件
+<ul>
+<li>Windows 应用开发者利用共享库进行软件版本的更新</li>
+</ul>
+</li>
+<li>构建高性能 web 服务器
+<ul>
+<li>生成个性化的 web 页面及账户余额</li>
+<li>将每个生成动态内容的函数打包在共享库中，服务器根据请求动态加载和链接适当的函数，然后直接调用，函数会一直缓存在服务器的地址空间中</li>
+<li>在更新函数时并不需要停止正在运行的服务器</li>
+</ul>
+</li>
+</ol>
+<h3 class="heading-element" id="实现运行时加载和链接共享库"><span>实现运行时加载和链接共享库</span>
+  <a href="#%e5%ae%9e%e7%8e%b0%e8%bf%90%e8%a1%8c%e6%97%b6%e5%8a%a0%e8%bd%bd%e5%92%8c%e9%93%be%e6%8e%a5%e5%85%b1%e4%ba%ab%e5%ba%93" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>Linux 提供了dlopen()接口允许应用程序在运行时加载和链接共享库。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="nf">dlopen</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">filename</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">handle</span> <span class="o">=</span> <span class="nf">dlopen</span><span class="p">(</span><span class="s">&#34;./libvector.so&#34;</span><span class="p">,</span> <span class="n">RTLD_LAZY</span><span class="p">);</span> <span class="c1">// 推迟到共享库中代码执行时再进行符号解析
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="nf">dlsym</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">handle</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">symbol</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">addvec</span> <span class="o">=</span> <span class="nf">dlsym</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s">&#34;addvec&#34;</span><span class="p">);</span> <span class="c1">// handle句柄 符号addvec 返回符号地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">addvec</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">dlclose</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">handle</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nf">dlclose</span><span class="p">(</span><span class="n">handle</span><span class="p">);</span> <span class="c1">// 卸载共享库
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>参考：</p>
+<ol>
+<li><a href="https://www.bilibili.com/video/BV1yq4y1t7is/?spm_id_from=333.1387.collection.video_card.click&amp;vd_source=050bf08a3643c244550421a1ccc94f6b"target="_blank" rel="external nofollow noopener noreferrer">CSAPP讲解课程——九曲阑干</a></li>
+<li><a href="https://www.bilibili.com/video/BV15F411G7Ti?spm_id_from=333.788.videopod.sections&amp;vd_source=050bf08a3643c244550421a1ccc94f6b"target="_blank" rel="external nofollow noopener noreferrer">南大操作系统课程——jyy</a></li>
+</ol></div><div class="collection-card">
+      <div class="collection-title text-secondary">收录于 <a href="/collections/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> <span>合集・编译原理</span></span></a> 2</div>
+      <div class="collection-nav">
+        <a href="/posts/programmer-note/" class="collection-nav-item" rel="prev" title="程序员的自我修养读书笔记"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i><span>程序员的自我修养读书笔记</span>
+          </a></div>
+    </div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod"><span title="更新于 2025-09-08 16:00:06">更新于 2025-09-08&nbsp;</span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/link/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="分享到 X" data-sharer="twitter" data-url="http://localhost:1313/posts/link/" data-title="链接" data-hashtags="链接"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/link/" data-hashtag="链接"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/link/" data-title="链接"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/%E9%93%BE%E6%8E%A5/" class="post-tag" title="标签 - 链接">链接</a></section>
+    <section><span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/programmer-note/" class="post-nav-item" rel="prev" title="程序员的自我修养读书笔记"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>程序员的自我修养读书笔记</a><a href="/posts/spdlog-analysis/" class="post-nav-item" rel="next" title="Spdlog源码解析">Spdlog源码解析<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div class="post-reward">
+    <div class="comment"></div>
+    <input type="checkbox" class="reward-input" name="reward" id="fi-reward" hidden />
+    <label class="reward-button" for="fi-reward"><i class="fa-solid fa-qrcode fa-fw" aria-hidden="true"></i>赞赏</label>
+    <div class="reward-ways" data-mode="static"></div>
+  </div><div id="comments"><div id="giscus" class="comment">
+          <script
+            src="https://giscus.app/client.js"
+            data-repo=""
+            data-repo-id=""
+            data-category=""
+            data-category-id=""
+            data-mapping=""
+            data-strict="0"
+            
+            data-theme="preferred_color_scheme"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-lang="zh-CN"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async
+            defer
+          ></script>
+        </div>
+        <noscript>
+          Please enable JavaScript to view the comments powered by <a href="https://giscus.app/" rel="external nofollow noopener noreferrer">giscus</a>.
+        </noscript></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="目录"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.148.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.4.0-alpha-20250823084643-0f68046a">FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/UAreFree"target="_blank" rel="external nofollow noopener noreferrer">UAreFree</a></span></div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">该网站在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/fuse/fuse.min.js" defer></script><script src="/lib/twemoji/twemoji.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":100},"comment":{"enable":true,"expired":false,"giscus":{"darkTheme":"dark","lightTheme":"light","origin":"https://giscus.app"}},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"twemoji":true,"version":"v0.4.0-alpha-20250823084643-0f68046a"};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

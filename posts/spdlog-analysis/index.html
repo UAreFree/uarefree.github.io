@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>Spdlog源码解析 -  Blog</title><meta name="author" content="UAreFree">
+<meta name="description" content="spdlog是一个快速的C&#43;&#43;日志库。使用有两个版本，headr-only的版本和编译版本。header-only版本只需要把项目include文件夹放到自己项目中即可构建，用起来比较方便。官方给出的特点：很快；header-only 或编译版本；使用 fmt 库实现丰富的格式化功能；异步模式；自定义格式化；多线程/单线程记录器；多种日志目标；日志过滤；支持从argv或环境变量中加载日志级别；回溯支持 - 将调试消息存储在环形缓冲区中并按需显示。
+"><meta name="keywords" content='spdlog, 日志库'>
+  <meta itemprop="name" content="spdlog源码解析">
+  <meta itemprop="description" content="spdlog是一个快速的C&#43;&#43;日志库。使用有两个版本，headr-only的版本和编译版本。header-only版本只需要把项目include文件夹放到自己项目中即可构建，用起来比较方便。官方给出的特点：很快；header-only 或编译版本；使用 fmt 库实现丰富的格式化功能；异步模式；自定义格式化；多线程/单线程记录器；多种日志目标；日志过滤；支持从argv或环境变量中加载日志级别；回溯支持 - 将调试消息存储在环形缓冲区中并按需显示。">
+  <meta itemprop="datePublished" content="2025-06-22T17:10:32+08:00">
+  <meta itemprop="dateModified" content="2025-09-08T17:10:32+08:00">
+  <meta itemprop="wordCount" content="1974">
+  <meta itemprop="keywords" content="Spdlog,日志库"><meta property="og:url" content="http://localhost:1313/posts/spdlog-analysis/">
+  <meta property="og:site_name" content=" Blog">
+  <meta property="og:title" content="spdlog源码解析">
+  <meta property="og:description" content="spdlog是一个快速的C&#43;&#43;日志库。使用有两个版本，headr-only的版本和编译版本。header-only版本只需要把项目include文件夹放到自己项目中即可构建，用起来比较方便。官方给出的特点：很快；header-only 或编译版本；使用 fmt 库实现丰富的格式化功能；异步模式；自定义格式化；多线程/单线程记录器；多种日志目标；日志过滤；支持从argv或环境变量中加载日志级别；回溯支持 - 将调试消息存储在环形缓冲区中并按需显示。">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-06-22T17:10:32+08:00">
+    <meta property="article:modified_time" content="2025-09-08T17:10:32+08:00">
+    <meta property="article:tag" content="Spdlog">
+    <meta property="article:tag" content="日志库">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="spdlog源码解析">
+  <meta name="twitter:description" content="spdlog是一个快速的C&#43;&#43;日志库。使用有两个版本，headr-only的版本和编译版本。header-only版本只需要把项目include文件夹放到自己项目中即可构建，用起来比较方便。官方给出的特点：很快；header-only 或编译版本；使用 fmt 库实现丰富的格式化功能；异步模式；自定义格式化；多线程/单线程记录器；多种日志目标；日志过滤；支持从argv或环境变量中加载日志级别；回溯支持 - 将调试消息存储在环形缓冲区中并按需显示。">
+<meta name="application-name" content="YouAreFree">
+<meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/spdlog-analysis/" title="spdlog源码解析 -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/posts/link/" title="链接" /><link rel="next" type="text/html" href="http://localhost:1313/posts/ostep-note/" title="操作系统导论读书笔记" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/spdlog-analysis/index.md" title="spdlog源码解析 -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "spdlog源码解析",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/localhost:1313\/posts\/spdlog-analysis\/"
+    },"genre": "posts","keywords": "spdlog, 日志库","wordcount":  1974 ,
+    "url": "http:\/\/localhost:1313\/posts\/spdlog-analysis\/","datePublished": "2025-06-22T17:10:32+08:00","dateModified": "2025-09-08T17:10:32+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "UAreFree"
+      },"description": ""
+  }
+  </script><script src="/js/head/color-scheme.min.js"></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="32" width="32"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item">
+              <a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item">
+              <a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title=" Blog"><img class="logo" src='/favicon.svg' alt=" Blog" height="26" width="26"><span class="header-title-text"> Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 归档</a></li><li class="menu-item"><a class="menu-link" href="/categories/"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item"><a class="menu-link" href="/about/"><i class="fa-solid fa-info-circle fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="fi-container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="合集"><div class="details collection-details open">
+      <div class="details-summary collection-summary">
+        <i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i>
+        <span class="collection-name" title="合集">开源库</span>
+        <span class="collection-count">1</span><i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></div>
+      <div class="details-content collection-content">
+        <nav>
+          <ul class="collection-list"><li class="collection-item"><span class="active" title="Spdlog源码解析">Spdlog源码解析</span></li></ul>
+          <div class="collection-nav-simple"><i class="fa-solid fa-angle-left fa-fw collection-nav-item text-secondary" aria-hidden="true"></i><span class="text-secondary">1/1</span><i class="fa-solid fa-angle-right fa-fw collection-nav-item text-secondary" aria-hidden="true"></i></div>
+        </nav>
+      </div>
+    </div></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>Spdlog源码解析</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E8%BD%AE%E5%AD%90/" class="post-category" title="分类 - 轮子"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 轮子</a> 和 <a href="/collections/%E5%BC%80%E6%BA%90%E5%BA%93/" class="post-collection" title="合集 - 开源库"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> 开源库</a></span></div><div class="post-meta-line"><span title="发布于 2025-06-22 17:10:32"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-06-22">2025-06-22</time></span>&nbsp;<span title="更新于 2025-09-08 17:10:32"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-09-08">2025-09-08</time></span>&nbsp;<span title="1974 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2000 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 4 分钟</span>&nbsp;</div>
+    </div><div class="content" id="content"><p>spdlog是一个快速的C++日志库。使用有两个版本，headr-only的版本和编译版本。header-only版本只需要把项目include文件夹放到自己项目中即可构建，用起来比较方便。官方给出的特点：很快；header-only 或编译版本；使用 fmt 库实现丰富的格式化功能；异步模式；自定义格式化；多线程/单线程记录器；多种日志目标；日志过滤；支持从argv或环境变量中加载日志级别；回溯支持 - 将调试消息存储在环形缓冲区中并按需显示。</p>
+<p>spdlog是一个日志库，调用其提供的接口实现日志打印功能，它本身引用到了fmt库，fmt是格式化的库。初级的日志打印的定义是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">spdlog</span><span class="o">::</span><span class="n">info</span><span class="p">(</span><span class="s">&#34;Positional args are {1} {0}..&#34;</span><span class="p">,</span> <span class="s">&#34;too&#34;</span><span class="p">,</span> <span class="s">&#34;supported&#34;</span><span class="p">);</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>上述函数通过调用spdlog命名空间的info接口，打印结果：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="o">[</span>2025-09-04 15:49:34.163<span class="o">]</span> <span class="o">[</span>info<span class="o">]</span> Positional args are supported too..</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">spdlog</span><span class="o">::</span><span class="n">set_level</span><span class="p">(</span><span class="n">spdlog</span><span class="o">::</span><span class="n">level</span><span class="o">::</span><span class="n">info</span><span class="p">);</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>我们通过spdlog::info接口来向下探索，该接口定义在spdlog.h中，说明所有源文件只要include了spdlog.h，即可调用spdlog库所提供的接口。该函数是一个模版函数定义如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="kt">void</span> <span class="n">info</span><span class="p">(</span><span class="n">format_string_t</span><span class="o">&lt;</span><span class="n">Args</span><span class="p">...</span><span class="o">&gt;</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">Args</span> <span class="o">&amp;&amp;</span><span class="p">...</span><span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">default_logger_raw</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">info</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">Args</span><span class="o">&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">)...);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Args&hellip;是可变参数包类型，format_string_t&lt;Args&hellip;&gt; fmt是fmt库接口fmt::format_string&lt;Args&hellip;&gt;，Args &amp;&amp;&hellip;args将可变参数包转为右值用于完美转发。还要需要注意的是spdlog.h中的所有函数都是inline的，这也是为什么spdlog能实现header-only的原因。
+default_logger_raw()的函数定义如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">SPDLOG_INLINE</span> <span class="n">spdlog</span><span class="o">::</span><span class="n">logger</span> <span class="o">*</span><span class="n">default_logger_raw</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">details</span><span class="o">::</span><span class="n">registry</span><span class="o">::</span><span class="n">instance</span><span class="p">().</span><span class="n">get_default_raw</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>该函数使用单例模式，使用static创建全局唯一registry实例，调用get_default_raw()拿到默认logger。然后调用logger类的成员函数info，该函数定义如下，其中log函数是重载函数，支持多种参数类型和数量。不过最终都会调用log_it_函数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">info</span><span class="p">(</span><span class="n">format_string_t</span><span class="o">&lt;</span><span class="n">Args</span><span class="p">...</span><span class="o">&gt;</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">Args</span> <span class="o">&amp;&amp;</span><span class="p">...</span><span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="p">(</span><span class="n">level</span><span class="o">::</span><span class="n">info</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">Args</span><span class="o">&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">)...);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">SPDLOG_INLINE</span> <span class="kt">void</span> <span class="n">logger</span><span class="o">::</span><span class="n">log_it_</span><span class="p">(</span><span class="k">const</span> <span class="n">spdlog</span><span class="o">::</span><span class="n">details</span><span class="o">::</span><span class="n">log_msg</span> <span class="o">&amp;</span><span class="n">log_msg</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                   <span class="kt">bool</span> <span class="n">log_enabled</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                   <span class="kt">bool</span> <span class="n">traceback_enabled</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">log_enabled</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sink_it_</span><span class="p">(</span><span class="n">log_msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">traceback_enabled</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">tracer_</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">log_msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>log_it_函数主要就是接收log函数根据日志级别判断是否日志打印的参数，调用sink_it_函数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">SPDLOG_INLINE</span> <span class="kt">void</span> <span class="n">logger</span><span class="o">::</span><span class="n">sink_it_</span><span class="p">(</span><span class="k">const</span> <span class="n">details</span><span class="o">::</span><span class="n">log_msg</span> <span class="o">&amp;</span><span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">sink</span> <span class="p">:</span> <span class="n">sinks_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">sink</span><span class="o">-&gt;</span><span class="n">should_log</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">level</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">SPDLOG_TRY</span> <span class="p">{</span> <span class="n">sink</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">SPDLOG_LOGGER_CATCH</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">source</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">should_flush_</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">flush_</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>sink_it_函数遍历所有sink，调用sink的log函数。这里sinks_的类型是std::vector&lt;sink_ptr&gt;，即shared_ptr的容器，每个元素是指向sink对象的智能指针。而log是虚函数，交由继承sink的子类对象来实现，这里sink-&gt;log(msg);很好的展现了多态的实现机制。base_sink继承了sink，且其他sink继承了base_sink，spdlog中定义了多种sink，如daily_file_sink、rotating_file_sink、stdout_sinks等，这些sink实现的头文件放到了sinks中。以daily_file_sink为例，最后写日志的函数实现为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">sink_it_</span><span class="p">(</span><span class="k">const</span> <span class="n">details</span><span class="o">::</span><span class="n">log_msg</span> <span class="o">&amp;</span><span class="n">msg</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">auto</span> <span class="n">time</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="n">time</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="n">should_rotate</span> <span class="o">=</span> <span class="n">time</span> <span class="o">&gt;=</span> <span class="n">rotation_tp_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">should_rotate</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">auto</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">FileNameCalc</span><span class="o">::</span><span class="n">calc_filename</span><span class="p">(</span><span class="n">base_filename_</span><span class="p">,</span> <span class="n">now_tm</span><span class="p">(</span><span class="n">time</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">file_helper_</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">truncate_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">rotation_tp_</span> <span class="o">=</span> <span class="n">next_rotation_tp_</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">memory_buf_t</span> <span class="n">formatted</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">base_sink</span><span class="o">&lt;</span><span class="n">Mutex</span><span class="o">&gt;::</span><span class="n">formatter_</span><span class="o">-&gt;</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">formatted</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">file_helper_</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">formatted</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Do the cleaning only at the end because it might throw on failure.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">should_rotate</span> <span class="o">&amp;&amp;</span> <span class="n">max_files_</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delete_old_</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>根据msg的时间判断是否大于轮转时间，如果大于就要新建一个文件，打开、写文件是通过抽象的file层实现。写操作是最后调用stdio.h中标准库POSIX接口fwrite_unlocked来实现文件写数据，这是单线程下不加锁的实现。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">SPDLOG_INLINE</span> <span class="kt">void</span> <span class="n">file_helper</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="k">const</span> <span class="n">memory_buf_t</span> <span class="o">&amp;</span><span class="n">buf</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">fd_</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size_t</span> <span class="n">msg_size</span> <span class="o">=</span> <span class="n">buf</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">auto</span> <span class="n">data</span> <span class="o">=</span> <span class="n">buf</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">details</span><span class="o">::</span><span class="n">os</span><span class="o">::</span><span class="n">fwrite_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">msg_size</span><span class="p">,</span> <span class="n">fd_</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">throw_spdlog_ex</span><span class="p">(</span><span class="s">&#34;Failed writing to file &#34;</span> <span class="o">+</span> <span class="n">os</span><span class="o">::</span><span class="n">filename_to_str</span><span class="p">(</span><span class="n">filename_</span><span class="p">),</span> <span class="n">errno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">extern</span> <span class="n">size_t</span> <span class="nf">fread_unlocked</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">__restrict</span> <span class="n">__ptr</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">__size</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">             <span class="n">size_t</span> <span class="n">__n</span><span class="p">,</span> <span class="n">FILE</span> <span class="o">*</span><span class="n">__restrict</span> <span class="n">__stream</span><span class="p">)</span> <span class="n">__wur</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__nonnull</span> <span class="p">((</span><span class="mi">4</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="k">extern</span> <span class="n">size_t</span> <span class="nf">fwrite_unlocked</span> <span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">__restrict</span> <span class="n">__ptr</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">__size</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">              <span class="n">size_t</span> <span class="n">__n</span><span class="p">,</span> <span class="n">FILE</span> <span class="o">*</span><span class="n">__restrict</span> <span class="n">__stream</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__nonnull</span> <span class="p">((</span><span class="mi">4</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>以上就是spdlog提供的spdlog::info实现流程，整体来看就是创建全局唯一单例registry，然后创建logger，logger构造时可以绑定sink输出槽，将日志消息传递到sink中调用标准库API进行写日志，其中还用到了fmt格式化。这是在单线程下单一logger单一sink的最简单实现。在example/example.cpp中还给出了其他使用示例，比如我们在使用时可以直接创建一个shared_ptr<logger>类型的对象指向spdlog所提供的sink，创建sink时一般是名字（字符串）和filename绑定的方式。一个logger是可以对应多个sink的，在logger的构造函数中提供了迭代器复制构造的实现：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">It</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">logger</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span><span class="p">,</span> <span class="n">It</span> <span class="n">begin</span><span class="p">,</span> <span class="n">It</span> <span class="n">end</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">:</span> <span class="n">name_</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">name</span><span class="p">)),</span>
+</span></span><span class="line"><span class="cl">      <span class="n">sinks_</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="p">{}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>本篇文章从示例出发，一层一层地解析了spdlog的实现。其实更深层次的解析应该从架构出发，给出整个库实现的各个模块关系，这里先挖个坑，有时间再来填。</p></div><div class="collection-card">
+      <div class="collection-title text-secondary">收录于 <a href="/collections/%E5%BC%80%E6%BA%90%E5%BA%93/"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> <span>合集・开源库</span></span></a> 1</div>
+      <div class="collection-nav">
+        </div>
+    </div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod"><span title="更新于 2025-09-08 17:10:32">更新于 2025-09-08&nbsp;</span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/spdlog-analysis/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="分享到 X" data-sharer="twitter" data-url="http://localhost:1313/posts/spdlog-analysis/" data-title="Spdlog源码解析" data-hashtags="spdlog,日志库"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/spdlog-analysis/" data-hashtag="spdlog"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/spdlog-analysis/" data-title="Spdlog源码解析"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/spdlog/" class="post-tag" title="标签 - Spdlog">Spdlog</a><a href="/tags/%E6%97%A5%E5%BF%97%E5%BA%93/" class="post-tag" title="标签 - 日志库">日志库</a></section>
+    <section><span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/link/" class="post-nav-item" rel="prev" title="链接"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>链接</a><a href="/posts/ostep-note/" class="post-nav-item" rel="next" title="操作系统导论读书笔记">操作系统导论读书笔记<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div class="post-reward">
+    <div class="comment"></div>
+    <input type="checkbox" class="reward-input" name="reward" id="fi-reward" hidden />
+    <label class="reward-button" for="fi-reward"><i class="fa-solid fa-qrcode fa-fw" aria-hidden="true"></i>赞赏</label>
+    <div class="reward-ways" data-mode="static"></div>
+  </div><div id="comments"><div id="giscus" class="comment">
+          <script
+            src="https://giscus.app/client.js"
+            data-repo=""
+            data-repo-id=""
+            data-category=""
+            data-category-id=""
+            data-mapping=""
+            data-strict="0"
+            
+            data-theme="preferred_color_scheme"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-lang="zh-CN"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async
+            defer
+          ></script>
+        </div>
+        <noscript>
+          Please enable JavaScript to view the comments powered by <a href="https://giscus.app/" rel="external nofollow noopener noreferrer">giscus</a>.
+        </noscript></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="目录"></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.148.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.4.0-alpha-20250823084643-0f68046a">FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/UAreFree"target="_blank" rel="external nofollow noopener noreferrer">UAreFree</a></span></div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">该网站在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/fuse/fuse.min.js" defer></script><script src="/lib/twemoji/twemoji.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":100},"comment":{"enable":true,"expired":false,"giscus":{"darkTheme":"dark","lightTheme":"light","origin":"https://giscus.app"}},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"twemoji":true,"version":"v0.4.0-alpha-20250823084643-0f68046a"};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

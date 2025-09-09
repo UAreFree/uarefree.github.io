@@ -13,7 +13,7 @@
 操作系统原型——xv6分析与实验 (罗秋明)">
   <meta itemprop="datePublished" content="2025-08-30T10:42:57+08:00">
   <meta itemprop="dateModified" content="2025-08-30T10:42:57+08:00">
-  <meta itemprop="wordCount" content="12252">
+  <meta itemprop="wordCount" content="14094">
   <meta itemprop="keywords" content="Xv6,读书笔记"><meta property="og:url" content="http://localhost:1313/posts/xv6-note/">
   <meta property="og:site_name" content=" Blog">
   <meta property="og:title" content="xv6读书笔记">
@@ -32,7 +32,7 @@
   <meta name="twitter:description" content="xv6: a simple, Unix-like teaching operating system (book-riscv-rev4)
 操作系统原型——xv6分析与实验 (罗秋明)">
 <meta name="application-name" content="YouAreFree">
-<meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/xv6-note/" title="xv6读书笔记 -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/posts/mit-lab-mmap/" title="MIT6.1810 Lab:Mmap" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/xv6-note/index.md" title="xv6读书笔记 -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+<meta name="apple-mobile-web-app-title" content="YouAreFree"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://localhost:1313/posts/xv6-note/" title="xv6读书笔记 -  Blog" /><link rel="prev" type="text/html" href="http://localhost:1313/about/" title="关于我" /><link rel="alternate" type="text/markdown" href="http://localhost:1313/posts/xv6-note/index.md" title="xv6读书笔记 -  Blog"><link rel="stylesheet" href="/css/config.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
   {
@@ -43,7 +43,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/localhost:1313\/posts\/xv6-note\/"
-    },"genre": "posts","keywords": "xv6, 读书笔记","wordcount":  12252 ,
+    },"genre": "posts","keywords": "xv6, 读书笔记","wordcount":  14094 ,
     "url": "http:\/\/localhost:1313\/posts\/xv6-note\/","datePublished": "2025-08-30T10:42:57+08:00","dateModified": "2025-08-30T10:42:57+08:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -129,7 +129,7 @@
   <article class="page single">
     <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>Xv6读书笔记</span>
       </h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-30 10:42:57"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-30">2025-08-30</time></span>&nbsp;<span title="12252 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 12300 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 25 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/UAreFree" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img class="avatar" src='/blogLogo.jpg' alt="UAreFree" height="16" width="16">&nbsp;UAreFree</a></span><span class="post-included-in">&nbsp;收录于 <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category" title="分类 - 操作系统"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 操作系统</a> 和 <a href="/collections/xv6/" class="post-collection" title="合集 - Xv6"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Xv6</a></span></div><div class="post-meta-line"><span title="发布于 2025-08-30 10:42:57"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-08-30">2025-08-30</time></span>&nbsp;<span title="14094 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 14100 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 29 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -142,6 +142,7 @@
     <li><a href="#xv6-book-chapter-3">xv6 book chapter 3</a></li>
     <li><a href="#xv6-book-chapter-4">xv6 book chapter 4</a></li>
     <li><a href="#xv6-book-chapter-6">xv6 book chapter 6</a></li>
+    <li><a href="#xv6-book-chapter-7">xv6 book chapter 7</a></li>
     <li><a href="#xv6-book-chapter-8">xv6 book chapter 8</a></li>
     <li><a href="#xv6fs-文件管理">xv6fs 文件管理</a>
       <ul>
@@ -267,7 +268,210 @@
 <p>多线程下程序指令会出现乱序问题，原因之一是编译器生成的加载和存储指令顺序与源代码顺序不同，原因之二是CPU可能会乱序执行指令以提高性能。为了告知硬件和编译器不要进行指令重排序，xv6在acquire和release中都使用了__sync_synchronize()，__sync_synchronize()是一种内存屏障：它告诉编译器和CPU不要跨屏障重新排序加载或存储操作。由于xv6在访问共享数据时都使用了锁，其acquire和release中的屏障在几乎所有关键场景中都强制保证了执行顺序。</p>
 <p>若一个进程试图获取自旋锁，长时间持有会导致资源浪费，因为获取进程会在自旋过程中空转CPU，且进程持有自旋锁时无法让出CPU。需要一种能在等待获取时以及持有锁时让出CPU的锁。xv6通过睡眠锁实现，acquiresleep函数在等待时会释放CPU使用权，从而使得其他线程能够继续执行。</p>
 <p>Real world中提到用锁编程充满挑战，若用锁编程，明智的做法是使用能检测竞态条件的工具。虽然无需原子指令也能实现锁机制，但这种方式代价太高，因此绝大多数OS仍选择采用原子指令。为避免锁带来的开销，许多OS采用无锁数据结构和算法，但无锁编程比基于锁的编程更为复杂，例如必须考虑指令与内存重排序的问题。</p>
-<h2 class="heading-element" id="xv6-book-chapter-8"><span>xv6 book chapter 8</span>
+<h2 class="heading-element" id="xv6-book-chapter-7"><span>xv6 book chapter 7</span>
+  <a href="#xv6-book-chapter-7" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>OS运行的进程数往往大于CPU数量，所以需要多路复用机制来实现在进程看来拥有自己独立的CPU。</p>
+<p>xv6通过两种机制实现多进程并发：1. 当进程发出阻塞系统调用时，xv6的睡眠和唤醒机制会自动切换CPU；2. 针对长期运行但不会阻塞的进程，xv6会定期进行CPU切换。前者属于自愿切换，后者属于非自愿切换。</p>
+<p>用户进程切换的完整流程：首先trap进内核，进行上下文切换至当前CPU的调度线程，随后再次切换到新进程的内核线程，最终返回用户进程。xv6通过独立线程（保存寄存器和堆栈）来执行调度程序，因为让调度程序直接在任意进程的内核堆栈上运行存在安全隐患，其他CPU可能随时唤醒并运行该进程，若两个不同的CPU使用同一堆栈将引发灾难性后果。每个CPU都有专门的调度线程，处理多个CPU同时运行且需要释放资源的进程。</p>
+<p>从一个线程切换到另一个线程需要保存旧线程的CPU寄存器，并恢复新线程之前保存的寄存器；由于堆栈指针和程序计数器被保存和恢复，意味着CPU将切换堆栈并切换正在执行的代码。</p>
+<p>swtch函数保存并恢复寄存器（上下文），当进程放弃CPU时，进程内核线程会调用swtch函数保存它自己的上下文并恢复调度器的上下文。每个上下文都包含在context结构体中，该结构体又包含在进程的proc结构体或CPU的结构体cpu中。swtch函数接受两个参数：context* old和context* new，它保存当前的old，加载new中的寄存器并返回。</p>
+<p>usertrap其中之一是yield，yield会调用sched，sched会调用swtch保存当前上下文到p-&gt;context中，并切换之前保存在cpu-&gt;context中的调度器上下文。</p>
+<p>swtch没有保存程序计数器，而是保存ra寄存器，该寄存器保存调用swtch的返回地址。当swtch返回时，它会返回到ra寄存器保存的返回地址，即之前调用swtch的新线程。此外，swtch也会返回sp堆栈指针指向的线程栈。</p>
+<p>每个CPU都有一个专用线程作为调度器，运行scheduler函数，选择下一个要运行的进程。当进程想要让出CPU时必须获取它自己的锁p-&gt;lock，释放它持有的其他锁，更新它自己的状态p-&gt;state，然后调用sched函数。这个操作流程同样存在于yield、sleep和exit函数中。sched调用swtch保存当前上下文p-&gt;context，切换调度器上下文cpu-&gt;context。随后调度器一直循环，找到要运行的进程并切换，如此循环往复。</p>
+<p>scheduler运行一个循环：找到一个进程来运行，运行它知道让出，重复。scheduler遍历进程表寻找可运行的进程，即p-&gt;state == RUNNABLE的进程。一旦找到一个进程，就设置每个CPU的当前进程变量c-&gt;proc，将进程标记为RUNNING，然后调用swtch启动运行。</p>
+<p>睡眠和唤醒：信号量PV操作作为条件同步的一种机制，xv6中信号量维护计数并提供两种操作：V操作（生产者）增加计数值，P操作（消费者）减少计数值。如果只有一个生产者一个消费者线程，其最初实现为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">semaphore</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">spinlock</span> <span class="n">lock</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">V</span><span class="p">(</span><span class="k">struct</span> <span class="n">semphore</span> <span class="o">*</span><span class="n">s</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">P</span><span class="p">(</span><span class="k">struct</span> <span class="n">semphore</span> <span class="o">*</span><span class="n">s</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这种实现P操作一直自旋，为了避免陷入忙等待，可以使用sleep调用将调用进程置于睡眠状态和wakeup调用唤醒进程，实现如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">semaphore</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">spinlock</span> <span class="n">lock</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">V</span><span class="p">(</span><span class="k">struct</span> <span class="n">semphore</span> <span class="o">*</span><span class="n">s</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">wakeup</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">P</span><span class="p">(</span><span class="k">struct</span> <span class="n">semphore</span> <span class="o">*</span><span class="n">s</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sleep</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是这样存在虚假唤醒的问题，进程A在P操作判断s-&gt;count == 0之后，sleep之前，另一进程B同时调用了V操作增加count并wakeup，导致此时进程A没有被唤醒。然后进程A继续执行P操作从而sleep睡眠。为了避免虚假唤醒，可以在P操作判断s-&gt;count == 0时也加上锁。比如如下实现：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">semaphore</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">spinlock</span> <span class="n">lock</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">V</span><span class="p">(</span><span class="k">struct</span> <span class="n">semphore</span> <span class="o">*</span><span class="n">s</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">wakeup</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">P</span><span class="p">(</span><span class="k">struct</span> <span class="n">semphore</span> <span class="o">*</span><span class="n">s</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sleep</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>但这样很明显又会带来死锁问题，进程B在执行P操作时睡眠持有锁，进程A永远无法拿到锁执行V操作，所以需要再sleep中传入锁，当进程被标记为睡眠状态并在睡眠通道等待时，sleep释放锁。最后的实现如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">semaphore</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">spinlock</span> <span class="n">lock</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">V</span><span class="p">(</span><span class="k">struct</span> <span class="n">semphore</span> <span class="o">*</span><span class="n">s</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">wakeup</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">P</span><span class="p">(</span><span class="k">struct</span> <span class="n">semphore</span> <span class="o">*</span><span class="n">s</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">acquire</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sleep</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">release</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 class="heading-element" id="xv6-book-chapter-8"><span>xv6 book chapter 8</span>
   <a href="#xv6-book-chapter-8" class="heading-mark">
     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
   </a>
@@ -370,7 +574,7 @@ file.c提供filewrite()，然后调用writei()，传入file对应的inode和偏�
     <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/xv6/" class="post-tag" title="标签 - Xv6">Xv6</a><a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-tag" title="标签 - 读书笔记">读书笔记</a></section>
     <section><span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
     </section>
-  </div><div class="post-nav"><a href="/posts/mit-lab-mmap/" class="post-nav-item" rel="prev" title="MIT6.1810 Lab:Mmap"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>MIT6.1810 Lab:Mmap</a></div>
+  </div><div class="post-nav"><a href="/posts/ostep-note/" class="post-nav-item" rel="prev" title="操作系统导论读书笔记"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>操作系统导论读书笔记</a></div>
 </div>
 <div class="post-reward">
     <div class="comment"></div>
